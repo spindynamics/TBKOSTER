@@ -1,0 +1,6 @@
+&units
+ energy = 'ev'
+ length = 'ang'
+ time = 'fs'
+ mass = 'hau'
+ /

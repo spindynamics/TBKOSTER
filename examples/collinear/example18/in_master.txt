@@ -1,0 +1,67 @@
+&calculation
+ processing = 'scf'
+ post_processing='dos'
+ /
+&units
+ length='ang'
+ energy='ev'
+ time='fs'
+ mass='hau'
+ /
+&element
+ ne = 2
+ symbol(1) = 'Co'
+ symbol(2) = 'Pt'
+ q(1)  = 9.0
+ q_d(1) = 8.0
+ u_lcn(1) = 20.0
+ i_stoner_d(1) = 1.1
+ q(2)  = 10.0
+ q_d(2) = 9.0
+ u_lcn(2)= 20.0
+ i_stoner_d(2) = 0.6
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
+ filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/pt_par_fcc_bcc_sc_lda_fl'
+ /
+&lattice
+ v_factor = 2.68378136158666993601
+ v(1,:) = 1.0 0.0 0.0
+ v(2,:) = 0.0 1.0 0.0
+ v(3,:) = 0.0 0.0 1.35340237919105196170 
+ /
+&atom
+ ns = 2
+ na = 2
+ ntag = 2
+ tag(1) = 'Co' 
+ tag(2) = 'Pt'
+ stag(1)=1
+ stag(2)=1 
+ pbc = 5, 5, 5
+ r(1,:) =      0.0000000     0.0000000     0.0000000
+ r(2,:) =      0.5000000     0.5000000     0.5000000
+ m(1,:) =      1.0000000     0.0000000     0.0000000
+ m(2,:) =      0.5000000     0.0000000     0.0000000
+ /
+&mesh
+ type = 'mp'
+ gx = 10, 10, 10
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.05
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en=0.0001
+ delta_q=0.0001
+ verbose=.true.
+ ni_max=200
+ /

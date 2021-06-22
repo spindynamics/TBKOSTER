@@ -1,0 +1,11 @@
+{
+    "cmake.configureOnOpen": false,
+    "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
+    "cSpell.words": [
+        "adiabaticity",
+        "antropov",
+        "initio",
+        "nonadiabatic",
+        "spintronics"
+    ]
+}

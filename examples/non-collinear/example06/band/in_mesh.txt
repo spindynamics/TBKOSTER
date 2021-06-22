@@ -1,0 +1,9 @@
+&mesh
+ type = 'path'
+ gxs = 100
+ nxs = 2
+ xs_label(1) = 'G'
+ xs_label(2) = 'X'
+ xs(1,:) =  0  ,  0.0 ,  0
+ xs(2,:) =  0.0,  0.0  ,  0.5
+ /

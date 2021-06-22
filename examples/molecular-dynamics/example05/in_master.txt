@@ -1,0 +1,63 @@
+&calculation
+ processing = 'scf'
+ post_processing='forces'
+ post_processing_dir = 'scf'
+ /
+&units
+ length='ang'
+ energy='ev'
+ time='fs'
+ mass='hau'
+ /
+&element
+ ne = 1
+ symbol(1) = 'Au'
+ q(1)   = 11.0
+ q_d(1) = 10
+ u_lcn(1)=20
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/au_par_fcc_bcc_sc_lda_fl'
+ /
+&lattice
+ v_factor = 2.88499566724111
+ v(1,:) = 1.0 0.0 0.0
+ v(2,:) =-0.5 0.866025403784438 0
+ v(3,:) = 0.0 0.0 0.1061445555206044D+02 
+ /
+&atom
+ ns = 1
+ na = 4 
+ ntag = 1
+ tag(1) = 'Au'
+ stag(1)=4 
+ pbc = 5, 5, 0 
+ r_coord='cartesian'
+ r(1,:) =      0.0000000     0.0000000     0.05
+ r(2,:) =      1.4424978    -0.8328265    -2.3555892
+ r(3,:) =     -1.4424978     0.8328265    -4.7111783
+ r(4,:) =      0.0000000     0.0000000    -7.0667677
+ /
+&mesh
+ type = 'mp'
+ gx = 10 , 10 , 1
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.05
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en=0.0001
+ delta_q=0.0001
+ verbose=.false.
+ ni_max=200
+ /
+&forces
+ computed=.true.
+ /

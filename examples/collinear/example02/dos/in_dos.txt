@@ -1,0 +1,8 @@
+&dos
+ nen=500
+ na_dos=2
+ ia(1)= 1
+ ia(2)=7
+ en_min=-10
+ en_max=10
+ /

@@ -1,0 +1,20 @@
+objs = atom.o math.o precision.o string.o
+opts = -g -Og
+mkl_lib_dir = /mnt/share/intel/mkl/lib/intel64
+f95_lib_dir = /mnt/share/intel/mkl_gf/lib/intel64
+f95_include_dir = /mnt/share/intel/mkl_gf/include
+
+main.x: main.o $(objs)
+	gfortran $(opts) -o main.x main.o $(objs) $(f95_lib_dir)/libmkl_lapack95_lp64.a -Wl,--start-group $(mkl_lib_dir)/libmkl_gf_lp64.a $(mkl_lib_dir)/libmkl_sequential.a $(mkl_lib_dir)/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl
+main.o: $(objs)
+	gfortran $(opts) -c main.f90
+atom.o: math.o precision.o string.o
+	gfortran $(opts) -c ../../src/atom.f90
+math.o: precision.o
+	gfortran $(opts) -c ../../src/math.f90 -m64 -I$(f95_include_dir)/intel64/lp64
+precision.o:
+	gfortran $(opts) -c ../../src/precision.f90
+string.o: precision.o
+	gfortran $(opts) -c ../../src/string.f90
+clean:
+	rm -f main.x main.o atom* math* precision* string*

@@ -1,0 +1,4 @@
+&hamiltonian_tb
+ nh = 9
+ ns = 1
+ /

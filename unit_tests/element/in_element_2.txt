@@ -1,0 +1,6 @@
+&element
+ ns = 2
+ ne = 2
+ symbol(1) = 'Fe'
+ symbol(2) = 'C'
+ /

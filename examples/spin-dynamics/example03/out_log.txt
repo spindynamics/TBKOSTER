@@ -1,0 +1,218 @@
+&units
+ energy = 'ev'
+ length = 'ang'
+ time = 'fs'
+ mass = 'hau'
+ /
+&element
+ ne = 1
+ symbol(1) = 'Cr'
+ no(1) = 9
+ o(1,1:9) = 1, 2, 3, 4, 5, 6, 7, 8, 9
+ q(1) = 6.0000000000000000
+ q_s(1) = 0.50000000000000000
+ q_p(1) = 0.50000000000000000
+ q_d(1) = 5.0000000000000000
+ u_lcn(1) = 20.000000000000000
+ u_lcn_d(1) = 0.0000000000000000
+ i_stoner_d(1) = 0.81999999999999995
+ b(1) = 0.0000000000000000
+ j_dd(1) = 0.0000000000000000
+ u_dd(1) = 0.0000000000000000
+ xi_so_p(1) = 0.0000000000000000
+ xi_so_d(1) = 0.0000000000000000
+ mass(1) = 51.996099999999998
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/cr_par_fcc_bcc_sc_gga_fl'
+ /
+&lattice
+ v(1,:) = 2.0000000000000000, 0.0000000000000000, 0.0000000000000000
+ v(2,:) = 0.0000000000000000, 2.0000000000000000, 0.0000000000000000
+ v(3,:) = 0.0000000000000000, 0.0000000000000000, 2.0000000000000000
+ /
+&atom
+ ns = 4
+ na = 3
+ ntag = 1
+ stag(1) = 3
+ tag(1) = 'Cr_trimer'
+ ia2ie(1) = 1
+ ia2ie(2) = 1
+ ia2ie(3) = 1
+ pbc = 0, 0, 0
+ k_spiral = 0.0000000000000000, 0.0000000000000000, 0.0000000000000000
+ r_coord = 'cartesian'
+ m_coord = 'spherical'
+ r(1,:) = 0.00000000000000, 0.00000000000000, 0.00000000000000
+ r(2,:) = 1.73205080756888, -1.00000000000000, 0.00000000000000
+ r(3,:) = 1.73205080756888, 1.00000000000000, 0.00000000000000
+ p(1,:) = 0.0000000000000000, 0.0000000000000000, 0.0000000000000000
+ p(2,:) = 0.0000000000000000, 0.0000000000000000, 0.0000000000000000
+ p(3,:) = 0.0000000000000000, 0.0000000000000000, 0.0000000000000000
+ m(1,:) = 3.1800000000000002, 45.000000000000000, 180.00000000000000
+ m(2,:) = 3.1800000000000002, 45.000000000000000, -59.999999999999993
+ m(3,:) = 3.1800000000000002, 45.000000000000000, 59.999999999999993
+ lambda_pen(1) = 30.000000000000000
+ lambda_pen(2) = 30.000000000000000
+ lambda_pen(3) = 30.000000000000000
+ /
+&mesh
+ type = 'mp'
+ gx = 1, 1, 1
+ dx = 0, 0, 0
+ nx = 1
+ /
+&hamiltonian_tb
+ e_e_interaction = 'stoner'
+ m_penalization = 'theta,phi'
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.20000000000000001
+ fixed_fermi_level = .false.
+ en_f_ffl = 0.0000000000000000
+ fixed_spin_moment = .false.
+ m_fsm = 0.0000000000000000
+ en_min = 0.0000000000000000
+ en_max = 0.0000000000000000
+ /
+&mixing
+ type = 'broyden'
+ alpha = 0.10000000000000001
+ n_init = 1
+ n_hist = 50
+ /
+&scf
+ ni_min = 2
+ ni_max = 50
+ delta_en = 1.0000000000000001E-005
+ delta_q = 1.0000000000000001E-005
+ verbose = .false.
+ /
+&sd
+ integrator = 'st_1'
+ engine = 'approx'
+ t_i = 0.0000000000000000
+ t_f = 30.000000000000000
+ dt = 5.0000000000000003E-002
+ fixed_time_step = .true.
+ quality_factor = 0.0000000000000000
+ alpha = 1.0000000000000000
+ temp = 0.0000000000000000
+ verbose = .true.
+ /
+&atom
+ nel = 18.000000000000000
+ nn(1) = 2
+ nn(2) = 2
+ nn(3) = 2
+ /
+
+calculation%run(): Processing sd
+
+===== spin_dynamics%integrate_st_1(): iteration 1 =====
+===== self_consistent_field%run(): iteration 1 =====
+===== self_consistent_field%run(): iteration 2 =====
+===== self_consistent_field%run(): iteration 3 =====
+===== self_consistent_field%run(): iteration 4 =====
+===== self_consistent_field%run(): iteration 5 =====
+===== self_consistent_field%run(): iteration 6 =====
+===== self_consistent_field%run(): iteration 7 =====
+===== self_consistent_field%run(): iteration 8 =====
+===== self_consistent_field%run(): iteration 9 =====
+===== self_consistent_field%run(): iteration 10 =====
+===== self_consistent_field%run(): iteration 11 =====
+===== self_consistent_field%run(): iteration 12 =====
+===== self_consistent_field%run(): iteration 13 =====
+===== self_consistent_field%run(): iteration 14 =====
+===== self_consistent_field%run(): iteration 15 =====
+===== self_consistent_field%run(): iteration 16 =====
+===== self_consistent_field%run(): iteration 17 =====
+===== self_consistent_field%run(): iteration 18 =====
+===== self_consistent_field%run(): iteration 19 =====
+===== self_consistent_field%run(): iteration 20 =====
+===== self_consistent_field%run(): iteration 21 =====
+===== self_consistent_field%run(): iteration 22 =====
+===== self_consistent_field%run(): iteration 23 =====
+===== self_consistent_field%run(): iteration 24 =====
+===== self_consistent_field%run(): iteration 25 =====
+===== self_consistent_field%run(): iteration 26 =====
+===== self_consistent_field%run(): iteration 27 =====
+===== self_consistent_field%run(): iteration 28 =====
+===== self_consistent_field%run(): iteration 29 =====
+===== self_consistent_field%run(): iteration 30 =====
+===== self_consistent_field%run(): iteration 31 =====
+===== self_consistent_field%run(): iteration 32 =====
+===== self_consistent_field%run(): iteration 33 =====
+===== self_consistent_field%run(): iteration 34 =====
+===== self_consistent_field%run(): iteration 35 =====
+===== self_consistent_field%run(): iteration 36 =====
+===== self_consistent_field%run(): iteration 37 =====
+===== self_consistent_field%run(): iteration 38 =====
+===== self_consistent_field%run(): iteration 39 =====
+===== self_consistent_field%run(): iteration 40 =====
+===== self_consistent_field%run(): iteration 41 =====
+===== self_consistent_field%run(): iteration 42 =====
+===== self_consistent_field%run(): iteration 43 =====
+===== self_consistent_field%run(): iteration 44 =====
+===== self_consistent_field%run(): iteration 45 =====
+===== self_consistent_field%run(): iteration 46 =====
+===== self_consistent_field%run(): iteration 47 =====
+===== self_consistent_field%run(): iteration 48 =====
+===== self_consistent_field%run(): iteration 49 =====
+===== self_consistent_field%run(): iteration 50 =====
+self_consistent_field%run(): SCF loop did not converge
+Convergence is not reached, SD stopped
+===== self_consistent_field%run(): iteration 1 =====
+===== self_consistent_field%run(): iteration 2 =====
+===== self_consistent_field%run(): iteration 3 =====
+===== self_consistent_field%run(): iteration 4 =====
+===== self_consistent_field%run(): iteration 5 =====
+===== self_consistent_field%run(): iteration 6 =====
+===== self_consistent_field%run(): iteration 7 =====
+===== self_consistent_field%run(): iteration 8 =====
+===== self_consistent_field%run(): iteration 9 =====
+===== self_consistent_field%run(): iteration 10 =====
+===== self_consistent_field%run(): iteration 11 =====
+===== self_consistent_field%run(): iteration 12 =====
+===== self_consistent_field%run(): iteration 13 =====
+===== self_consistent_field%run(): iteration 14 =====
+===== self_consistent_field%run(): iteration 15 =====
+===== self_consistent_field%run(): iteration 16 =====
+===== self_consistent_field%run(): iteration 17 =====
+===== self_consistent_field%run(): iteration 18 =====
+===== self_consistent_field%run(): iteration 19 =====
+===== self_consistent_field%run(): iteration 20 =====
+===== self_consistent_field%run(): iteration 21 =====
+===== self_consistent_field%run(): iteration 22 =====
+===== self_consistent_field%run(): iteration 23 =====
+===== self_consistent_field%run(): iteration 24 =====
+===== self_consistent_field%run(): iteration 25 =====
+===== self_consistent_field%run(): iteration 26 =====
+===== self_consistent_field%run(): iteration 27 =====
+===== self_consistent_field%run(): iteration 28 =====
+===== self_consistent_field%run(): iteration 29 =====
+===== self_consistent_field%run(): iteration 30 =====
+===== self_consistent_field%run(): iteration 31 =====
+===== self_consistent_field%run(): iteration 32 =====
+===== self_consistent_field%run(): iteration 33 =====
+===== self_consistent_field%run(): iteration 34 =====
+===== self_consistent_field%run(): iteration 35 =====
+===== self_consistent_field%run(): iteration 36 =====
+===== self_consistent_field%run(): iteration 37 =====
+===== self_consistent_field%run(): iteration 38 =====
+===== self_consistent_field%run(): iteration 39 =====
+===== self_consistent_field%run(): iteration 40 =====
+===== self_consistent_field%run(): iteration 41 =====
+===== self_consistent_field%run(): iteration 42 =====
+===== self_consistent_field%run(): iteration 43 =====
+===== self_consistent_field%run(): iteration 44 =====
+===== self_consistent_field%run(): iteration 45 =====
+===== self_consistent_field%run(): iteration 46 =====
+===== self_consistent_field%run(): iteration 47 =====
+===== self_consistent_field%run(): iteration 48 =====
+===== self_consistent_field%run(): iteration 49 =====
+===== self_consistent_field%run(): iteration 50 =====
+self_consistent_field%run(): SCF loop did not converge
+Convergence is not reached, SD stopped

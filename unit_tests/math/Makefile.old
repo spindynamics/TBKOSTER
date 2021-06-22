@@ -1,0 +1,15 @@
+objs = math.o precision.o
+mkl_lib_dir = /mnt/share/intel/mkl/lib/intel64
+f95_lib_dir = /mnt/share/intel/mkl_gf/lib/intel64
+f95_include_dir = /mnt/share/intel/mkl_gf/include
+
+main.x: main.o $(objs)
+	gfortran -o main.x main.o $(objs) $(f95_lib_dir)/libmkl_lapack95_ilp64.a -Wl,--start-group $(mkl_lib_dir)/libmkl_gf_ilp64.a $(mkl_lib_dir)/libmkl_sequential.a $(mkl_lib_dir)/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl
+main.o: $(objs)
+	gfortran -c main.f90
+math.o: precision.o
+	gfortran -c ../../src/math.f90 -m64 -I$(f95_include_dir)/intel64/ilp64
+precision.o:
+	gfortran -c ../../src/precision.f90
+clean:
+	rm -f main.x main.o math* precision*

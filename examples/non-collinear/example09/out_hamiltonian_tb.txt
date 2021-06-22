@@ -1,0 +1,4 @@
+&hamiltonian_tb
+ nh = 900
+ ns = 4
+ /

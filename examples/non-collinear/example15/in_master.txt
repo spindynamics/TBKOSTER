@@ -1,0 +1,55 @@
+&calculation
+ processing = 'scf'
+ post_processing = 'dos'
+ /
+&units
+ energy = 'ev'
+ length = 'ang'
+ time = 'fs'
+ mass='hau'
+ /
+&element
+ ne = 1
+ symbol(1) = 'Fe'
+ q(1)   = 8.0
+ q_d(1) = 7.0
+ u_lcn(1) = 20.0
+ i_stoner_d(1) = 0.95
+ xi_so_d(1) = 0.06
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+ /
+&lattice
+ v_factor = 2.87
+ v(1,:) = -0.5,  0.5,  0.5
+ v(2,:) =  0.5, -0.5,  0.5
+ v(3,:) =  0.5,  0.5, -0.5
+ /
+&atom
+ ns = 4
+ na = 1
+ ntag = 1
+ stag(1) = 1
+ tag(1) = 'Fe_bulk'
+ r(1,:) = 0.0, 0.0, 0.0
+ m(1,:) = 1.0, 0.0, 0.0
+ /
+&mesh
+ type = 'mp'
+ gx = 10, 10, 10
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.2
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en = 0.0001
+ delta_q  = 0.0001
+ /

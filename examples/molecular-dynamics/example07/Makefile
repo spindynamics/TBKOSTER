@@ -1,0 +1,141 @@
+SHELL:=bash
+.ONESHELL:
+.NOTPARALLEL:
+
+DYNAMOL_ROOT_DIRECTORY=/home/barreto/github/DyNaMol
+DYNAMOL_COMMAND=$(DYNAMOL_ROOT_DIRECTORY)/linux/bin/DyNaMol.x
+TBPARAM_DIR=$(DYNAMOL_ROOT_DIRECTORY)/tb_parameters
+EXAMPLE_DIR=$(DYNAMOL_ROOT_DIRECTORY)/build/examples
+
+define get_x =
+$(shell grep 'r(1,:) =' $(EXAMPLE_DIR)/force_log_$(1).txt | cut -d"=" -f2 | cut -d"," -f1)
+endef
+
+define diag_x =
+$(shell echo "$(shell grep 'r(1,:) =' $(EXAMPLE_DIR)/force_log_$(1).txt | cut -d"=" -f2 | cut -d"," -f1)*2.03*sqrt(3)"| bc -l)
+endef
+
+define get_e =
+$(shell grep 'en =' $(EXAMPLE_DIR)/out_energy_$(1).txt | cut -d"=" -f2)
+endef
+
+define get_fx =
+$(shell grep 'Atom 1' $(EXAMPLE_DIR)/force_log_$(1).txt |cut -d"=" -f2 |cut -d"F" -f1)
+endef
+
+define get_variable =
+@$(info $(1) $(call get_x,$(1)) $(call diag_x,$(1)) $(call get_e,$(1)) $(call get_fx,$(1)))
+endef
+
+define corpse =
+$(call generate_file,$(TBPARAM_DIR),$(1),1)
+@mv in_master.orig in_master.txt	
+@$(DYNAMOL_COMMAND) 
+endef
+
+define generate_file =
+cat > in_master.orig << EOF
+&calculation
+processing = 'md'
+post_processing= 'none'
+post_processing_dir= ''
+/
+&units
+length='ang'
+energy='ev'
+time='fs'
+mass='g/mol'
+/
+&element
+ne=1
+symbol(1)='Co'
+q(1)=9.0
+q_d(1)=8.0
+u_lcn(1)=20
+i_stoner_d(1) = 1.10
+xi_so_d(1) = 0.0
+/
+&element_tb
+filename(1) = '$(1)/co_par_fcc_bcc_sc_gga_fl'
+/
+&lattice
+v_factor = 2.5
+v(1,:) = 1, 0, 0
+v(2,:) = 0, 1, 0
+v(3,:) = 0, 0, 1
+/
+&atom
+ns = 1
+na = 3
+ntag = 1
+tag(1)='Co'
+stag(1)= 3
+pbc = 0, 0, 0
+r_coord='direct'
+r(1,:) = $(2),0.0,0.0
+r(2,:) = 0.86602540378443864676,-0.5,0.0
+r(3,:) = 0.86602540378443864676,0.5,0.0
+m_listing = 'by_atom'
+m_coord = 'spherical'
+m(1,:) = 3.0000000000000000, 0.0000000000000000, 0.0000000000000000
+m(2,:) = 3.0000000000000000, 0.0000000000000000, 0.0000000000000000
+m(3,:) = 3.0000000000000000, 0.0000000000000000, 0.0000000000000000
+lambda_pen_listing= 'by_tag'
+lambda_pen(1) = 5.0
+/
+&mesh
+type = 'mp'
+gx = $(3), $(3), $(3)
+dx = 0, 0, 0
+/
+&hamiltonian_tb
+/
+&energy
+smearing = 'mv'
+degauss = 0.2
+/
+&mixing
+alpha = 0.1
+/
+&scf
+delta_en=0.0001
+delta_q=0.0001
+verbose=.false.
+ni_max= 1500
+/
+&forces
+computed=.true.
+/
+&md
+ensemble='nvt'
+t_i=0
+t_f=4
+dt=0.01
+verbose=.true.
+gamma=10.0
+temperature=0.0
+/
+EOF
+endef
+
+run:
+	$(call corpse,0.00)
+	
+verify:
+	@$(info $$DYNAMOL_ROOT_DIRECTORY is [$(DYNAMOL_ROOT_DIRECTORY)])
+	@$(info $$DYNAMOL_COMMAND is [$(DYNAMOL_COMMAND)])
+
+in_master:
+ifeq ($(DYNAMOL_ROOT_DIRECTORY),)
+@$(error DYNAMOL_ROOT_DIRECTORY is not set)
+endif
+ifeq ($(DYNAMOL_COMMAND),)
+@$(error DYNAMOL_COMMAND is not set)
+endif
+
+clean:
+	@rm -f out* in_master*
+
+help:
+	@$(info example 01:)
+	@$(info Molecular Dynamics for Co trimer)

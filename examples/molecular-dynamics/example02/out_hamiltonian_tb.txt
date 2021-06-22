@@ -1,0 +1,4 @@
+&hamiltonian_tb
+ nh = 18
+ ns = 1
+ /

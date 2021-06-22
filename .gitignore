@@ -1,0 +1,72 @@
+# Prerequisites
+*.d
+
+# Compiled object files
+*.lo
+*.o
+*.obj
+*.slo
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Compiled dynamic libraries
+*.dll
+*.dylib
+*.so
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled static libraries
+*.a
+*.la
+*.lai
+*.lib
+
+# Executables
+*.app
+*.exe
+*.out
+*.x
+
+# Directories where the build are located
+build
+linux*
+mac
+win
+bin
+doc/html
+doc/latex
+doc/UserManual.pdf
+doc/UserManual.tex
+lib
+modules
+python/__pycache__
+src/main.f90
+src/CMakeFiles
+examples/README
+
+# CMake related
+*.cmake
+CMakeCache.txt
+CMakeDoxyfile.in
+CMakeFiles/*
+#Makefile
+unit_tests/string/CMakeFiles/*
+
+# LaTeX auxillary files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Draft paper produced locally
+files/papers/TB_spin_dynamics.pdf

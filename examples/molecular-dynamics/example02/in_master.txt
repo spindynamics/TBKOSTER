@@ -1,0 +1,61 @@
+&calculation
+ processing = 'scf'
+ post_processing= 'forces'
+ post_processing_dir= 'scf'
+ /
+&units
+ length='ang'
+ energy='ev'
+ time='fs'
+ mass='hau'
+ /
+&element
+ ne = 1
+ symbol(1) = 'Pt'
+ q(1)   = 10.0
+ q_d(1) = 8.8
+ u_lcn(1)=20
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/pt_par_fcc_bcc_sc_lda_fl'
+ /
+&lattice
+ v_factor = 1.0
+ v(1,:) = 1 0 0
+ v(2,:) = 0 1 0
+ v(3,:) = 0 0 1 
+ /
+&atom
+ ns = 1
+ na = 2
+ ntag = 1
+ tag(1) = 'Pt'
+ stag(1)= 2
+ pbc = 0, 0, 0
+ r_coord='cartesian'
+ r(1,:) =      0.0000000     0.0000000     0.0000000
+ r(2,:) =      0.0000000     0.0000000     2.10000
+ /
+&mesh
+ type = 'mp'
+ gx = 1, 1, 1
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.05
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en=0.0001
+ delta_q=0.0001
+ verbose=.false.
+ ni_max=200
+ /
+&forces
+ computed=.true.
+ /

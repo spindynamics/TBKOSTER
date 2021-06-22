@@ -1,0 +1,23 @@
+&element_1
+ number_of_elements = 2
+ number_of_spins = 2
+ /
+&element_2
+ symbol = "Fe","C"
+ /
+&element_3
+ number_of_orbitals = 9,4
+ /
+&element_4
+ orbital(1,1:9) = 1,2,3,4,5,6,7,8,9
+ q(1) = 7.0 ! On purpose
+ i_stoner_d(1) = 1.0
+
+ orbital(2,1:4) = 1,2,3,4
+ q(2) = 3.0 ! On purpose
+ i_stoner_d(2) = 0.0
+ /
+&element_tb
+ filename(1) = "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga"
+ filename(2) = "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/c_par_105"
+ /

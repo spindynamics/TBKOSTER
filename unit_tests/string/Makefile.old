@@ -1,0 +1,12 @@
+objs = precision.o string.o
+
+main.x: main.o $(objs)
+	gfortran -o main.x main.o $(objs)
+main.o: $(objs)
+	gfortran -c main.f90
+precision.o:
+	gfortran -c ../../src/precision.f90
+string.o: precision.o
+	gfortran -c ../../src/string.f90
+clean:
+	rm -f main.x main.o precision* string*

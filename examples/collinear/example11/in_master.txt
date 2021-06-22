@@ -1,0 +1,60 @@
+&calculation
+ processing='scf'
+ /
+&units
+ energy = 'ev'
+ length = 'ang'
+ time = 'fs'
+ mass='hau'
+ /
+&element
+ ne = 1
+ symbol(1) = 'Cr'
+ q(1)   = 6.0
+ q_d(1) = 5.0
+ u_lcn(1) = 20.0
+ i_stoner_d(1) = 0.82
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/cr_par_fcc_bcc_sc_gga_fl'
+ /
+&lattice
+ v_factor = 2.91
+ v(1,:) = 1.0	0.0  0.0
+ v(2,:) = 0.0	1.0  0.0
+ v(3,:) = 0.0	0.0  1.0
+ /
+&atom
+ ns = 2
+ na = 2
+ ntag = 2
+ stag(1) = 1
+ stag(2) = 1
+ tag(1) = 'Cr_up'
+ tag(2) = 'Cr_dn'
+ r(1,:) = 0.0, 0.0, 0.0
+ r(2,:) = 0.5, 0.5, 0.5
+ m_listing = 'by_tag'
+ m_coord = 'spherical'
+m(1,:) =  1.0, 0.0, 0.0
+m(2,:) = -1.0, 0.0, 0.0
+ /
+&mesh
+ type = 'mp'
+ gx = 10, 10, 10
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.2
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en = 0.0001
+ delta_q  = 0.0001
+ verbose = .true.
+ /
