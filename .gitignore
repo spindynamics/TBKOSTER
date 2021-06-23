@@ -50,10 +50,10 @@ src/CMakeFiles
 examples/README
 
 # CMake related
-*.cmake
-CMakeCache.txt
-CMakeDoxyfile.in
-CMakeFiles/*
+#*.cmake
+#CMakeCache.txt
+#CMakeDoxyfile.in
+#CMakeFiles/*
 #Makefile
 unit_tests/string/CMakeFiles/*
 
@@ -68,5 +68,3 @@ unit_tests/string/CMakeFiles/*
 *.synctex.gz
 *.toc
 
-# Draft paper produced locally
-files/papers/TB_spin_dynamics.pdf

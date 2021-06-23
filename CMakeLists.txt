@@ -96,10 +96,11 @@ if(ENABLE_LATEX)
   find_package(LATEX COMPONENTS PDFLATEX BIBTEX)
   if(LATEX_FOUND)
     include(CMakeModules/UseLATEX.cmake)
-    set(LATEX_OUTPUT_PATH doc)
+    set(LATEX_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/doc)
     set(MyDocImages doc/images)
-    add_latex_document(doc/UserManual.tex
-      # IMAGES ${MyDocImages}
+    add_latex_document(
+      doc/src/UserManual.tex 
+      IMAGE_DIRS ${MyDocImages}
     )
   else()
     message("LaTeX needs to be installed to generate the LaTeX documentation")

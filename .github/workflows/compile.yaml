@@ -1,0 +1,26 @@
+name: DyNaMol Compilation
+on: [push]
+jobs:
+  Compilation-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "The workflow is now ready to test your code on the runner."
+      - name: Upgrade packages
+        run: sudo apt-get install -y gettext doxygen texlive tex4ht texlive-latex-extra biber ghostscript poppler-utils
+      - run: mkdir build
+      - name: Prepare environment
+        run: cmake -B build .
+      - name: Make binaries
+        run: |
+         cd build
+         make
+      - name: 'Upload Artifacts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: binary
+          path: build/bin/*.x
+          retention-days: 1
+      - run: echo "🍏 This job's status is ${{ job.status }}."
