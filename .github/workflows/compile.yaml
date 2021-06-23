@@ -20,7 +20,9 @@ jobs:
       - name: 'Upload Artifacts'
         uses: actions/upload-artifact@v2
         with:
-          name: binary
+          name: Binary on ubuntu
           path: build/bin/*.x
+          name: User manual
+          path: build/doc/UserManual.pdf
           retention-days: 1
       - run: echo "🍏 This job's status is ${{ job.status }}."
