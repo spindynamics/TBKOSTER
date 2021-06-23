@@ -17,12 +17,12 @@ jobs:
         run: |
          cd build
          make
-      - name: 'Upload Artifacts'
+      - name: 'Generate artifacts'
         uses: actions/upload-artifact@v2
         with:
-          name: Binary on ubuntu
-          path: build/bin/*.x
-          name: User manual
-          path: build/doc/UserManual.pdf
-          retention-days: 1
+          name: Binary for ubuntu and user manual
+          path: |
+            build/bin/*.x
+            build/doc/UserManual.pdf
+          retention-days: 5
       - run: echo "🍏 This job's status is ${{ job.status }}."
