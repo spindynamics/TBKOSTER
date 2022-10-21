@@ -7,7 +7,7 @@ Using a variety of common simulation methods it can calculate the equilibrium an
 DyNaMol is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can use, modify and/ or redistribute the software under the terms of the [CeCILL license](http://www.cecill.info) as circulated by CEA, CNRS and INRIA.
 
 To account DyNaMol in your developments, please cite and refer to the following references for more details :
-* [Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau and Chu Chun Fu, [arXiv:2101.06121] (2021)](https://arxiv.org/abs/2101.06121) [Accepted in Phys.Rev.B](https://journals.aps.org/prb/accepted/b1076O35N591174ac0066747e69debe334e69a498)
+* [Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau and Chu Chun Fu, Phys. Rev. B **103**, 235436 (2021)](https://doi.org/10.1103/PhysRevB.103.235436) and [arXiv.2101.06121](https://arxiv.org/abs/2101.06121) 
 * [Cyrille Barreteau, Daniel Spanjaard and Marie-Catherine Desjonquères, Comptes Rendus Physique **17** (3-4) 406-429 (2016)](https://www.sciencedirect.com/science/article/pii/S1631070515002601?via%3Dihub)
 
 
