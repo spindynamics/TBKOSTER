@@ -360,12 +360,12 @@ contains
                 do ia1=1,na
                     obj%f%f_at(ia1,:)=0.0_rp
                 end do
-                call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
-                call obj%f%scf%q%calculate_charge_in()
-                call obj%f%scf%h%calculate_h_r()
-                call obj%f%scf%h%calculate_s_r()
-                call obj%f%scf%run(unit)
-                call obj%f%calculate_forces()
+!                call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
+!                call obj%f%scf%q%calculate_charge_in()
+!                call obj%f%scf%h%calculate_h_r()
+!                call obj%f%scf%h%calculate_s_r()
+!                call obj%f%scf%run(unit)
+!                call obj%f%calculate_forces()
                 !print *, "f_new(",ia,")=",obj%f%f_at(ia,:)
 
                 ! update the impulsions
@@ -376,6 +376,12 @@ contains
             end do
 
             ! Update iteration step and time counter
+            call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
+            call obj%f%scf%q%calculate_charge_in()
+            call obj%f%scf%h%calculate_h_r()
+            call obj%f%scf%h%calculate_s_r()
+            call obj%f%scf%run(unit)
+            call obj%f%calculate_forces()    
             it = it + 1
             t = t + obj%dt
             !print *,"====="
