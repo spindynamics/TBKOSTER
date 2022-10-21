@@ -113,7 +113,7 @@ SUBROUTINE build_band_path(x, en_k, nh, nx, nsl)
 
     OPEN (unit=unit_band, file=dir//file_band, action='write')
     !write(number,'(I3)') nh+1
-    FMT = TRIM('('//int2str(nh + 1)//'F8.3'//')')
+    FMT = TRIM('('//int2str(nh + 1)//'F23.16'//')')
 
     DO isl = 1, nsl
         WRITE (unit_band, *) '@# k   band (eV)'

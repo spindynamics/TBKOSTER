@@ -1,0 +1,6 @@
+&energy
+ smearing = 'mv'
+ degauss = 0.2
+ en_min = -10.0
+ en_max =  10.0
+ /

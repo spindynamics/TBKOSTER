@@ -1,0 +1,65 @@
+&calculation
+ processing='scf'
+ post_processing='band'
+ /
+&units
+ length='ang'
+ energy='ev'
+ time='fs'
+ mass='hau'
+ /
+&element
+ ne = 2
+ symbol(1) = 'Ti'
+ symbol(2) = 'H'
+ no(1) = 3 
+ q(1) = 3.0
+ o(1,1:3) =  5, 6, 7
+ no(2)= 1
+ o(2,1) =  5
+ xi_so_d(1) = 0.1
+ xi_so_d(2) = 0.1
+ /
+&element_tb
+ filename(1) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
+ filename(2) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
+ /
+&lattice
+ v_factor = 3.94
+ v(1,:) = 1.0 0.0 0.0
+ v(2,:) = 0.0 1.0 0.0
+ v(3,:) = 0.0 0.0 1.0
+ /
+&atom
+ ns = 4
+ na = 2
+ ntag = 2
+ tag(1) = 'Ti'
+ tag(2) = 'H' 
+ stag(1)=1
+ stag(2)=1
+ pbc = 1, 1, 0
+ r_coord='direct'
+ r(1,:) = 0.0, 0.0, 0.0
+ r(2,:) = 0.0, 0.0, 1.0 
+ /
+&mesh
+ type = 'mp'
+ gx = 10, 10, 1
+ dx = 0, 0, 0
+ /
+&hamiltonian_tb
+ /
+&energy
+ smearing = 'mv'
+ degauss = 0.05
+ /
+&mixing
+ alpha = 0.1
+ /
+&scf
+ delta_en=0.0001
+ delta_q=0.0001
+ verbose=.true.
+ ni_max=200
+ /

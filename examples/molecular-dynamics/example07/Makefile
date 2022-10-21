@@ -109,10 +109,10 @@ computed=.true.
 &md
 ensemble='nvt'
 t_i=0
-t_f=4
+t_f=10
 dt=0.01
 verbose=.true.
-gamma=10.0
+gamma=20.0
 temperature=0.0
 /
 EOF

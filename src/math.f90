@@ -101,7 +101,7 @@ module math_mod
   complex(rp), dimension(9,9), parameter :: L_x &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
-                0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
+                0.0_rp,0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,-sqrt_three, &
@@ -113,7 +113,7 @@ module math_mod
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
-                0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
+                0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,sqrt_three, &    
