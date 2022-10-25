@@ -271,7 +271,7 @@ contains
     ! Derived type procedure
     inquire(unit=10,opened=isopen)
     if (isopen) then
-      write(error_unit,'(a)') 'element_b%read_txt() : Unit 10 already open'
+      write(error_unit,'(a)') 'element_tb%read_txt() : Unit 10 already open'
       error stop
     else
       open(unit=10,file=file_rt,action='read',iostat=iostatus,status='old')
