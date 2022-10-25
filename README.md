@@ -62,5 +62,12 @@ DyNaMol is designed to be highly flexible to deal with a wide variety of problem
 
 ## Installation
 
+There are many ways to install DyNaMol.
+The simplest way is to use Docker/Podman with the Dockerfile. 
+```bash
+docker build -t dynamol .
+docker run -it localhost/dynamol:latest
+```
+The second way is to install the necessary packages locally.
 The installation process relies heavily on [CMake](https://cmake.org). CMake is used to control the software compilation process using simple platform and compiler independent configuration files, and generate native makefiles and workspaces that can be used in the compiler environment of your choice.
 Please read the corresponding manual. For further details, a UserManual will be created during the compilation process if a LaTeX distribution is found.  
