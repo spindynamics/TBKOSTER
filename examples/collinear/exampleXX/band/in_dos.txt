@@ -1,0 +1,7 @@
+&dos
+ nen=100
+ na_dos=1
+ ia= 1
+ en_min=-10
+ en_max=10
+ /

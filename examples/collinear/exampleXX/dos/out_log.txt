@@ -1,7 +1,3 @@
-&calculation
-processing = 'scf'
-post_processing='band'
-/
 &units
  energy = 'ev'
  length = 'ang'
@@ -9,43 +5,26 @@ post_processing='band'
  mass = 'hau'
  /
 &element
- ne = 2
- symbol(1) = 'J1'
- symbol(2) = 'J2'
- no(1) = 2
- no(2) = 2
- o(1,1:2) = 2, 3
- o(2,1:2) = 2, 3
- q(1) = 2.0000000000000000
- q(2) = 2.0000000000000000
- q_s(1) = 0.0000000000000000
- q_s(2) = 0.0000000000000000
+ ne = 1
+ symbol(1) = 'C'
+ no(1) = 4
+ o(1,1:4) = 1, 2, 3, 4
+ q(1) = 4.0000000000000000
+ q_s(1) = 2.0000000000000000
  q_p(1) = 2.0000000000000000
- q_p(2) = 2.0000000000000000
  q_d(1) = 0.0000000000000000
- q_d(2) = 0.0000000000000000
  u_lcn(1) = 0.0000000000000000
- u_lcn(2) = 0.0000000000000000
  u_lcn_d(1) = 0.0000000000000000
- u_lcn_d(2) = 0.0000000000000000
  i_stoner_d(1) = 0.0000000000000000
- i_stoner_d(2) = 0.0000000000000000
  b(1) = 0.0000000000000000
- b(2) = 0.0000000000000000
  j_dd(1) = 0.0000000000000000
- j_dd(2) = 0.0000000000000000
  u_dd(1) = 0.0000000000000000
- u_dd(2) = 0.0000000000000000
  xi_so_p(1) = 0.0000000000000000
- xi_so_p(2) = 0.0000000000000000
  xi_so_d(1) = 0.0000000000000000
- xi_so_d(2) = 0.0000000000000000
  mass(1) = 12.010700000000000
- mass(2) = 12.010700000000000
  /
 &element_tb
  filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
- filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
  /
 &lattice
  v(1,:) = 2.1299999999999999, 1.2297560733739030, 0.0000000000000000
@@ -75,34 +54,32 @@ post_processing='band'
  /
 &mesh
  type = 'mp'
- gx = 50, 50, 1
+ gx = 100, 100, 1
  dx = 0, 0, 0
- nx = 2500
+ nx = 10000
  /
 &hamiltonian_tb
  e_e_interaction = 'stoner'
  m_penalization = 'none'
  /
 &energy
- smearing = 'mv'
- degauss = 5.0000000000000003E-002
+ smearing = 'g'
+ degauss = 0.10000000000000001
  fixed_fermi_level = .false.
  en_f_ffl = 0.0000000000000000
  fixed_spin_moment = .false.
  m_fsm = 0.0000000000000000
- en_min = 0.0000000000000000
- en_max = 0.0000000000000000
+ en_min = -10.000000000000000
+ en_max = 10.000000000000000
  /
-&mixing
- type = 'broyden'
- alpha = 0.10000000000000001
- n_init = 1
- n_hist = 50
+&dos
+ nen = 500
+ en_min = -20.000000000000000
+ en_max = 20.000000000000000
+ na_dos = 2
+ ia(1) = 1
+ ia(2) = 2
  /
-&scf
- ni_min = 2
- ni_max = 1500
- delta_en = 1.0000000000000000E-004
- delta_q = 1.0000000000000000E-004
- verbose = .true.
- /
+
+calculation%run(): Post-processing dos
+===== self_consistent_field%run(): iteration 1 =====

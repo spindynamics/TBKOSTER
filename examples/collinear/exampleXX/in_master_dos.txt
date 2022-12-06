@@ -1,0 +1,57 @@
+&calculation
+processing = 'scf'
+post_processing='dos'
+/
+&units
+length='ang'
+energy='ev'
+time='fs'
+mass='hau'
+/
+&element
+ne=1
+symbol(1)='C'
+/
+&element_tb
+filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
+/
+&lattice
+v_factor = 2.45951214674780575679
+v(1,:) =  0.86602540378443864676, 0.5, 0
+v(2,:) = -0.86602540378443864676, 0.5, 0
+v(3,:) =   0, 0, 1
+/
+&atom
+ns = 1
+na = 2
+ntag = 1
+tag(1)='C'
+stag(1)= 2
+pbc = 5, 5, 0
+r_coord='cartesian'
+r(1,:) =  0.0,0.0,0.0
+r(2,:) = -1.42,0.0,0.0
+/
+&mesh
+type = 'mp'
+gx = 10, 10, 1
+dx = 0, 0, 0
+/
+&hamiltonian_tb
+/
+&energy
+smearing = 'mv'
+degauss = 0.05
+/
+&mixing
+alpha = 0.1
+/
+&scf
+delta_en=0.0001
+delta_q=0.0001
+verbose=.true.
+ni_max= 1500
+/
+&forces
+computed=.false.
+/

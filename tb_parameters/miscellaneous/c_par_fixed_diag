@@ -1,7 +1,7 @@
 NN00001                           (New style Overlap Parameters)
 Carbon (C)
 1                                 (One atom type in this file)
-8.0   10.5   0.5                  (Rc, Rmax and delta: beware for papa parameters Rmax=Rc+5*delta)
+ 8.0   10.5   0.5                  (Rc, Rmax and delta: beware for papa parameters Rmax=Rc+5*delta) 
 4                                 (Orbitals for atom 1)
 12.01                             (Atomic Weight of Atom 1)
  2.0  2.0  0.0                    (formal spd valence occupancy for atom 1)

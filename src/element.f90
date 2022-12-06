@@ -465,6 +465,7 @@ contains
   subroutine initialize_o(ne, symbol, no_max, o, os)
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
+    character(len=1) :: first_c
     integer,intent(in) :: no_max
     integer,dimension(:,:),allocatable,intent(out) :: o
     character(len=3),dimension(:),allocatable,intent(out) :: os
@@ -627,9 +628,15 @@ contains
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
+        first_c=lower(trim(symbol(ie)))
+        if(first_c=='j') then
+       ! TB model
+          o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
+        else
         write(error_unit,*) 'element%parse_symbol(): element symbol ', &
          symbol(ie), ' not known'
         error stop
+        endif
       end select
       os(ie) = parse_orbital_to_string(o(ie,:))
     end do
@@ -640,6 +647,7 @@ contains
    q_d, mass)
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
+    character(len=1) :: first_c
     character(len=sl),dimension(:),allocatable,intent(out) :: name
     integer,dimension(:),allocatable,intent(out) :: number
     integer,dimension(:),allocatable,intent(out) :: no
@@ -1315,9 +1323,22 @@ contains
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
       case default
+        first_c=lower(trim(symbol(ie)))
+        if(first_c=='j') then
+     ! TB model
+        name(ie) = lower(trim(symbol(ie)))
+        number(ie) = 0
+        no(ie) = 9
+        q(ie)   = 1.0_rp
+        q_s(ie) = 1.0_rp
+        q_p(ie) = 0.0_rp
+        q_d(ie) = 0.0_rp
+        mass(ie)= 0.0_rp
+      else
         write(error_unit,*) 'element%parse_symbol(): element symbol ', &
          symbol(ie), 'not known'
-        error stop
+         error stop
+      endif
       end select
     end do
     no_max = maxval(no)

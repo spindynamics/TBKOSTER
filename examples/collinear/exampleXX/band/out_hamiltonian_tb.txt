@@ -1,4 +1,4 @@
 &hamiltonian_tb
- nh = 9
+ nh = 4
  ns = 1
  /

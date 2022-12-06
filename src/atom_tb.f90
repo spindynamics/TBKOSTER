@@ -98,11 +98,11 @@ contains
         RR(:) = obj%rn(ia1,in,:)
         R = norm2(RR)
 
-        select case(obj%e_tb%type(ie1))
+        select case(obj%e_tb%nrl_type(ie1))
         case('old','new','cyr')
           do lbeta=1,10
             step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_papa(&
+            Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
             obj%e_tb%p(ie1,20+step),obj%e_tb%p(ie1,21+step),R)
           end do
@@ -120,11 +120,11 @@ contains
 
         if(ie1/=ie2) then
           
-          select case(obj%e_tb%type(ie2))
+          select case(obj%e_tb%nrl_type(ie2))
           case('old','new','cyr')
             do lbeta=1,10
               step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_papa(&
+              I_Overlap(lbeta)=integral_parametrization_nrl(&
               obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
               obj%e_tb%p(ie2,20+step),obj%e_tb%p(ie2,21+step),R)
             end do
@@ -191,19 +191,19 @@ contains
         !Getting the hopping NRL parameters in the source file and computing the
         !value of the function. For the derivative, storing part of if on
         !d_Overlaptemp to later compute it at d_Overlap
-        select case(obj%e_tb%type(ie1))
+        select case(obj%e_tb%nrl_type(ie1))
         case('old','new','cyr')
               
           do lbeta=1,10
             step = 4*(lbeta-1)
 
             !Calculating f(r)
-            Overlap(lbeta)=integral_parametrization_papa(&
+            Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
             obj%e_tb%p(ie1,20+step),obj%e_tb%p(ie1,21+step),R)
 
             !The derivative as (f'(r)*fcut(r)+f(r)*fcut'(r))
-            d_Overlaptemp(lbeta)=d_integral_parametrization_papa(&
+            d_Overlaptemp(lbeta)=d_integral_parametrization_nrl(&
             obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
             obj%e_tb%p(ie1,20+step),obj%e_tb%p(ie1,21+step),R)*f_cut+&
             Overlap(lbeta)*d_f_cut
@@ -237,19 +237,19 @@ contains
           f_cut = fermi_function(R-obj%e_tb%r_0(ie1), 1/obj%e_tb%r_l(ie1))
           d_f_cut = fermi_function_derivative(R-obj%e_tb%r_0(ie1),1/obj%e_tb%r_l(ie1))
 
-          select case(obj%e_tb%type(ie2))
+          select case(obj%e_tb%nrl_type(ie2))
           case('old','new','cyr')
                  
           do lbeta=1,10
             step = 4*(lbeta-1)
 
             !Calculating f(r) 
-            I_Overlap(lbeta)=integral_parametrization_papa(&
+            I_Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
             obj%e_tb%p(ie2,20+step),obj%e_tb%p(ie2,21+step),R)
 
             !The derivative as (f'(r)*fcut(r)+f(r)*fcut'(r)) 
-            d_I_Overlaptemp(lbeta)=d_integral_parametrization_papa(&
+            d_I_Overlaptemp(lbeta)=d_integral_parametrization_nrl(&
             obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
             obj%e_tb%p(ie2,20+step),obj%e_tb%p(ie2,21+step),R)*f_cut+&
             I_Overlap(lbeta)*d_f_cut
@@ -319,18 +319,18 @@ contains
         RR = obj%rn(ia1,in,:)
         R = norm2(RR(:))
 
-        select case(obj%e_tb%type(ie1))
+        select case(obj%e_tb%nrl_type(ie1))
         case('old','cyr')
           do lbeta=1,10
             step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_papa(&
+            Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
           end do
         case('new')
           do lbeta=1,10
             step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_papa_new1(&
+            Overlap(lbeta)=integral_parametrization_nrl_new1(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
           end do
@@ -348,11 +348,11 @@ contains
         Overlap(:)=f_cut*Overlap(:)
 
         if(ie1/=ie2) then
-          select case(obj%e_tb%type(ie2))
+          select case(obj%e_tb%nrl_type(ie2))
           case('old','cyr')
             do lbeta=1,10
               step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_papa(&
+              I_Overlap(lbeta)=integral_parametrization_nrl(&
               obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
               obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
             end do
@@ -360,7 +360,7 @@ contains
           case('new')
             do lbeta=1,10
               step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_papa_new1(&
+              I_Overlap(lbeta)=integral_parametrization_nrl_new1(&
               obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
               obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
             end do 
@@ -424,19 +424,19 @@ contains
         !Getting the hopping NRL parameters in the source file and computing the
         !value of the function. For the derivative, storing part of if on
         !d_Overlaptemp to later compute it at d_Overlap
-        select case(obj%e_tb%type(ie1))
+        select case(obj%e_tb%nrl_type(ie1))
         case('old','cyr')
                     
           do lbeta=1,10
             step = 4*(lbeta-1)
 
             !Calculating f(r)
-            Overlap(lbeta)=integral_parametrization_papa(&
+            Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
 
             !The derivative as (f'(r)*fcut(r)+f(r)*fcut'(r))
-            d_Overlaptemp(lbeta)=d_integral_parametrization_papa(&
+            d_Overlaptemp(lbeta)=d_integral_parametrization_nrl(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)*f_cut+&
             Overlap(lbeta)*d_f_cut
@@ -447,11 +447,11 @@ contains
           do lbeta=1,10
             step = 4*(lbeta-1)
            if(lbeta==2.or.lbeta==5.or.lbeta==6.or.lbeta==7)then
-            Overlap(lbeta)=integral_parametrization_papa_new2(&
+            Overlap(lbeta)=integral_parametrization_nrl_new2(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
            else  
-            Overlap(lbeta)=integral_parametrization_papa_new1(&
+            Overlap(lbeta)=integral_parametrization_nrl_new1(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
            end if
@@ -463,7 +463,7 @@ contains
            if(lbeta==2.or.lbeta==5.or.lbeta==6.or.lbeta==7)then
             newparamtype=0._rp
            end if
-            d_Overlaptemp(lbeta)=d_integral_parametrization_papa_new(&
+            d_Overlaptemp(lbeta)=d_integral_parametrization_nrl_new(&
             obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
             obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R,newparamtype)+&
             Overlap(lbeta)*d_f_cut
@@ -499,19 +499,19 @@ contains
           f_cut = fermi_function(R-obj%e_tb%r_0(ie1), 1/obj%e_tb%r_l(ie1))
         d_f_cut = fermi_function_derivative(R-obj%e_tb%r_0(ie1),1/obj%e_tb%r_l(ie1))
 
-          select case(obj%e_tb%type(ie2))
+          select case(obj%e_tb%nrl_type(ie2))
           case('old','cyr')
           !Calculating f(r)          
           do lbeta=1,10
             step = 4*(lbeta-1)
-            I_Overlap(lbeta)=integral_parametrization_papa(&
+            I_Overlap(lbeta)=integral_parametrization_nrl(&
             obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
             obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
           end do
           !The derivative as (f'(r)*fcut(r)+f(r)*fcut'(r)) 
           do lbeta=1,10
             step = 4*(lbeta-1)
-            d_I_Overlaptemp(lbeta)=d_integral_parametrization_papa(&
+            d_I_Overlaptemp(lbeta)=d_integral_parametrization_nrl(&
             obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
             obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)*f_cut+&
             I_Overlap(lbeta)*d_f_cut
@@ -521,11 +521,11 @@ contains
           do lbeta=1,10
             step = 4*(lbeta-1)
            if(lbeta==2.or.lbeta==5.or.lbeta==6.or.lbeta==7)then
-            I_Overlap(lbeta)=integral_parametrization_papa_new2(&
+            I_Overlap(lbeta)=integral_parametrization_nrl_new2(&
             obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
             obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
            else
-            I_Overlap(lbeta)=integral_parametrization_papa_new1(&
+            I_Overlap(lbeta)=integral_parametrization_nrl_new1(&
             obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
             obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
            end if
@@ -537,7 +537,7 @@ contains
            if(lbeta==2.or.lbeta==5.or.lbeta==6.or.lbeta==7)then
             newparamtype=0._rp
            end if
-            d_I_Overlaptemp(lbeta)=d_integral_parametrization_papa_new(&
+            d_I_Overlaptemp(lbeta)=d_integral_parametrization_nrl_new(&
             obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
             obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R,newparamtype)+&
             Overlap(lbeta)*d_f_cut
@@ -678,21 +678,21 @@ contains
     !write(*,*)'d_onesite',sum(d_en_intra(1,:,1)),sum(d_en_intra(1,:,2)),sum(d_en_intra(1,:,3))
   end function build_d_en_intra
 
-  function integral_parametrization_papa(e,f,fbar,g,R) result(p)
+  function integral_parametrization_nrl(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R
     real(rp) :: p
     p = (e+f*R+fbar*R*R)*exp(-g*g*R)
-  end function integral_parametrization_papa
+  end function integral_parametrization_nrl
 
-  !Function d_integral_parametrization_papa to be used in the molecular dynamics
-  function d_integral_parametrization_papa(e,f,fbar,g,R) result(p)
+  !Function d_integral_parametrization_nrl to be used in the molecular dynamics
+  function d_integral_parametrization_nrl(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R          
     real(rp) :: p
 
     p = exp(-g*g*R)*((f+2._rp*fbar*R)-(e+f*R+fbar*R*R)*(g*g))
-  end function d_integral_parametrization_papa
+  end function d_integral_parametrization_nrl
 
-  function integral_parametrization_papa_new1(e,f,fbar,g,R) result(p)
+  function integral_parametrization_nrl_new1(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R
     real(rp) :: p
     real(rp) :: R2,R3
@@ -701,9 +701,9 @@ contains
     R3=R*R2
 
     p = (1._rp+e*R+f*R2+fbar*R3)*exp(-g*g*R)
-  end function integral_parametrization_papa_new1
+  end function integral_parametrization_nrl_new1
 
-  function integral_parametrization_papa_new2(e,f,fbar,g,R) result(p)
+  function integral_parametrization_nrl_new2(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R
     real(rp) :: p
     real(rp) :: R2,R3
@@ -712,11 +712,11 @@ contains
     R3=R*R2
 
     p = (e*R+f*R2+fbar*R3)*exp(-g*g*R)
-  end function integral_parametrization_papa_new2
+  end function integral_parametrization_nrl_new2
 
-  !Function d_integral_parametrization_papa_new to be used in the molecular
+  !Function d_integral_parametrization_nrl_new to be used in the molecular
   !dynamics
-  function d_integral_parametrization_papa_new(e,f,fbar,g,R,newparam) result(p)
+  function d_integral_parametrization_nrl_new(e,f,fbar,g,R,newparam) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R,newparam
     real(rp) :: p
     real(rp) :: R2,R3,g2
@@ -726,7 +726,7 @@ contains
     R3=R*R2
 
     p=exp(-g2*R)*((e+2._rp*f*R+3._rp*fbar*R2)-(newparam+e*R+f*R2+fbar*R3)*g2) 
-  end function d_integral_parametrization_papa_new
+  end function d_integral_parametrization_nrl_new
 
   function integral_parametrization_pow(e,f,g,R) result(p)
     real(rp),intent(in) :: e,f,g,R

@@ -190,16 +190,16 @@ calculation%run(): Processing scf
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 1 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0850000381469727 s
+self_consistent_field%run(): Time for k-loop 1 is 1.0119999647140503 s
  en_k_min = -6.5803482998406979
  en_k_max = 24.210921424548879
  en_f = 3.5597029460462655
-self_consistent_field%run(): Time for k-loop 2 is 1.3600000143051147 s
+self_consistent_field%run(): Time for k-loop 2 is 1.3380000591278076 s
  en_band = 2.2562421664310643
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 8.7439112142450703
+ en_dc_lcn = 8.7439112142471966
  en_dc_pen = 0.0000000000000000
- en = -6.4876690478140064
+ en = -6.4876690478161336
  delta_q_mul = 0.36979878167321978
  delta_rho_net = 0.19776264005772837
 |------------------------------------------------------------------|
@@ -234,19 +234,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3600000143051147 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 2 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0579999685287476 s
- en_k_min = -6.8530176210428868
- en_k_max = 24.043494275935718
- en_f = 3.5494719628495743
-self_consistent_field%run(): Time for k-loop 2 is 1.3459999561309814 s
- en_band = 1.7386967194966527
+self_consistent_field%run(): Time for k-loop 1 is 0.98900002241134644 s
+ en_k_min = -6.8530176210428566
+ en_k_max = 24.043494275935711
+ en_f = 3.5494719628495801
+self_consistent_field%run(): Time for k-loop 2 is 1.3279999494552612 s
+ en_band = 1.7386967194972223
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 38.106862746051760
+ en_dc_lcn = 38.106862746060607
  en_dc_pen = 0.0000000000000000
- en = -36.368166026555109
- delta_en = 29.880496978741103
- delta_q_mul = 1.2684507606501496
- delta_rho_net = 0.40102083338746963
+ en = -36.368166026563387
+ delta_en = 29.880496978747257
+ delta_q_mul = 1.2684507606501363
+ delta_rho_net = 0.40102083338746897
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -279,19 +279,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3459999561309814 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 3 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0310000181198120 s
- en_k_min = -6.6228951085271932
- en_k_max = 24.170937944534625
- en_f = 3.5271264553144817
-self_consistent_field%run(): Time for k-loop 2 is 1.3789999485015869 s
- en_band = 2.5698693550932847
+self_consistent_field%run(): Time for k-loop 1 is 0.98400002717971802 s
+ en_k_min = -6.6228951085272296
+ en_k_max = 24.170937944534629
+ en_f = 3.5271264553144848
+self_consistent_field%run(): Time for k-loop 2 is 1.3170000314712524 s
+ en_band = 2.5698693550934739
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 3.1700408890067671
+ en_dc_lcn = 3.1700408890185554
  en_dc_pen = 0.0000000000000000
- en = -0.60017153391348210
- delta_en = 35.767994492641627
- delta_q_mul = 0.35580333695224020
- delta_rho_net = 0.18606998532955821
+ en = -0.60017153392508116
+ delta_en = 35.767994492638309
+ delta_q_mul = 0.35580333695219402
+ delta_rho_net = 0.18606998532954799
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -324,19 +324,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3789999485015869 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 4 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0190000534057617 s
- en_k_min = -6.7276250635476291
- en_k_max = 24.118268800431288
- en_f = 3.5386631040825853
-self_consistent_field%run(): Time for k-loop 2 is 1.3459999561309814 s
- en_band = 2.4227287478666240
+self_consistent_field%run(): Time for k-loop 1 is 1.0039999485015869 s
+ en_k_min = -6.7276250635476140
+ en_k_max = 24.118268800431252
+ en_f = 3.5386631040825760
+self_consistent_field%run(): Time for k-loop 2 is 1.3309999704360962 s
+ en_band = 2.4227287478654991
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 6.9040612832316022
+ en_dc_lcn = 6.9040612832192343
  en_dc_pen = 0.0000000000000000
- en = -4.4813325353649791
- delta_en = 3.8811610014514972
- delta_q_mul = 0.47371936836290729
- delta_rho_net = 0.24537491520492072
+ en = -4.4813325353537348
+ delta_en = 3.8811610014286533
+ delta_q_mul = 0.47371936836298723
+ delta_rho_net = 0.24537491520493826
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -369,19 +369,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3459999561309814 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 5 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0169999599456787 s
- en_k_min = -6.7157984373555006
+self_consistent_field%run(): Time for k-loop 1 is 1.0060000419616699 s
+ en_k_min = -6.7157984373554545
  en_k_max = 24.121490809410460
- en_f = 3.5153107215485790
-self_consistent_field%run(): Time for k-loop 2 is 1.3480000495910645 s
- en_band = 2.4328667533180952
+ en_f = 3.5153107215485879
+self_consistent_field%run(): Time for k-loop 2 is 1.3300000429153442 s
+ en_band = 2.4328667533189710
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 7.1147888255752889
+ en_dc_lcn = 7.1147888255624911
  en_dc_pen = 0.0000000000000000
- en = -4.6819220722571933
- delta_en = 0.20058953689221443
- delta_q_mul = 0.31659512150584668
- delta_rho_net = 0.11604960058064950
+ en = -4.6819220722435198
+ delta_en = 0.20058953688978551
+ delta_q_mul = 0.31659512150593017
+ delta_rho_net = 0.11604960058057956
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -414,19 +414,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3480000495910645 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 6 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0149999856948853 s
- en_k_min = -6.7199520059015789
- en_k_max = 24.090138164824417
- en_f = 3.5128933685635499
-self_consistent_field%run(): Time for k-loop 2 is 1.3489999771118164 s
- en_band = 2.5734310390534620
+self_consistent_field%run(): Time for k-loop 1 is 1.0110000371932983 s
+ en_k_min = -6.7199520059016189
+ en_k_max = 24.090138164824388
+ en_f = 3.5128933685635455
+self_consistent_field%run(): Time for k-loop 2 is 1.3370000123977661 s
+ en_band = 2.5734310390522142
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 2.7716569295431106
+ en_dc_lcn = 2.7716569295957014
  en_dc_pen = 0.0000000000000000
- en = -0.19822589048964850
- delta_en = 4.4836961817675451
- delta_q_mul = 0.23178522578353977
- delta_rho_net = 8.0823028093466309E-002
+ en = -0.19822589054348741
+ delta_en = 4.4836961817000320
+ delta_q_mul = 0.23178522578332839
+ delta_rho_net = 8.0823028093437221E-002
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -459,19 +459,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3489999771118164 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 7 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0160000324249268 s
- en_k_min = -6.6773409801122217
- en_k_max = 24.118333559960330
- en_f = 3.5101313731193189
-self_consistent_field%run(): Time for k-loop 2 is 1.3500000238418579 s
- en_band = 2.6623788930439178
+self_consistent_field%run(): Time for k-loop 1 is 0.98900002241134644 s
+ en_k_min = -6.6773409801121746
+ en_k_max = 24.118333559960366
+ en_f = 3.5101313731193464
+self_consistent_field%run(): Time for k-loop 2 is 1.3229999542236328 s
+ en_band = 2.6623788930479173
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 0.22593952443500476
+ en_dc_lcn = 0.22593952441738435
  en_dc_pen = 0.0000000000000000
- en = 2.4364393686089132
- delta_en = 2.6346652590985618
- delta_q_mul = 7.2165343437834650E-002
- delta_rho_net = 2.2188852785236746E-002
+ en = 2.4364393686305332
+ delta_en = 2.6346652591740205
+ delta_q_mul = 7.2165343437937679E-002
+ delta_rho_net = 2.2188852785254953E-002
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -504,19 +504,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3500000238418579 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 8 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0149999856948853 s
- en_k_min = -6.6753692296179512
- en_k_max = 24.119164304137776
- en_f = 3.5119467974501624
-self_consistent_field%run(): Time for k-loop 2 is 1.3430000543594360 s
- en_band = 2.6689431719367720
+self_consistent_field%run(): Time for k-loop 1 is 0.98900002241134644 s
+ en_k_min = -6.6753692296178766
+ en_k_max = 24.119164304137804
+ en_f = 3.5119467974502001
+self_consistent_field%run(): Time for k-loop 2 is 1.3170000314712524 s
+ en_band = 2.6689431719412311
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 4.5940455439250134E-002
+ en_dc_lcn = 4.5940455531338409E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6230027164975218
- delta_en = 0.18656334788860873
- delta_q_mul = 2.1953220036049714E-002
- delta_rho_net = 1.4265621198951139E-002
+ en = 2.6230027164098928
+ delta_en = 0.18656334777935962
+ delta_q_mul = 2.1953220035950238E-002
+ delta_rho_net = 1.4265621198918277E-002
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -549,19 +549,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3430000543594360 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 9 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0590000152587891 s
- en_k_min = -6.6748639402134113
- en_k_max = 24.119629290410714
- en_f = 3.5122759685550995
-self_consistent_field%run(): Time for k-loop 2 is 1.3639999628067017 s
- en_band = 2.6683946598763506
+self_consistent_field%run(): Time for k-loop 1 is 0.98799997568130493 s
+ en_k_min = -6.6748639402133918
+ en_k_max = 24.119629290410742
+ en_f = 3.5122759685551239
+self_consistent_field%run(): Time for k-loop 2 is 1.3200000524520874 s
+ en_band = 2.6683946598795449
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 5.5367746860353506E-002
+ en_dc_lcn = 5.5367746827099065E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6130269130159971
- delta_en = 9.9758034815246310E-003
- delta_q_mul = 2.5910679372103118E-002
- delta_rho_net = 1.4415735554762499E-002
+ en = 2.6130269130524457
+ delta_en = 9.9758033574469905E-003
+ delta_q_mul = 2.5910679371991208E-002
+ delta_rho_net = 1.4415735554732301E-002
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -594,19 +594,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3639999628067017 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 10 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0169999599456787 s
- en_k_min = -6.6747942293498781
- en_k_max = 24.119705331202024
- en_f = 3.5123027412072245
-self_consistent_field%run(): Time for k-loop 2 is 1.4019999504089355 s
- en_band = 2.6682139083995153
+self_consistent_field%run(): Time for k-loop 1 is 0.98400002717971802 s
+ en_k_min = -6.6747942293499429
+ en_k_max = 24.119705331202013
+ en_f = 3.5123027412071943
+self_consistent_field%run(): Time for k-loop 2 is 1.3209999799728394 s
+ en_band = 2.6682139083964334
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 5.7955762388957728E-002
+ en_dc_lcn = 5.7955762395351822E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6102581460105574
- delta_en = 2.7687670054398188E-003
- delta_q_mul = 2.6310200150016172E-002
- delta_rho_net = 1.4016137410338692E-002
+ en = 2.6102581460010814
+ delta_en = 2.7687670513642480E-003
+ delta_q_mul = 2.6310200149042728E-002
+ delta_rho_net = 1.4016137410063356E-002
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -639,19 +639,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.4019999504089355 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 11 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0160000324249268 s
- en_k_min = -6.6758211701704395
- en_k_max = 24.118787369844469
- en_f = 3.5119488049681125
-self_consistent_field%run(): Time for k-loop 2 is 1.3760000467300415 s
- en_band = 2.6690415119407405
+self_consistent_field%run(): Time for k-loop 1 is 0.99000000953674316 s
+ en_k_min = -6.6758211701717114
+ en_k_max = 24.118787369843158
+ en_f = 3.5119488049670426
+self_consistent_field%run(): Time for k-loop 2 is 1.3559999465942383 s
+ en_band = 2.6690415118044881
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 4.2783999761153615E-002
+ en_dc_lcn = 4.2784000646350004E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6262575121795870
- delta_en = 1.5999366169029396E-002
- delta_q_mul = 1.4662450754940437E-002
- delta_rho_net = 4.4007534583843100E-003
+ en = 2.6262575111581379
+ delta_en = 1.5999365157056418E-002
+ delta_q_mul = 1.4662450726689258E-002
+ delta_rho_net = 4.4007534498380352E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -684,19 +684,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3760000467300415 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 12 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0169999599456787 s
- en_k_min = -6.6766345290983224
- en_k_max = 24.118045814097428
- en_f = 3.5116310260493093
-self_consistent_field%run(): Time for k-loop 2 is 1.3470000028610229 s
- en_band = 2.6695099206058086
+self_consistent_field%run(): Time for k-loop 1 is 1.0140000581741333 s
+ en_k_min = -6.6766345291063081
+ en_k_max = 24.118045814089879
+ en_f = 3.5116310260391721
+self_consistent_field%run(): Time for k-loop 2 is 1.3179999589920044 s
+ en_band = 2.6695099198850176
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 3.2909203375480797E-002
+ en_dc_lcn = 3.2909168366331051E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6366007172303281
- delta_en = 1.0343205050740996E-002
- delta_q_mul = 9.4817607259560788E-003
- delta_rho_net = 2.6145954328586907E-003
+ en = 2.6366007515186869
+ delta_en = 1.0343240360548837E-002
+ delta_q_mul = 9.4817606353583272E-003
+ delta_rho_net = 2.6145954065157628E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -729,19 +729,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3470000028610229 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 13 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0160000324249268 s
- en_k_min = -6.6770543442179484
- en_k_max = 24.117666386797222
- en_f = 3.5114925742727081
-self_consistent_field%run(): Time for k-loop 2 is 1.3480000495910645 s
- en_band = 2.6697508737242130
+self_consistent_field%run(): Time for k-loop 1 is 0.99099999666213989 s
+ en_k_min = -6.6770543442380061
+ en_k_max = 24.117666386778115
+ en_f = 3.5114925742518612
+self_consistent_field%run(): Time for k-loop 2 is 1.3209999799728394 s
+ en_band = 2.6697508716065887
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 2.8220489053013369E-002
+ en_dc_lcn = 2.8220450867592155E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6415303846711997
- delta_en = 4.9296674408717423E-003
- delta_q_mul = 6.6193669528118448E-003
- delta_rho_net = 1.8255667754822902E-003
+ en = 2.6415304207389969
+ delta_en = 4.9296692203099840E-003
+ delta_q_mul = 6.6193669044736225E-003
+ delta_rho_net = 1.8255667631263961E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -774,19 +774,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3480000495910645 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 14 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0160000324249268 s
- en_k_min = -6.6772894043122752
- en_k_max = 24.117454774286951
- en_f = 3.5114195847662133
-self_consistent_field%run(): Time for k-loop 2 is 1.3439999818801880 s
- en_band = 2.6698907305681838
+self_consistent_field%run(): Time for k-loop 1 is 0.98799997568130493 s
+ en_k_min = -6.6772894043372215
+ en_k_max = 24.117454774262121
+ en_f = 3.5114195847415162
+self_consistent_field%run(): Time for k-loop 2 is 1.3209999799728394 s
+ en_band = 2.6698907273936023
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 2.5647127106367719E-002
+ en_dc_lcn = 2.5647125777084504E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6442436034618160
- delta_en = 2.7132187906165109E-003
- delta_q_mul = 4.6775905428511066E-003
- delta_rho_net = 1.3207465484132985E-003
+ en = 2.6442436016165178
+ delta_en = 2.7131808775210341E-003
+ delta_q_mul = 4.6775905441602816E-003
+ delta_rho_net = 1.3207465483566772E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -819,19 +819,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3439999818801880 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 15 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0149999856948853 s
- en_k_min = -6.6773012020270883
- en_k_max = 24.117443871794869
- en_f = 3.5114136540758767
-self_consistent_field%run(): Time for k-loop 2 is 1.3470000028610229 s
- en_band = 2.6698991506927339
+self_consistent_field%run(): Time for k-loop 1 is 1.0069999694824219 s
+ en_k_min = -6.6773012020469649
+ en_k_max = 24.117443871774725
+ en_f = 3.5114136540493592
+self_consistent_field%run(): Time for k-loop 2 is 1.3320000171661377 s
+ en_band = 2.6698991471646738
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 2.5490335311957348E-002
+ en_dc_lcn = 2.5490308454152705E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6444088153807765
- delta_en = 1.6521191896036100E-004
- delta_q_mul = 4.5728295091489457E-003
- delta_rho_net = 1.2904496965111534E-003
+ en = 2.6444088387105209
+ delta_en = 1.6523709400329163E-004
+ delta_q_mul = 4.5728295412210684E-003
+ delta_rho_net = 1.2904497056234199E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -864,19 +864,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3470000028610229 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 16 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0290000438690186 s
- en_k_min = -6.6773350122627635
- en_k_max = 24.117412838648033
- en_f = 3.5113985703693462
-self_consistent_field%run(): Time for k-loop 2 is 1.3660000562667847 s
- en_band = 2.6699210509510447
+self_consistent_field%run(): Time for k-loop 1 is 0.98699998855590820 s
+ en_k_min = -6.6773350123396158
+ en_k_max = 24.117412838572132
+ en_f = 3.5113985702910018
+self_consistent_field%run(): Time for k-loop 2 is 1.3350000381469727 s
+ en_band = 2.6699210414690446
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 2.5080097269240063E-002
+ en_dc_lcn = 2.5080056658595390E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6448409536818045
- delta_en = 4.3213830102819926E-004
- delta_q_mul = 4.3208460290848905E-003
- delta_rho_net = 1.2168602959718999E-003
+ en = 2.6448409848104490
+ delta_en = 4.3214609992801579E-004
+ delta_q_mul = 4.3208459805512689E-003
+ delta_rho_net = 1.2168602805913142E-003
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -909,19 +909,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3660000562667847 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 17 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0169999599456787 s
- en_k_min = -6.6779112455968823
- en_k_max = 24.116887858437750
- en_f = 3.5111766035622396
-self_consistent_field%run(): Time for k-loop 2 is 1.3430000543594360 s
- en_band = 2.6702381712036423
+self_consistent_field%run(): Time for k-loop 1 is 1.0000000000000000 s
+ en_k_min = -6.6779112469735216
+ en_k_max = 24.116887857059336
+ en_f = 3.5111766021278594
+self_consistent_field%run(): Time for k-loop 2 is 1.3220000267028809 s
+ en_band = 2.6702379826799927
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 1.9106300591006094E-002
+ en_dc_lcn = 1.9106080524125050E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6511318706126361
- delta_en = 6.2909169308314090E-003
- delta_q_mul = 1.2796354047317493E-004
- delta_rho_net = 4.0841252173295928E-005
+ en = 2.6511319021558677
+ delta_en = 6.2909173454186130E-003
+ delta_q_mul = 1.2796374651458109E-004
+ delta_rho_net = 4.0841231534916034E-005
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -954,17 +954,17 @@ self_consistent_field%run(): Time for k-loop 2 is 1.3430000543594360 s
 | n_tot =  130.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 18 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.0149999856948853 s
- en_k_min = -6.6779034037780765
- en_k_max = 24.116894417112483
- en_f = 3.5111746121914904
-self_consistent_field%run(): Time for k-loop 2 is 1.3459999561309814 s
- en_band = 2.6702391912485535
+self_consistent_field%run(): Time for k-loop 1 is 1.0019999742507935 s
+ en_k_min = -6.6779034052126605
+ en_k_max = 24.116894415678761
+ en_f = 3.5111746107702464
+self_consistent_field%run(): Time for k-loop 2 is 1.3220000267028809 s
+ en_band = 2.6702390057858532
  en_dc_eei = 0.0000000000000000
- en_dc_lcn = 1.9094888868663562E-002
+ en_dc_lcn = 1.9094932226124676E-002
  en_dc_pen = 0.0000000000000000
- en = 2.6511443023798900
- delta_en = 1.2431767254042447E-005
- delta_q_mul = 4.2406400707406533E-005
- delta_rho_net = 1.4505703564315908E-005
+ en = 2.6511440735597285
+ delta_en = 1.2171403860774446E-005
+ delta_q_mul = 4.2406544698891935E-005
+ delta_rho_net = 1.4505692989885688E-005
 self_consistent_field%run(): SCF loop converged
