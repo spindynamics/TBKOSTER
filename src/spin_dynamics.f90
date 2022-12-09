@@ -837,7 +837,7 @@ contains
        case('verbose')
          write(unit_rt,'(a)') ' verbose = ' // log2str(obj%verbose)
        case('compute_effective_field_every')
-         write(unit_rt,'(a)') ' compute_effective_field = ' &
+         write(unit_rt,'(a)') ' compute_effective_field_every = ' &
           // int2str(obj%compute_effective_field_every)
       end select
     end do
