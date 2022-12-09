@@ -62,7 +62,8 @@ module spin_dynamics_mod
    'quality_factor', &
    'alpha', &
    'temp', &
-   'verbose' &
+   'verbose', &
+   'compute_effective_field_every' &
    ]
 
   type,public :: spin_dynamics
@@ -119,6 +120,9 @@ module spin_dynamics_mod
 
     !> Output verbosity flag (default: false)
     logical :: verbose
+
+    !> Compute effective field every timesteps (default:1)
+    integer :: compute_effective_field_every
 
   contains
     ! Destructor
@@ -375,12 +379,13 @@ contains
   end subroutine initialize_temperature
 
   subroutine initialize_time(integrator,engine,t_i,t_f,dt,fixed_time_step, &
-   quality_factor)
+   quality_factor, compute_effective_field_every)
     character(len=5),intent(out) :: integrator
     character(len=6),intent(out) :: engine
     real(rp),intent(out) :: t_i, t_f, dt
     logical,intent(out) :: fixed_time_step
     real(rp),intent(out) :: quality_factor
+    integer,intent(out) :: compute_effective_field_every
 
     integrator = 'euler'
     engine = 'approx'
@@ -389,6 +394,7 @@ contains
     dt = 0.0_rp
     fixed_time_step = .true.
     quality_factor = 0.0_rp
+    compute_effective_field_every = 1
   end subroutine initialize_time
 
   !> Select the integration routine based on the integrator
@@ -461,12 +467,13 @@ contains
         write(unit,'(a)') ''
         write(unit,'(a)') '===== spin_dynamics%integrate_euler(): atom ' &
          // int2str(ia) // ' ====='
-         ! run a scf calculation to update the effective fields
-        call obj%scf%run(unit)
-
-        if(.not. obj%scf%converged) then
-          write(unit,'(a)') 'Convergence is not reached, SD stopped'
-          exit
+        ! run a scf calculation to update the effective fields every known steps
+        if (mod(it,obj%compute_effective_field_every)==0) then
+          call obj%scf%run(unit)
+          if(.not. obj%scf%converged) then
+            write(unit,'(a)') 'Convergence is not reached, SD stopped'
+            exit
+          end if
         end if
         call obj%advance_st(unit,ia,obj%dt)
       end do
@@ -534,28 +541,37 @@ contains
       ! Advance the first na-1 magnetizations in ascending order by dt/2
       ! Update the effective field by a scf%run
       do ia=1,obj%a%na-1
-        call obj%scf%run(unit)
-        if(.not. obj%scf%converged) then
-          write(unit,'(a)') 'Convergence is not reached, SD stopped'
-          exit
+        ! run a scf calculation to update the effective fields every known steps
+        if (mod(it,obj%compute_effective_field_every)==0) then
+          call obj%scf%run(unit)
+          if(.not. obj%scf%converged) then
+            write(unit,'(a)') 'Convergence is not reached, SD stopped'
+            exit
+          end if
         end if
         call obj%advance_st(unit,ia,obj%dt/2)
       end do
       ! Advance the na-th magnetization by dt
       ! Update the effective field by a scf%run
-      call obj%scf%run(unit)
-      if(.not. obj%scf%converged) then
-        write(unit,'(a)') 'Convergence is not reached, SD stopped'
-        exit
+      ! run a scf calculation to update the effective fields every known steps
+      if (mod(it,obj%compute_effective_field_every)==0) then
+        call obj%scf%run(unit)
+        if(.not. obj%scf%converged) then
+          write(unit,'(a)') 'Convergence is not reached, SD stopped'
+          exit
+        end if
       end if
       call obj%advance_st(unit,obj%a%na,obj%dt)
       ! Advance the first na-1 magnetizations in descending order by dt/2
       ! Update the effective field by a scf%run
       do ia=obj%a%na-1,1,-1
-        call obj%scf%run(unit)
-        if(.not. obj%scf%converged) then
-          write(unit,'(a)') 'Convergence is not reached, SD stopped'
-          exit
+        ! run a scf calculation to update the effective fields every known steps
+        if (mod(it,obj%compute_effective_field_every)==0) then
+          call obj%scf%run(unit)
+          if(.not. obj%scf%converged) then
+            write(unit,'(a)') 'Convergence is not reached, SD stopped'
+            exit
+          end if
         end if
         call obj%advance_st(unit,ia,obj%dt/2)
       end do
@@ -601,9 +617,10 @@ contains
     real(rp) :: alpha
     real(rp) :: temp
     logical :: verbose
+    integer :: compute_effective_field_every
     ! Namelist
     namelist /sd/ integrator, engine, t_i, t_f, dt, fixed_time_step, &
-    quality_factor, alpha, temp, verbose
+    quality_factor, alpha, temp, verbose, compute_effective_field_every
 
     if(present(file)) then
       file_rt = trim(file)
@@ -624,7 +641,7 @@ contains
     end if
 
     call initialize_time(integrator,engine,t_i,t_f,dt,fixed_time_step,&
-    quality_factor)
+                         quality_factor,compute_effective_field_every)
     call initialize_damping(alpha)
     call initialize_temperature(temp)
     verbose = .false.
@@ -644,6 +661,7 @@ contains
     obj%alpha = alpha
     obj%temp = temp
     obj%verbose = verbose
+    obj%compute_effective_field_every = compute_effective_field_every
 
     close(unit=10)
     !deallocate(file_rt)
@@ -701,9 +719,10 @@ contains
     real(rp) :: alpha
     real(rp) :: temp
     logical  :: verbose
+    integer  :: compute_effective_field_every
     ! Namelist
     namelist /sd/ integrator, engine, t_i, t_f, dt, fixed_time_step, &
-    quality_factor, alpha, temp, verbose
+    quality_factor, alpha, temp, verbose, compute_effective_field_every
 
     if(present(file)) then
       file_rt = file
@@ -730,6 +749,7 @@ contains
     alpha = obj%alpha
     temp = obj%temp
     verbose = obj%verbose
+    compute_effective_field_every = obj%compute_effective_field_every
 
     write(unit_rt,nml=sd)
 
@@ -816,6 +836,9 @@ contains
          ! TO DO
        case('verbose')
          write(unit_rt,'(a)') ' verbose = ' // log2str(obj%verbose)
+       case('compute_effective_field_every')
+         write(unit_rt,'(a)') ' compute_effective_field = ' &
+          // int2str(obj%compute_effective_field_every)
       end select
     end do
 
