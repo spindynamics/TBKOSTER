@@ -12,10 +12,10 @@ post_processing='band'
  ne = 2
  symbol(1) = 'J1'
  symbol(2) = 'J2'
- no(1) = 2
- no(2) = 2
- o(1,1:2) = 2, 3
- o(2,1:2) = 2, 3
+ no(1) = 3
+ no(2) = 3
+ o(1,1:3) = 2, 3, 4
+ o(2,1:3) = 2, 3, 4
  q(1) = 2.0000000000000000
  q(2) = 2.0000000000000000
  q_s(1) = 0.0000000000000000
@@ -44,8 +44,8 @@ post_processing='band'
  mass(2) = 12.010700000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
- filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
+ filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
  /
 &lattice
  v(1,:) = 2.1299999999999999, 1.2297560733739030, 0.0000000000000000

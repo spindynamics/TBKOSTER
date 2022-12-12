@@ -8,10 +8,10 @@
  ne = 2
  symbol(1) = 'J1'
  symbol(2) = 'J2'
- no(1) = 2
- no(2) = 2
- o(1,1:2) = 2, 3
- o(2,1:2) = 2, 3
+ no(1) = 3
+ no(2) = 3
+ o(1,1:3) = 2, 3, 4
+ o(2,1:3) = 2, 3, 4
  q(1) = 2.0000000000000000
  q(2) = 2.0000000000000000
  q_s(1) = 0.0000000000000000
@@ -40,8 +40,8 @@
  mass(2) = 12.010700000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
- filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
+ filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
+ filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
  /
 &lattice
  v(1,:) = 2.1299999999999999, 1.2297560733739030, 0.0000000000000000
@@ -104,8 +104,8 @@
  /
 &atom
  nel = 4.0000000000000000
- nn(1) = 12
- nn(2) = 12
+ nn(1) = 3
+ nn(2) = 3
  /
 
 calculation%run(): Processing scf
@@ -119,18 +119,18 @@ calculation%run(): Processing scf
 | n_tot =    4.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 1 =====
-self_consistent_field%run(): Time for k-loop 1 is 1.4999999664723873E-002 s
+self_consistent_field%run(): Time for k-loop 1 is 1.9999999552965164E-002 s
  en_k_min = 0.0000000000000000
- en_k_max = 15.233777395635050
- en_f = 7.7294456555128646
-self_consistent_field%run(): Time for k-loop 2 is 1.0999999940395355E-002 s
- en_band = 18.438601887485479
+ en_k_max = 16.539670300433919
+ en_f = 7.7139141815989998
+self_consistent_field%run(): Time for k-loop 2 is 1.8999999389052391E-002 s
+ en_band = 13.843911984861620
  en_dc_eei = 0.0000000000000000
  en_dc_lcn = 0.0000000000000000
  en_dc_pen = 0.0000000000000000
- en = 18.438601887485479
- delta_q_mul = 1.3305823109988069E-010
- delta_rho_net = 0.23235549483959517
+ en = 13.843911984861620
+ delta_q_mul = 2.4214164007219097E-010
+ delta_rho_net = 0.66604854669614166
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -141,19 +141,19 @@ self_consistent_field%run(): Time for k-loop 2 is 1.0999999940395355E-002 s
 | n_tot =    4.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 2 =====
-self_consistent_field%run(): Time for k-loop 1 is 4.9999998882412910E-003 s
+self_consistent_field%run(): Time for k-loop 1 is 8.0000003799796104E-003 s
  en_k_min = 0.0000000000000000
- en_k_max = 15.233777395635050
- en_f = 7.7294456555128646
-self_consistent_field%run(): Time for k-loop 2 is 8.9999996125698090E-003 s
- en_band = 18.438601887485479
+ en_k_max = 16.539670300433919
+ en_f = 7.7139141815989998
+self_consistent_field%run(): Time for k-loop 2 is 1.3000000268220901E-002 s
+ en_band = 13.843911984861620
  en_dc_eei = 0.0000000000000000
  en_dc_lcn = 0.0000000000000000
  en_dc_pen = 0.0000000000000000
- en = 18.438601887485479
+ en = 13.843911984861620
  delta_en = 0.0000000000000000
- delta_q_mul = 1.1975265223895804E-010
- delta_rho_net = 0.20911994535563672
+ delta_q_mul = 2.1792745386051138E-010
+ delta_rho_net = 0.59944369202652747
 |------------------------------------------------------------------|
 |      |       s      |       p      |       d      |     total    |
 |------------------------------------------------------------------|
@@ -164,17 +164,17 @@ self_consistent_field%run(): Time for k-loop 2 is 8.9999996125698090E-003 s
 | n_tot =    4.0000000                                             |
 |------------------------------------------------------------------|
 ===== self_consistent_field%run(): iteration 3 =====
-self_consistent_field%run(): Time for k-loop 1 is 4.9999998882412910E-003 s
+self_consistent_field%run(): Time for k-loop 1 is 4.0000001899898052E-003 s
  en_k_min = 0.0000000000000000
- en_k_max = 15.233777395635050
- en_f = 7.7294456555128646
-self_consistent_field%run(): Time for k-loop 2 is 1.0999999940395355E-002 s
- en_band = 18.438601887485479
+ en_k_max = 16.539670300433919
+ en_f = 7.7139141815989998
+self_consistent_field%run(): Time for k-loop 2 is 1.2000000104308128E-002 s
+ en_band = 13.843911984861620
  en_dc_eei = 0.0000000000000000
  en_dc_lcn = 0.0000000000000000
  en_dc_pen = 0.0000000000000000
- en = 18.438601887485479
+ en = 13.843911984861620
  delta_en = 0.0000000000000000
- delta_q_mul = 1.0880185641326534E-014
- delta_rho_net = 1.8818913187113040E-005
+ delta_q_mul = 1.9317880628477724E-014
+ delta_rho_net = 5.3944537825917154E-005
 self_consistent_field%run(): SCF loop converged
