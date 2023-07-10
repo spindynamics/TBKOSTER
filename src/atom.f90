@@ -36,12 +36,14 @@
 !  DyNaMol
 module atom_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
+!  use element_mod
   use element_mod
   use lattice_mod
   use math_mod, only: deg2rad, epsilon, i_unit, pi, rad2deg, sph2cart
   use precision_mod, only: rp
   use string_mod, only: sl, int2str, lower, real2str, fixedreal2str, unique_str, dynamol_flush
   use units_mod
+  use constant_mod, only: a_0
   implicit none
   private
 
@@ -148,6 +150,8 @@ module atom_mod
     integer :: nn_max
     !> Atom/neighbour-to-atom index
     integer,dimension(:,:),allocatable :: ian2ia
+    !> Atom/periodic-boundary-to-neighbour index
+    integer,dimension(:,:,:,:,:),allocatable :: iapbc2in
     !> Neighbour position
     real(rp),dimension(:,:,:),allocatable :: rn        
     !> @}
@@ -242,6 +246,7 @@ contains
     if(allocated(obj%m_pen))      deallocate(obj%m_pen)
     if(allocated(obj%nn))         deallocate(obj%nn)
     if(allocated(obj%ian2ia))     deallocate(obj%ian2ia)
+    if(allocated(obj%iapbc2in))     deallocate(obj%iapbc2in)
     if(allocated(obj%rn))         deallocate(obj%rn)
     if(allocated(obj%lambda_pen)) deallocate(obj%lambda_pen)
     if(allocated(obj%b_pen))      deallocate(obj%b_pen)
@@ -299,28 +304,75 @@ contains
     end select
   end function build_c_k
 
-  subroutine calculate_neighbours(obj,r_max)
+  subroutine calculate_neighbours(obj,r_max,type)
     ! INPUT
     class(atom),intent(inout) :: obj
-    real(rp),intent(in) :: r_max ! cutoff distance to compute the neighbors 
+    real(rp),intent(inout) :: r_max ! cutoff distance to compute the neighbors 
+    character(len=3):: type
     ! LOCAL
     integer,dimension(:),allocatable :: nn ! number of atoms of atom i
     integer,dimension(:,:),allocatable :: ian2ia ! list of atoms of a given atom
+    integer,dimension(:,:,:,:,:),allocatable :: iapbc2in ! list of atoms of a given atom
     real(rp),dimension(:,:,:),allocatable :: rn ! distance vector between atoms
     integer :: ia1,ia2,in,ip1,ip2,ip3               
     integer,dimension(3) :: x            
     real(rp),dimension(3) :: r
     real(rp) :: r_max_2,r_2
 
+  
+    select case(trim(type))
+    case('nrl')
     ! compute their numbers
     r_max_2 = r_max*r_max
+
+  case('mod','wan')
+
+    r_max_2=0.0
+    do ia1=1,obj%na
+      do ia2=1,obj%na
+        do ip1=1,2*obj%pbc(1)+1
+          do ip2=1,2*obj%pbc(2)+1
+            do ip3=1,2*obj%pbc(3)+1
+              x = (/ip1,ip2,ip3/) - obj%pbc - 1
+              r = matmul(x,obj%l_r%v)
+              r = r + obj%r(ia2,:) - obj%r(ia1,:)
+              r_2 = dot_product(r,r)
+              if(r_2>r_max_2) then
+                r_max_2=r_2
+              end if
+            end do
+          end do
+        end do
+      end do
+    end do
+
+
+  
+ !   do ip1=1,2*obj%pbc(1)+1
+ !     do ip2=1,2*obj%pbc(2)+1
+ !       do ip3=1,2*obj%pbc(3)+1
+ !         x = (/ip1,ip2,ip3/) - obj%pbc - 1
+ !         r = matmul(x,obj%l_r%v)
+ !         r_2 = dot_product(r,r)
+ !         if(r_2>r_max_2) then
+ !           r_max_2=r_2
+ !         end if
+ !       end do
+ !     end do
+ !   end do
+    r_max_2=r_max_2+4*epsilon
+    r_max=sqrt(r_max_2)
+    end select
+
     allocate(nn(obj%na))
+
+
     nn = 0
     do ia1=1,obj%na
       do ia2=1,obj%na
-        do ip3=1,2*obj%pbc(3)+1
+        do ip1=1,2*obj%pbc(1)+1
           do ip2=1,2*obj%pbc(2)+1
-            do ip1=1,2*obj%pbc(1)+1
+            do ip3=1,2*obj%pbc(3)+1
               x = (/ip1,ip2,ip3/) - obj%pbc - 1
               r = matmul(x,obj%l_r%v)
               r = r + obj%r(ia2,:) - obj%r(ia1,:)
@@ -336,15 +388,16 @@ contains
 
     obj%nn_max = maxval(nn)
     allocate(ian2ia(obj%na,obj%nn_max))
+    allocate(iapbc2in(obj%na,obj%na,2*obj%pbc(1)+1,2*obj%pbc(2)+1,2*obj%pbc(3)+1))
     allocate(rn(obj%na,obj%nn_max,3))
 
     ! then compute their distances
     do ia1=1,obj%na
       in = 0
       do ia2=1,obj%na
-        do ip3=1,2*obj%pbc(3)+1
+        do ip1=1,2*obj%pbc(1)+1
           do ip2=1,2*obj%pbc(2)+1
-            do ip1=1,2*obj%pbc(1)+1
+            do ip3=1,2*obj%pbc(3)+1
               x = (/ip1,ip2,ip3/) - obj%pbc - 1
               r = matmul(x,obj%l_r%v)
               r = r + obj%r(ia2,:) - obj%r(ia1,:)
@@ -352,7 +405,11 @@ contains
               if(r_2<r_max_2 .and. r_2>epsilon) then
                 in = in+1
                 ian2ia(ia1,in) = ia2
+                iapbc2in(ia1,ia2,ip1,ip2,ip3)=in
                 rn(ia1,in,:) = r
+              end if
+              if(r_2<epsilon) then
+                iapbc2in(ia1,ia2,ip1,ip2,ip3)=0
               end if
             end do
           end do
@@ -362,6 +419,7 @@ contains
 
     call move_alloc(nn,obj%nn)
     call move_alloc(ian2ia,obj%ian2ia)
+    call move_alloc(iapbc2in,obj%iapbc2in)
     call move_alloc(rn,obj%rn)
 
   end subroutine calculate_neighbours

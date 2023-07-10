@@ -36,6 +36,7 @@
 !  DyNaMol
 module atom_tb_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
+  use constant_mod, only :e_ry
   use atom_mod
   use element_tb_mod
   use lattice_mod
@@ -70,7 +71,7 @@ contains
     class(lattice),target,intent(in) :: l_r
     class(lattice),target,intent(in) :: l_k
     type(atom_tb) :: obj
-
+    
     ! Parent type constructor
     obj%atom = atom(e_tb,l_r,l_k)
 
@@ -87,8 +88,12 @@ contains
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
-    integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step
+    integer,dimension(3) :: x   
+    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,ip1,ip2,ip3,i1,i2,i3,imat1,imat2,icase,ncase
+    real(rp) :: Btemp
 
+    select case(obj%e_tb%tb_type)
+    case('nrl')
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       do in=1,obj%nn(ia1)
@@ -152,9 +157,46 @@ contains
             B(ia1,in,io1,io2) = temp(obj%e%o(ie1,io1),obj%e%o(ie2,io2))
           end do
         end do
-
       end do
     end do
+
+  case('wan')
+   open(unit=10,file='hr.dat',action='read')
+    do ip1=1,2*obj%pbc(1)+1
+     do ip2=1,2*obj%pbc(2)+1
+      do ip3=1,2*obj%pbc(3)+1
+         do ia2=1,obj%na 
+            ie2 = obj%ia2ie(ia2)
+            do io2=1,obj%e%no(ie2)
+             do ia1=1,obj%na
+                ie1 = obj%ia2ie(ia1)
+                do io1=1,obj%e%no(ie1)
+                 read(10,*) i1,i2,i3,imat1,imat2,Btemp
+                 in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
+  ! Unit conversion from eV atomic units to Hartree atomic units             
+                 B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
+                end do 
+              end do
+            end do
+          end do
+       end do
+      end do
+    end do
+  close(10)
+    
+case('mod')
+  open(unit=10,file='mod.dat',action='read')
+  B=0.0
+  read(10,*) ncase
+   do icase=1,ncase
+       read(10,*) i1,i2,i3,ia1,io1,ia2,io2,Btemp
+      x=(/i1,i2,i3/)+obj%pbc+1
+       in=obj%iapbc2in(ia1,ia2,x(1),x(2),x(3))
+   ! Unit conversion from eV atomic units to Hartree atomic units             
+        B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
+   end do
+ close(10)
+  end select
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 
@@ -310,6 +352,9 @@ contains
     real(rp) :: Overlap(10),I_Overlap(10)
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step
 
+    select case(obj%e_tb%tb_type)
+    case('nrl')
+
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       do in=1,obj%nn(ia1)
@@ -390,6 +435,10 @@ contains
         end do
       end do
     end do
+
+  case('mod','wan')
+   S=0.0D0
+  end select
   end function build_s_r
 
   function build_d_s_r(obj) result(d_S)
@@ -1156,7 +1205,7 @@ contains
     ! Parent type procedure
     call obj%atom%read_txt(file_rt)
     ! Derived type procedure
-    call obj%calculate_neighbours(obj%e_tb%r_c_max)
+    call obj%calculate_neighbours(obj%e_tb%r_c_max,obj%e_tb%tb_type)
     !deallocate(file_rt)
   end subroutine read_txt
 

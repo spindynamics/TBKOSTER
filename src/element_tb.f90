@@ -51,7 +51,7 @@ module element_tb_mod
 
   !> Maximum number of NRL TB parameters
   integer,parameter :: np_max = 97
-
+  
   type,public,extends(element) :: element_tb
     !> @defgroup TB_parameters TB parameter variables
     !> See \cite Barreteau2016 page 7-8, \cite Mehl1996 page 1-4.\n
@@ -77,8 +77,8 @@ module element_tb_mod
 
     !> TB parameter filenames
     character(len=sl),dimension(:),allocatable :: filename
-    !> TB model types ; options: 'nrl', 'model', 'wan'
-    character(len=sl),dimension(:),allocatable :: tb_type
+    !> TB model types ; options: 'nrl', 'mod', 'wan'
+    character(len=3):: tb_type
     !> TB parameter types ; options: 'old', 'new', 'cyr', 'pow'
     character(len=3),dimension(:),allocatable :: nrl_type
     !> TB parameters of NRL type
@@ -125,9 +125,6 @@ module element_tb_mod
     !> Exponential lifetimes \f$ r_l \f$ of the cutoff function \f$ F_c(R) \f$
     real(rp),dimension(:),allocatable :: r_l
     !> @}
-    !> TB parameters of "model" type
-    real(rp),dimension(:,:,:,:),allocatable :: tb_model_p
-    integer :: na_model,nn_max_model
 
   contains
     ! Destructor
@@ -162,7 +159,6 @@ contains
     if(allocated(obj%r_0))      deallocate(obj%r_0)
     if(allocated(obj%r_c))      deallocate(obj%r_c)
     if(allocated(obj%r_l))      deallocate(obj%r_l)
-    if(allocated(obj%tb_model_p))   deallocate(obj%tb_model_p )
 
   end subroutine destructor
 
@@ -254,54 +250,6 @@ contains
     end do
   end subroutine read_file_nrl
 
-!> Read object from TBmodel file
-  subroutine read_file_tb_model(obj)
-    class(element_tb),intent(inout) :: obj
-    integer :: iostatus
-    logical :: isopen
-    integer :: ie,ip
-
-    if(allocated(obj%tb_model_p)) deallocate(obj%tb_model_p)
-
-
-   ! allocate(obj%bmodel(obj%na,nn_max))
-    
-
-      inquire(unit=10,opened=isopen)
-      if (isopen) then
-       write(error_unit,'(a)') 'element_tb%read_txt() : Unit 10 is already open'
-        error stop
-      else
-        open(unit=10,file=obj%filename(ie),action='read',iostat=iostatus, &
-       status='old')
-      end if
-      if(iostatus /= 0) then
-        write(error_unit,*) 'element_tb%read_file_tb_model(): file ', obj%filename(ie), &
-         ' not found'
-        error stop
-      end if
-
-     ! read(10,*) type
-      read(10,*)
-      read(10,*)
-      read(10,*) obj%r_0(ie), obj%r_c(ie), obj%r_l(ie)
-      if(abs(obj%r_c(ie) - obj%r_0(ie) - 5*obj%r_l(ie)) > 0.00001_rp) then
-        write(error_unit,*) 'element_tb%read_file_nrl(): bad cut-off'
-        error stop
-      end if
-      read(10,*)
-      read(10,*)
-      read(10,*)
-      do ip=1,np_max
-        read(10,*) obj%p(ie,ip)
-      end do
-
-      close(unit=10)
-
-      
-  end subroutine read_file_tb_model
-
-
   !> Read object in text format from file (default: 'in_element_tb.txt')
   subroutine read_txt(obj,file)
     class(element_tb),intent(inout) :: obj
@@ -310,7 +258,7 @@ contains
     integer :: iostatus
     logical :: isopen
     ! Namelist variables
-    character(len=sl)::tb_type
+    character(len=3)::tb_type
     character(len=sl),dimension(:),allocatable :: filename
     ! Namelist
     namelist /element_tb/tb_type,filename
@@ -340,9 +288,9 @@ contains
 
     allocate(filename(obj%ne))
     read(10,nml=element_tb)
+    obj%tb_type=tb_type
 
     if(trim(tb_type)=='nrl') then
-
     call move_alloc(filename,obj%filename)
 
     close(unit=10)
@@ -350,12 +298,23 @@ contains
 
     call obj%read_file_nrl()
     call check_nrl_type(obj%nrl_type)
-    elseif(lower(trim(tb_type))=='model') then
-     write(output_unit,*) 'error tb_model'
-     stop
+
+    elseif(lower(trim(obj%tb_type))=='wan') then
+      deallocate(filename)
+      allocate(filename(1))
+      filename='hr.dat'
+      obj%filename=filename
+      call move_alloc(filename,obj%filename)
+       write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
+    elseif(lower(trim(obj%tb_type))=='mod') then
+      deallocate(filename)
+      allocate(filename(1))
+      filename='mod.dat'
+      obj%filename=filename
+      call move_alloc(filename,obj%filename)
+       write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
     endif
     close(unit=10)
-
   end subroutine read_txt
 
   !> Write object in text format to unit (default: 10), if it's a file
@@ -474,6 +433,8 @@ contains
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
       case('filename')
+        select case(obj%tb_type)
+           case('nrl')
         do ie=1,obj%ne
         ! filenames with quotes
           write(unit_rt,'(a)') ' filename(' // int2str(ie) // ') = ' &
@@ -482,6 +443,9 @@ contains
         !          write(unit_rt,'(a)') ' filename(' // int2str(ie) // ') = ' &
         !           // trim(obj%filename(ie))
         end do
+           case('mod','wan')
+            write(unit_rt,'(a)') ' filename= '// "'" // trim(obj%filename(1)) // "'"
+           end select
       end select
     end do
 
