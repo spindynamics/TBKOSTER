@@ -1424,10 +1424,8 @@ contains
     read(10,nml=element,iostat=iostatus)
     deallocate(symbol)
     allocate(symbol(ne))
-    allocate(no(0))
     rewind(10)
     read(10,nml=element,iostat=iostatus)
-    deallocate(no)
     call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
     call initialize_o(ne,symbol,no_max,o,os)
     call initialize_lcn(ne,u_lcn,u_lcn_d)
@@ -1436,6 +1434,7 @@ contains
     rewind(10)
     read(10,nml=element)
     no_max = maxval(no)
+
 
     ! Charge initialization recipe
     do ie=1,ne

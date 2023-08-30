@@ -89,7 +89,8 @@ contains
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
     integer,dimension(3) :: x   
-    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,ip1,ip2,ip3,i1,i2,i3,imat1,imat2,icase,ncase
+    integer, dimension(:), allocatable ::  weight   
+    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,ip1,ip2,ip3,i1,i2,i3,imat1,imat2,icase,ncase,norb
     real(rp) :: Btemp
 
     select case(obj%e_tb%tb_type)
@@ -162,26 +163,57 @@ contains
 
   case('wan')
    open(unit=10,file='hr.dat',action='read')
-    do ip1=1,2*obj%pbc(1)+1
-     do ip2=1,2*obj%pbc(2)+1
-      do ip3=1,2*obj%pbc(3)+1
+   B=0.0
+   read(10,*)
+   read(10,*) norb
+   read(10,*)  ncase
+   allocate(weight(ncase))
+   read(10,*) (weight(icase),icase=1,ncase)
+
+   do icase=1,ncase
          do ia2=1,obj%na 
             ie2 = obj%ia2ie(ia2)
             do io2=1,obj%e%no(ie2)
-             do ia1=1,obj%na
-                ie1 = obj%ia2ie(ia1)
-                do io1=1,obj%e%no(ie1)
-                 read(10,*) i1,i2,i3,imat1,imat2,Btemp
-                 in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
+               do ia1=1,obj%na
+                 ie1 = obj%ia2ie(ia1)
+                  do io1=1,obj%e%no(ie1)
+                   read(10,*) i1,i2,i3,imat1,imat2,Btemp
+                     ip1=i1+obj%pbc(1)+1
+                     ip2=i2+obj%pbc(2)+1
+                     ip3=i3+obj%pbc(3)+1	      
+                    in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
+! Unit conversion from eV atomic units to Hartree atomic units       
+                    B(ia1,in,io1,io2)=Btemp/weight(icase)*0.5_rp/e_ry
+           	      end do
+                end do
+            end do 
+          end do  
+    end do  
+
+  deallocate(weight)
+
+ !   do ip1=1,2*obj%pbc(1)+1
+ !    do ip2=1,2*obj%pbc(2)+1
+ !     do ip3=1,2*obj%pbc(3)+1
+ !        do ia2=1,obj%na 
+ !           ie2 = obj%ia2ie(ia2)
+ !           do io2=1,obj%e%no(ie2)
+ !            do ia1=1,obj%na
+ !               ie1 = obj%ia2ie(ia1)
+ !               do io1=1,obj%e%no(ie1)
+ !                read(10,*) i1,i2,i3,imat1,imat2,Btemp
+ !                in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
   ! Unit conversion from eV atomic units to Hartree atomic units             
-                 B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
-                end do 
-              end do
-            end do
-          end do
-       end do
-      end do
-    end do
+ !                B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
+ !               end do 
+ !             end do
+ !           end do
+ !         end do
+ !      end do
+ !     end do
+ !   end do
+
+
   close(10)
     
 case('mod')
