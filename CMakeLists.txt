@@ -86,6 +86,9 @@ set(CMAKE_VERBOSE_MAKEFILE off)
 # add the directory of the sources
 add_subdirectory(src)
 
+# add the directory of the tools
+add_subdirectory(tools)
+
 if(ENABLE_TESTS)
   # unitary tests
   add_subdirectory(unit_tests)
