@@ -1160,6 +1160,8 @@ contains
     ! LOCAL
     integer :: ia,ie,io
 
+    select case(obj%e_tb%tb_type)
+    case('nrl')
     obj%en_intra = obj%a_tb%build_en_intra()
     obj%h_r = obj%a_tb%build_b_r()
     obj%h_r(:,0,:,:) = 0.0_rp
@@ -1169,6 +1171,9 @@ contains
         obj%h_r(ia,0,io,io) = obj%en_intra(ia,io)
       end do
     end do
+    case('mod','wan')
+      obj%h_r = obj%a_tb%build_b_r()
+  end select  
   end subroutine calculate_h_r
 
   subroutine calculate_s_r(obj)
@@ -1176,7 +1181,6 @@ contains
     class(hamiltonian_tb),intent(inout) :: obj
     ! LOCAL
     integer :: ia,ie,io
-
     obj%s_r = obj%a_tb%build_s_r()
     obj%s_r(:,0,:,:) = 0.0_rp
     do ia=1,obj%a_tb%na
