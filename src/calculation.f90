@@ -39,6 +39,7 @@ module calculation_mod
   use atom_tb_mod
   use charge_mod
   use density_of_states_mod
+  use band_structure_mod
   use element_tb_mod
   use energy_mod
   use forces_mod
@@ -179,6 +180,7 @@ contains
        &''scf'', ''sd'''
       error stop
     end if
+    
   end subroutine check_processing
 
   subroutine destructor(obj)
@@ -205,6 +207,7 @@ contains
     type(atom_tb),target :: atom_tb_obj
     type(charge),target :: charge_obj
     type(density_of_states),target :: dos_obj
+    type(band_structure),target :: band_obj
     type(element_tb),target :: element_tb_obj
     type(energy),target :: energy_obj
     type(hamiltonian_tb),target :: hamiltonian_tb_obj
@@ -215,13 +218,12 @@ contains
 
     character(len=:),allocatable :: dir
     character(len=*),parameter :: master_file = 'in_master.txt'
-    logical :: file_existence
+    logical :: file_existence,file_existence2
     character(len=4) :: old_mesh_type
     integer :: unit
     logical :: isopen
 
     dir = trim(obj%post_processing_dir)
-
     ! Read input
     inquire(file=master_file,exist=file_existence)
     if(file_existence) then
@@ -254,6 +256,8 @@ contains
       call energy_obj%read_txt(file=master_file)
       dos_obj = density_of_states(energy_obj)
       call dos_obj%read_txt(file=master_file)
+      band_obj = band_structure(energy_obj)
+      call band_obj%read_txt(file=dir // '/in_band.txt')
     else
       hamiltonian_tb_obj = hamiltonian_tb(atom_tb_obj,charge_obj,mesh_k)
       call hamiltonian_tb_obj%read_txt()
@@ -261,12 +265,13 @@ contains
       call energy_obj%read_txt(file=dir // '/in_energy.txt')
       dos_obj = density_of_states(energy_obj)
       call dos_obj%read_txt(file=dir // '/in_dos.txt')
+      band_obj = band_structure(energy_obj)
+      call band_obj%read_txt(file=dir // '/in_band.txt')   
     end if
-
     !scf_obj = self_consistent_field(en=energy_obj)
-    scf_obj = self_consistent_field(dos=dos_obj)
+    ! scf_obj = self_consistent_field(dos=dos_obj)
+       scf_obj = self_consistent_field(band=band_obj)
     call scf_obj%initialize('nscf')
-
     ! Write mesh in list format
     old_mesh_type = mesh_k%type
     mesh_k%type = 'list'
@@ -290,6 +295,7 @@ contains
       open(unit=11,file=dir // '/out_log.txt',action='write')
     end if
 
+
     call units_obj%write_txt_formatted(unit=unit)
     call element_tb_obj%write_txt_formatted(unit=unit)
     call lattice_r%write_txt_formatted(unit=unit)
@@ -297,20 +303,21 @@ contains
     call mesh_k%write_txt_formatted(unit=unit)
     call hamiltonian_tb_obj%write_txt_formatted(unit=unit)
     call energy_obj%write_txt_formatted(unit=unit)
-    call dos_obj%write_txt_formatted(unit=unit)
+    call band_obj%write_txt_formatted(unit=unit)
     ! Run
     write(unit,'(a)') ''
     write(unit,'(a)') 'calculation%run(): Post-processing band'
     call dynamol_flush(unit)
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
-    call scf_obj%run(unit)
+    call scf_obj%run(unit,obj%post_processing)
     ! Close log
     close(unit)
 
+
     ! Write band structure
-    call energy_obj%write_txt_formatted(file=dir // '/out_energy.txt', &
-     property=[character(len=sl) :: 'en_min','en_max','en_f','en_k'])
+    call band_obj%write_txt_formatted(file=dir // '/out_band.txt', &
+     property=[character(len=sl) :: 'en_k'])
 
     ! Plot band structure
     ! call execute_command_line('python ' // trim(obj%dynamol_dir) &
@@ -408,7 +415,7 @@ contains
     call dynamol_flush(unit)
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
-    call scf_obj%run(unit)
+    call scf_obj%run(unit,obj%post_processing)
     ! Close log
     close(unit)
 
@@ -541,7 +548,6 @@ contains
     type(element_tb),target :: element_tb_obj
     type(lattice),target    :: lattice_r, lattice_k
     type(units),target      :: units_obj
-
     character(len=:),allocatable :: dir, file
     character(len=*),parameter :: master_file = 'in_master.txt'
     logical :: file_existence
@@ -822,7 +828,6 @@ contains
 
     ! Write units
     ! call units_obj%write_txt_formatted()
-
     ! Write mesh in list format
     old_mesh_type = mesh_k%type
     mesh_k%type = 'list'

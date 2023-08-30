@@ -74,7 +74,6 @@ module energy_mod
     class(mesh),pointer :: k
     ! Hamiltonian
     class(hamiltonian_tb),pointer :: h
-
     !> @defgroup Smearing Smearing related variables
     !> @{
 
@@ -200,17 +199,6 @@ module energy_mod
     !> @defgroup Local_band_energy_weight Local band energy weight-related
     !> variables
     !> @{
-
-    ! Local band energy atomic site number
-    integer :: na_band
-    ! Local band energy atomic site index
-    integer,dimension(:),allocatable ::  ia_band
-    ! Lowest and highest band index
-    integer :: iband_min, iband_max
-    ! Local band energy weight
-    real(rp), dimension(:,:,:,:,:), allocatable :: w_en_band_local
-    !> @}
-
   contains
     ! Destructor
     final :: destructor
@@ -218,7 +206,7 @@ module energy_mod
     procedure :: calculate_delta_en
     procedure :: calculate_en
     procedure :: calculate_en_band
-    procedure :: calculate_en_band_local
+    procedure :: calculate_en_band_local_k
     procedure :: calculate_en_dc_eei
     procedure :: calculate_en_dc_lcn
     procedure :: calculate_en_dc_pen
@@ -230,7 +218,6 @@ module energy_mod
     procedure :: print_indx
     procedure :: read_txt
     procedure :: save_en_k
-    procedure :: save_weight_energy_band
     procedure :: sort_en_k
     procedure :: write_txt
     procedure :: write_txt_formatted
@@ -266,8 +253,6 @@ contains
     if(allocated(obj%f_k_fsm))         deallocate(obj%f_k_fsm)
     if(allocated(obj%en_band_local))   deallocate(obj%en_band_local)
     if(allocated(obj%en_band_local_f)) deallocate(obj%en_band_local_f)
-    if(allocated(obj%ia_band))         deallocate(obj%ia_band)
-    if(allocated(obj%w_en_band_local)) deallocate(obj%w_en_band_local)
   end subroutine destructor
 
   subroutine calculate_delta_en(obj)
@@ -324,17 +309,15 @@ contains
     end if
   end subroutine calculate_en_band
 
-  subroutine calculate_en_band_local(obj,ik,isl,V,Vtilde)
+  subroutine calculate_en_band_local_k(obj,ik,isl,v_k)
     ! INPUT
     class(energy),intent(inout) :: obj
     integer :: ik,isl
-    complex(rp),intent(in),dimension(obj%h%nh,obj%h%nh) :: V,Vtilde
+    complex(rp),intent(in),dimension(2,obj%h%nh,obj%h%nh) :: v_k
     ! LOCAL
     integer :: ia,ie,io,l,ispin,jspin,imat_ispin,imat_jspin,imat,jmat,jmat2,nn,q
     real(rp) :: ffe
 
-    obj%en_band_local   = 0.0_rp
-    obj%en_band_local_f = 0.0_rp
 
     select case(obj%a%ns)
     case(1,2)
@@ -347,12 +330,12 @@ contains
             nn = ik+(jmat2-1)*obj%k%nx
             ffe = obj%f_k(nn)*obj%en_k(nn)
             obj%en_band_local(ia,io,isl) = obj%en_band_local(ia,io,isl) &
-             + ffe*obj%k%w(ik)*obj%a%g_s*real(V(imat,jmat) &
-             *conjg(Vtilde(imat,jmat)))
+             + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
+             *conjg(v_k(2,imat,jmat)))
             ffe = ffe - obj%en_f*obj%f_k(nn)
             obj%en_band_local_f(ia,io,isl) = obj%en_band_local_f(ia,io,isl) &
-             + ffe*obj%k%w(ik)*obj%a%g_s*real(V(imat,jmat) &
-             *conjg(Vtilde(imat,jmat)))
+             + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
+             *conjg(v_k(2,imat,jmat)))
           end do
         end do
       end do
@@ -378,15 +361,15 @@ contains
 
                 obj%en_band_local(ia,io,q) = obj%en_band_local(ia,io,q) &
                  + ffe*obj%k%w(ik) &
-                 *real(conjg(V(imat_jspin,jmat))*Vtilde(imat_ispin,jmat) &
-                 + V(imat_ispin,jmat)*conjg(Vtilde(imat_jspin,jmat)))/2
+                 *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat) &
+                 + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
 
                 ffe = ffe-obj%f_k(nn)*obj%en_f
 
                 obj%en_band_local_f(ia,io,q) = obj%en_band_local_f(ia,io,q) &
                  + ffe*obj%k%w(ik) &
-                 *real(conjg(V(imat_jspin,jmat))*Vtilde(imat_ispin,jmat)&
-                 + V(imat_ispin,jmat)*conjg(Vtilde(imat_jspin,jmat)))/2
+                 *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat)&
+                 + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
               end do
 
             end do
@@ -394,7 +377,7 @@ contains
         end do
       end do
     end select
-  end subroutine calculate_en_band_local
+  end subroutine calculate_en_band_local_k
 
   subroutine calculate_en_dc_eei(obj)
     ! INPUT
@@ -954,18 +937,6 @@ contains
     if(allocated(obj%en_band_local_f)) deallocate(obj%en_band_local_f)
     allocate(obj%en_band_local_f(obj%a%na,obj%e%no_max,obj%a%ns))
 
-    ! Local band energy weight
-    ! if(obj%na_band>0) then
-    !   select case(obj%a%ns)
-    !   case(1,2)
-    !     allocate(obj%w_en_band_local(obj%na_band,obj%k%nx,obj%e%no_max, &
-    !      obj%h%nh,obj%a%nsl))
-    !   case(4)
-    !     allocate(obj%w_en_band_local(obj%na_band,obj%k%nx,obj%e%no_max*2, &
-    !      obj%h%nh,obj%a%nsl))
-    !   end select
-    ! end if
-
     obj%en_k = 0.0_rp
     obj%f_k = 0.0_rp
     if(.not. obj%fixed_spin_moment) then
@@ -1085,7 +1056,7 @@ contains
     call initialize_ffl(fixed_fermi_level,en_f_ffl)
     call initialize_fsm(fixed_spin_moment,m_fsm)
     call initialize_en_bounds(en_min,en_max)
-    read(10,nml=energy)
+    read(10,nml=energy,iostat=iostatus)
     smearing = lower(smearing)
     call check_smearing(trim(smearing))
     call check_fixed_spin_moment(obj%a%ns,fixed_fermi_level,fixed_spin_moment)
@@ -1100,7 +1071,6 @@ contains
     obj%en_max = en_max * obj%u%convert_energy('to','hau')
 
     call obj%initialize()
-
     close(unit=10)
     !deallocate(file_rt)
   end subroutine read_txt
@@ -1141,54 +1111,6 @@ contains
       obj%en_k_2(:,ik,isl) = w_k
     end if
   end subroutine save_en_k
-
-  subroutine save_weight_energy_band(obj,ik,isl,V,Vtilde)
-    ! INPUT
-    class(energy),intent(inout) :: obj
-    integer :: ik,isl
-    complex(rp),intent(in),dimension(obj%h%nh,obj%h%nh) :: V,Vtilde
-    ! LOCAL
-    integer :: ia_band1,ia,ie,io,ispin,imat,jmat,jmat2,imat_ispin,jj,nn
-
-    select case(obj%a%ns)
-    case(1,2)
-      do jmat=obj%iband_min,obj%iband_max
-        jmat2=isl+(jmat-1)*obj%a%ns
-        jj=ik+(jmat-1)*obj%k%nx
-        nn=ik+(jmat2-1)*obj%k%nx
-
-        if(obj%na_band>0) then
-          do ia_band1=1,obj%na_band
-            ia = obj%ia_band(ia_band1)
-            ie = obj%a%ia2ie(ia)
-            do io=1,obj%e%no(ie)
-              imat=obj%h%iaos2ih(ia,io,1)
-              obj%w_en_band_local(ia_band1,ik,ia,jmat,isl) &
-               = real(V(imat,jmat)*conjg(Vtilde(imat,jmat)))
-            end do
-          end do
-        end if
-      end do
-    case(4)
-      do jmat=obj%iband_min,obj%iband_max
-        jj=ik+(jmat-1)*obj%k%nx
-
-        if(obj%na_band>0) then
-          do ia_band1=1,obj%na_band
-            ia = obj%ia_band(ia_band1)
-            ie = obj%a%ia2ie(ia)
-            do io=1,obj%e%no(ie)
-              do ispin=1,2
-                imat_ispin=obj%h%iaos2ih(ia,io,ispin)
-                obj%w_en_band_local(ia_band1,ik,ia+(ispin-1)*obj%e%no(ie),jmat,isl) &
-                 = real(V(imat_ispin,jmat)*conjg(Vtilde(imat_ispin,jmat)))
-              end do
-            end do
-          end do
-        end if
-      end do
-    end select
-  end subroutine save_weight_energy_band
 
   !> Sorting eigenvalues in ascendig order
   subroutine sort_en_k(obj)
@@ -1290,7 +1212,8 @@ contains
     ! Namelist variables
     real(rp),dimension(obj%h%nh,obj%k%nx,obj%a%nsl) :: en_k_2
     ! Local variables
-    integer :: ip, isl, ik, ih
+    integer :: ip, isl, ik, ih,ia_band1,ia,io,ie
+    integer,dimension(:),allocatable         :: iband2io
 
     if(present(file)) then
       file_rt = file
@@ -1344,17 +1267,6 @@ contains
       case('en_max')
         write(unit_rt,'(a)') ' en_max = ' // real2str(obj%en_max &
          * obj%u%convert_energy('from','hau'))
-      case('en_k')
-        en_k_2 = obj%en_k_2 * obj%u%convert_energy('from','hau')
-        do isl=1,obj%a%nsl
-          do ik=1,obj%k%nx
-            do ih=1,obj%h%nh
-              write(unit_rt,'(a)') ' en_k(' // int2str(ih) // ',' &
-               // int2str(ik) // ',' // int2str(isl) // ') = ' &
-               // real2str(en_k_2(ih,ik,isl))
-            end do
-          end do
-        end do
       case('en_k_min')
         write(unit_rt,'(a)') ' en_k_min = ' // real2str(minval(obj%en_k) &
          * obj%u%convert_energy('from','hau'))

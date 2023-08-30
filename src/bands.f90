@@ -39,26 +39,47 @@ PROGRAM bands
     USE string_mod
     IMPLICIT NONE
     INTEGER, PARAMETER :: unit_mesh = 11
-    INTEGER, PARAMETER :: unit_energy = 12
-    INTEGER, PARAMETER :: unit_hamiltonian_tb = 13
-    INTEGER :: iostatus, nx, nh, ns, nsl
+    INTEGER, PARAMETER :: unit_hamiltonian_tb = 12
+    INTEGER, PARAMETER :: unit_band_in = 13 
+    INTEGER, PARAMETER :: unit_band_out = 14
+    INTEGER :: iostatus, nx, nh, ns, nsl, no_max, na_band
+    logical :: isopen
     CHARACTER(len=*), PARAMETER :: dir = 'band/'
-    CHARACTER(len=*), PARAMETER :: file_energy = 'out_energy.txt'
+    CHARACTER(len=*), PARAMETER :: file_band_in = 'in_band.txt' 
+    CHARACTER(len=*), PARAMETER :: file_band_out = 'out_band.txt'
     CHARACTER(len=*), PARAMETER :: file_mesh = 'out_mesh.txt'
     CHARACTER(len=*), PARAMETER :: file_hamiltonian_tb = 'out_hamiltonian_tb.txt'
     CHARACTER(len=9) :: x_coord
     CHARACTER(len=4) :: TYPE
+    CHARACTER(len=80) :: line
+    INTEGER, DIMENSION(:), ALLOCATABLE :: ia_band,iband2io
     REAL(rp), DIMENSION(:, :, :), ALLOCATABLE :: en_k
     REAL(rp), DIMENSION(:), ALLOCATABLE :: w
     REAL(rp), DIMENSION(:, :), ALLOCATABLE :: x
+    REAL(rp), DIMENSION(:,:,:,:,:), allocatable :: w_en_band_local
     REAL(rp) :: en_min, en_max, en_f
-    NAMELIST /energy/ en_min, en_max, en_f, en_k
     NAMELIST /mesh/ TYPE, nx, x_coord, x, w
     NAMELIST /hamiltonian_tb/ nh, ns
+    NAMELIST /band/ na_band,ia_band 
+    NAMELIST /band_out/en_k,iband2io,w_en_band_local
 
-    OPEN (unit_energy, file=dir//file_energy, action='read', iostat=iostatus, status='old')
+   ! inquire(unit=unit_energy_in,opened=isopen)
+   ! if (isopen) then
+   !   write(*,'(a)') 'energy%read_txt() : Unit 14 is already open'
+   !   close(unit_energy_in)
+   ! else
+   !   open(unit=unit_energy_in,file=dir//file_energy_in,action='read',iostat=iostatus,status='old')
+   ! end if
+   ! if(iostatus /= 0) then
+   !   write(*,*) 'energy%read_txt(): file ', file_energy_in, ' not found'
+   !   error stop
+   !  end if
+
+    OPEN (unit_band_in, file=dir//file_band_in, action='read', iostat=iostatus, status='old')
+    OPEN (unit_band_out, file=dir//file_band_out, action='read', iostat=iostatus, status='old')
     OPEN (unit_mesh, file=dir//file_mesh, action='read', iostat=iostatus, status='old')
     OPEN (unit_hamiltonian_tb, file=dir//file_hamiltonian_tb, action='read', iostat=iostatus, status='old')
+
 
     ALLOCATE (x(0, 0), w(0))
     READ (unit_mesh, nml=mesh, iostat=iostatus)
@@ -88,12 +109,34 @@ PROGRAM bands
         nsl = 1
     END SELECT
 
+    ALLOCATE(ia_band(0))
+    READ(unit_band_in, nml=band, iostat=iostatus)
+    DEALLOCATE(ia_band)
+    ALLOCATE(ia_band(na_band))
+    REWIND(unit_band_in)
+    READ(unit_band_in, nml=band, iostat=iostatus)
+    CLOSE(unit_band_in) 
+
 
     ALLOCATE (en_k(nh, nx, nsl))
-    READ (unit_energy, nml=energy, iostat=iostatus)
+    READ (unit_band_out, nml=band_out, iostat=iostatus)
+
+    REWIND(unit_band_out)
+    
+    if(na_band>0) then
+       ALLOCATE(iband2io(na_band))   
+       iband2io=0 
+       ALLOCATE(w_en_band_local(0,0,0,0,0))
+       READ (unit_band_out, nml=band_out, iostat=iostatus) 
+       no_max=maxval(iband2io)
+       DEALLOCATE(w_en_band_local)
+       REWIND(unit_band_out)
+       ALLOCATE(w_en_band_local(na_band,no_max,nx,nh,ns))
+       READ (unit_band_out, nml=band_out, iostat=iostatus) 
+    end if
+    CLOSE (unit_band_out)
     CALL get_Fermi_scf(en_f)
     en_k = en_k - en_f
-    CLOSE (unit_energy)
     CALL build_band_path(x, en_k, nh, nx, nsl)
 END PROGRAM bands
 
@@ -137,10 +180,10 @@ SUBROUTINE get_Fermi_scf(en_f)
     INTEGER :: iostatus
     CHARACTER(len=*), PARAMETER :: file_energy_scf = 'out_energy.txt'
     REAL(rp) :: en_f
-    NAMELIST /energy/ en_f
+    NAMELIST /energy/en_f
 
     OPEN (unit_energy_scf, file=file_energy_scf, action='read', iostat=iostatus, status='old')
     READ (unit_energy_scf, nml=energy, iostat=iostatus)
-   !write(*,*) 'EF=',en_f
+   
     CLOSE (unit_energy_scf)
 END SUBROUTINE get_Fermi_scf

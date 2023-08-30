@@ -74,7 +74,6 @@ module density_of_states_mod
     class(hamiltonian_tb),pointer :: h
     ! Energy
     class(energy),pointer :: en
-
     ! Number of energy points
     integer :: nen
     ! Energy range
