@@ -7,5 +7,6 @@
         "initio",
         "nonadiabatic",
         "spintronics"
-    ]
+    ],
+    "fortran.fortls.disabled": true
 }
