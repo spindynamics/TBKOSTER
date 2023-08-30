@@ -262,7 +262,6 @@ contains
     character(len=sl),dimension(:),allocatable :: filename
     ! Namelist
     namelist /element_tb/tb_type,filename
-
     tb_type='nrl'
     if(present(file)) then
       file_rt = trim(file)
@@ -272,7 +271,6 @@ contains
 
     ! Parent type procedure
     call obj%element%read_txt(file_rt)
-
     ! Derived type procedure
     inquire(unit=10,opened=isopen)
     if (isopen) then

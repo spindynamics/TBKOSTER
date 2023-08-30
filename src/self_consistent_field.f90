@@ -39,6 +39,7 @@ module self_consistent_field_mod
   use atom_mod
   use charge_mod
   use density_of_states_mod
+  use band_structure_mod
   use energy_mod
   use hamiltonian_tb_mod
   use mesh_mod
@@ -79,6 +80,8 @@ module self_consistent_field_mod
     class(mixing),pointer :: mx
     !> Density of states
     class(density_of_states),pointer :: dos
+    !> Band structure
+    class(band_structure),pointer :: band   
     !> Logical forces (default: .false.)
     logical :: forces_logical
     !> Minimum number of iterations (default: 2)
@@ -124,10 +127,11 @@ module self_consistent_field_mod
   end interface self_consistent_field
 
 contains
-  function constructor(en,mx,dos) result(obj)
+  function constructor(en,mx,dos,band) result(obj)
     class(energy),target,intent(in),optional :: en
     class(mixing),target,intent(in),optional :: mx
     class(density_of_states),target,intent(in),optional :: dos
+    class(band_structure),target,intent(in),optional :: band
     type(self_consistent_field) :: obj
 
     if(present(en)) then
@@ -145,6 +149,14 @@ contains
       obj%h => dos%h
       obj%en => dos%en
       obj%dos => dos
+    elseif(present(band)) then
+      obj%u => band%u
+      obj%a => band%a
+      obj%q => band%en%q
+      obj%k => band%k
+      obj%h => band%h
+      obj%en => band%en
+      obj%band => band
     else
       write(error_unit,*) 'self_consistent_field%constructor(): one of &
        & arguments en or dos must be specified'
@@ -159,7 +171,6 @@ contains
   subroutine initialize(obj,type)
     class(self_consistent_field),intent(inout) :: obj
     character(len=*),intent(in) :: type
-
     select case(lower(trim(type)))
     case('nscf')
       call initialize_nscf(obj%ni_min,obj%ni_max,obj%delta_en,obj%delta_q,obj%forces_logical)
@@ -254,9 +265,10 @@ contains
     !deallocate(file_rt)
   end subroutine read_txt
 
-  subroutine run(obj,unit)
+  subroutine run(obj,unit,post_processing)
     class(self_consistent_field),intent(inout) :: obj
     integer,intent(in),optional :: unit
+    character(len=7),intent(in),optional  :: post_processing
     integer                     :: unit_rt
     ! Iteration index
     integer :: i
@@ -304,7 +316,6 @@ contains
       write(unit_rt,'(a)') '===== self_consistent_field%run(): iteration ' &
        // int2str(i) // ' ====='
       call dynamol_flush(unit_rt)
-
       !=========================================================================
       !                        BUILD RENORMALIZATION
       !=========================================================================
@@ -359,7 +370,6 @@ contains
 
     call obj%q%nullify_charge_out()
     call obj%q%nullify_orbital_moment()
-
     !=========================================================================
     !                    BEGIN K-POINT AND SPIN LOOPS
     !=========================================================================
@@ -398,8 +408,16 @@ contains
 !$OMP CRITICAL
 #endif
         ! entering here when post-proc band and/or dos is activated
-          call obj%dos%add_dos_k(ik, isl)
-          call obj%dos%add_dos_local_k(ik, isl, v_k)
+        if(present(post_processing))  then
+             select case(post_processing)
+               case('dos') 
+                 call obj%dos%add_dos_k(ik, isl)
+                 call obj%dos%add_dos_local_k(ik, isl, v_k)
+               case('band') 
+                 call obj%band%save_weight_band_local(ik, isl, v_k)
+              end select
+        endif
+          
 #if defined(OpenMP_Fortran_FOUND)
 !$OMP END CRITICAL
 #endif
@@ -421,7 +439,6 @@ contains
     !=========================================================================
     !                      END K-POINT AND SPIN LOOPS
     !=========================================================================
-
     if(obj%ni_max>1) then
       !=======================================================================
       !           CALCULATE DOUBLE COUNTING TERMS AND TOTAL ENERGY
@@ -491,11 +508,8 @@ contains
     if(obj%verbose.and.obj%a%ns==4) then
       call obj%q%write_orbital_moment_analysis(unit_rt)
     endif
-
-
-    
+ !   write(*,*) obj%en%w_en_band_local
     call dynamol_flush(unit_rt)
-
   end subroutine run
 
   !> Write object in text format to unit (default: 10), if it's a file
