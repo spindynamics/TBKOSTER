@@ -12,6 +12,7 @@ add_library(
   charge.f90
   constant.f90
   density_of_states.f90
+  band_structure.f90
   element_tb.f90
   element.f90
   energy.f90

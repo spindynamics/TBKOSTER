@@ -376,7 +376,7 @@ contains
             end do
 
             ! Update iteration step and time counter
-            call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
+            call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max,obj%f%e_tb%tb_type)
             call obj%f%scf%q%calculate_charge_in()
             call obj%f%scf%h%calculate_h_r()
             call obj%f%scf%h%calculate_s_r()

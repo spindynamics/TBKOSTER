@@ -49,9 +49,9 @@ module element_tb_mod
    'filename' &
    ]
 
-  !> Maximum number of TB parameters
+  !> Maximum number of NRL TB parameters
   integer,parameter :: np_max = 97
-
+  
   type,public,extends(element) :: element_tb
     !> @defgroup TB_parameters TB parameter variables
     !> See \cite Barreteau2016 page 7-8, \cite Mehl1996 page 1-4.\n
@@ -77,8 +77,11 @@ module element_tb_mod
 
     !> TB parameter filenames
     character(len=sl),dimension(:),allocatable :: filename
+    !> TB model types ; options: 'nrl', 'mod', 'wan'
+    character(len=3):: tb_type
     !> TB parameter types ; options: 'old', 'new', 'cyr', 'pow'
-    character(len=3),dimension(:),allocatable :: type
+    character(len=3),dimension(:),allocatable :: nrl_type
+    !> TB parameters of NRL type
     !> TB parameter \f$ \Lambda \f$
     !real(rp),dimension(:),allocatable :: lambda = abs(p(:,1)) (absolute value) ?
     !> TB parameters:\n
@@ -127,7 +130,7 @@ module element_tb_mod
     ! Destructor
     final :: destructor
     ! Procedures
-    procedure :: read_file
+    procedure :: read_file_nrl
     procedure :: read_txt
     procedure :: write_txt
     procedure :: write_txt_formatted
@@ -151,7 +154,7 @@ contains
     type(element_tb) :: obj
 
     if(allocated(obj%filename)) deallocate(obj%filename)
-    if(allocated(obj%type))     deallocate(obj%type)
+    if(allocated(obj%nrl_type)) deallocate(obj%nrl_type)
     if(allocated(obj%p))        deallocate(obj%p)
     if(allocated(obj%r_0))      deallocate(obj%r_0)
     if(allocated(obj%r_c))      deallocate(obj%r_c)
@@ -160,29 +163,29 @@ contains
   end subroutine destructor
 
   !> Check compatibility of TB parameter types
-  subroutine check_type(type)
+  subroutine check_nrl_type(type)
     character(len=*),dimension(:),intent(in) :: type
     integer :: ie
 
     do ie=1,size(type)-1
       if(type(ie) /= type(ie+1)) then
-        write(error_unit,*) 'element_tb%check_type(): element_tb%type of &
+        write(error_unit,*) 'element_tb%check_type(): element_tb%nrl_type of &
          &elements ', ie, ' and ', ie+1, ' incompatible'
         error stop
       end if
     end do
-  end subroutine check_type
+  end subroutine check_nrl_type
 
-  !> Read object from formatted file
-  subroutine read_file(obj)
+  !> Read object from formatted TB nrlconstantopoulos file
+  subroutine read_file_nrl(obj)
     class(element_tb),intent(inout) :: obj
     integer :: iostatus
     logical :: isopen
     character(len=7) :: type
     integer :: ie,ip
 
-    if(allocated(obj%type)) deallocate(obj%type)
-    allocate(obj%type(obj%ne))
+    if(allocated(obj%nrl_type)) deallocate(obj%nrl_type)
+    allocate(obj%nrl_type(obj%ne))
     if(allocated(obj%p)) deallocate(obj%p)
     allocate(obj%p(obj%ne,np_max))
     if(allocated(obj%r_0)) deallocate(obj%r_0)
@@ -202,17 +205,17 @@ contains
        status='old')
       end if
       if(iostatus /= 0) then
-        write(error_unit,*) 'element_tb%read_file(): file ', obj%filename(ie), &
+        write(error_unit,*) 'element_tb%read_file_nrl(): file ', obj%filename(ie), &
          ' not found'
         error stop
       end if
 
-      read(10,*) obj%type(ie)
+      read(10,*) obj%nrl_type(ie)
       read(10,*)
       read(10,*)
       read(10,*) obj%r_0(ie), obj%r_c(ie), obj%r_l(ie)
       if(abs(obj%r_c(ie) - obj%r_0(ie) - 5*obj%r_l(ie)) > 0.00001_rp) then
-        write(error_unit,*) 'element_tb%read_file(): bad cut-off'
+        write(error_unit,*) 'element_tb%read_file_nrl(): bad cut-off'
         error stop
       end if
       read(10,*)
@@ -226,15 +229,15 @@ contains
 
       select case(trim(type))
       case('NN00000')
-        obj%type(ie) = 'old'
+        obj%nrl_type(ie) = 'old'
       case('NN00001')
-        obj%type(ie) = 'new'
+        obj%nrl_type(ie) = 'new'
       case('NN00002')
-        obj%type(ie) = 'cyr'
+        obj%nrl_type(ie) = 'cyr'
       case('power')
-        obj%type(ie) = 'pow'
+        obj%nrl_type(ie) = 'pow'
       case default
-        obj%type(ie) = 'cyr'
+        obj%nrl_type(ie) = 'cyr'
       end select
     end do
 
@@ -245,7 +248,7 @@ contains
     do ip=18,54,4
       obj%p(:,ip:ip+2) = 0.5_rp * obj%p(:,ip:ip+2)
     end do
-  end subroutine read_file
+  end subroutine read_file_nrl
 
   !> Read object in text format from file (default: 'in_element_tb.txt')
   subroutine read_txt(obj,file)
@@ -255,10 +258,11 @@ contains
     integer :: iostatus
     logical :: isopen
     ! Namelist variables
+    character(len=3)::tb_type
     character(len=sl),dimension(:),allocatable :: filename
     ! Namelist
-    namelist /element_tb/ filename
-
+    namelist /element_tb/tb_type,filename
+    tb_type='nrl'
     if(present(file)) then
       file_rt = trim(file)
     else
@@ -267,7 +271,6 @@ contains
 
     ! Parent type procedure
     call obj%element%read_txt(file_rt)
-
     ! Derived type procedure
     inquire(unit=10,opened=isopen)
     if (isopen) then
@@ -283,14 +286,33 @@ contains
 
     allocate(filename(obj%ne))
     read(10,nml=element_tb)
+    obj%tb_type=tb_type
 
+    if(trim(tb_type)=='nrl') then
     call move_alloc(filename,obj%filename)
 
     close(unit=10)
     !deallocate(file_rt)
 
-    call obj%read_file()
-    call check_type(obj%type)
+    call obj%read_file_nrl()
+    call check_nrl_type(obj%nrl_type)
+
+    elseif(lower(trim(obj%tb_type))=='wan') then
+      deallocate(filename)
+      allocate(filename(1))
+      filename='hr.dat'
+      obj%filename=filename
+      call move_alloc(filename,obj%filename)
+       write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
+    elseif(lower(trim(obj%tb_type))=='mod') then
+      deallocate(filename)
+      allocate(filename(1))
+      filename='mod.dat'
+      obj%filename=filename
+      call move_alloc(filename,obj%filename)
+       write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
+    endif
+    close(unit=10)
   end subroutine read_txt
 
   !> Write object in text format to unit (default: 10), if it's a file
@@ -409,6 +431,8 @@ contains
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
       case('filename')
+        select case(obj%tb_type)
+           case('nrl')
         do ie=1,obj%ne
         ! filenames with quotes
           write(unit_rt,'(a)') ' filename(' // int2str(ie) // ') = ' &
@@ -417,6 +441,9 @@ contains
         !          write(unit_rt,'(a)') ' filename(' // int2str(ie) // ') = ' &
         !           // trim(obj%filename(ie))
         end do
+           case('mod','wan')
+            write(unit_rt,'(a)') ' filename= '// "'" // trim(obj%filename(1)) // "'"
+           end select
       end select
     end do
 

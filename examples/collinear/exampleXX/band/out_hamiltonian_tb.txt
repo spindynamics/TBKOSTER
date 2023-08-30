@@ -1,0 +1,4 @@
+&hamiltonian_tb
+ nh = 6
+ ns = 1
+ /
