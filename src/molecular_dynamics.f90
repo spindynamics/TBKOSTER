@@ -48,6 +48,9 @@ module molecular_dynamics_mod
     use self_consistent_field_mod
     use string_mod, only: dynamol_flush, int2str, log2str, lower, real2str, sl
     use units_mod
+#if defined(INTEL_COMPILER)
+    use ifport
+#endif
 
     implicit none
     private

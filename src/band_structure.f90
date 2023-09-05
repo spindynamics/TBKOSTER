@@ -108,7 +108,7 @@ module band_structure_mod
 
 contains
   function constructor(en) result(obj)
-    class(energy),pointer,intent(in) :: en
+    class(energy),target,intent(in) :: en
     type(band_structure) :: obj
 
     obj%u => en%u
