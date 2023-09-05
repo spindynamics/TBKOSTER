@@ -40,6 +40,10 @@ add_executable(
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fcheck=all")
 endif()
+if (CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -DINTEL_COMPILER=true")
+endif()
+
 
 if (ENABLE_FLUSH)
   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -DEnable_flush")
