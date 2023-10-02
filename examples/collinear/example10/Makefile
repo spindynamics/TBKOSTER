@@ -1,7 +1,7 @@
 .ONESHELL:
 
-DYNAMOL_ROOT_DIRECTORY=/home/barreto/github.com/DyNaMol
-DYNAMOL_COMMAND=$DYNAMOL_ROOT_DIRECTORY/bin/DyNaMol.x
+TBKOSTER_ROOT_DIRECTORY=/home/barreto/github.com/TBKOSTER
+TBKOSTER_COMMAND=$TBKOSTER_ROOT_DIRECTORY/bin/TBKOSTER.x
 define generate_file =
 cat > in_master.orig << EOF
 &units
@@ -22,7 +22,7 @@ cat > in_master.orig << EOF
  xi_so_d(1) = 0.06
  /
 &element_tb
- filename(1) = 'DYNAMOL_ROOT_DIRECTORY/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+ filename(1) = 'TBKOSTER_ROOT_DIRECTORY/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v_factor = 2.27
@@ -72,19 +72,19 @@ EOF
 endef
 
 run: help in_master
-	@sed "s|DYNAMOL_ROOT_DIRECTORY|$(DYNAMOL_ROOT_DIRECTORY)|g" in_master.orig > in_master.txt
-	@$(IN_DYNAMOL_COMMAND) >job_out.txt
+	@sed "s|TBKOSTER_ROOT_DIRECTORY|$(TBKOSTER_ROOT_DIRECTORY)|g" in_master.orig > in_master.txt
+	@$(IN_TBKOSTER_COMMAND) >job_out.txt
 
 verify:
-	@$(info $$DYNAMOL_ROOT_DIRECTORY is [$(DYNAMOL_ROOT_DIRECTORY)])
-	@$(info $$DYNAMOL_COMMAND is [$(DYNAMOL_COMMAND)])
+	@$(info $$TBKOSTER_ROOT_DIRECTORY is [$(TBKOSTER_ROOT_DIRECTORY)])
+	@$(info $$TBKOSTER_COMMAND is [$(TBKOSTER_COMMAND)])
 
 in_master:
-ifeq ($(DYNAMOL_ROOT_DIRECTORY),)
-@$(error DYNAMOL_ROOT_DIRECTORY is not set)
+ifeq ($(TBKOSTER_ROOT_DIRECTORY),)
+@$(error TBKOSTER_ROOT_DIRECTORY is not set)
 endif
-ifeq ($(DYNAMOL_COMMAND),)
-@$(error DYNAMOL_COMMAND is not set)
+ifeq ($(TBKOSTER_COMMAND),)
+@$(error TBKOSTER_COMMAND is not set)
 endif
 	@$(value generate_file)
 

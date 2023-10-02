@@ -16,12 +16,12 @@ if(UNIX)
   endif()
 endif()
 
-set(PROJECT_NAME DyNaMol)
+set(PROJECT_NAME TBKOSTER)
 project(${PROJECT_NAME} VERSION 1.9.3.0)
 message(STATUS "Preparing ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK} ...")
 message(STATUS "Running on ${CMAKE_SYSTEM_NAME} version ${CMAKE_SYSTEM_VERSION}")
 
-set(DYNAMOL_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}")
+set(TBKOSTER_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}")
 
 # this variable controls the default value of the options which are normally set
 # to ON (useful if you want to configure a minimal version of SpinDynamics: e.g. "cmake
@@ -135,13 +135,13 @@ else()
 endif()
 
 foreach(OPT ${CONFIG_OPTIONS})
-	set(DYNAMOL_CONFIG_OPTIONS "${DYNAMOL_CONFIG_OPTIONS} ${OPT}")
+	set(TBKOSTER_CONFIG_OPTIONS "${TBKOSTER_CONFIG_OPTIONS} ${OPT}")
 endforeach()
 
 message(STATUS "")
-message(STATUS "DYNAMOL ${DYNAMOL_VERSION} has been configured for ${CMAKE_HOST_SYSTEM}")
+message(STATUS "TBKOSTER ${TBKOSTER_VERSION} has been configured for ${CMAKE_HOST_SYSTEM}")
 message(STATUS "")
-message(STATUS " * Build options: " ${DYNAMOL_CONFIG_OPTIONS})
+message(STATUS " * Build options: " ${TBKOSTER_CONFIG_OPTIONS})
 message(STATUS " * Build type: " ${CMAKE_BUILD_TYPE})
 message(STATUS " * Fortran compiler: " ${CMAKE_Fortran_COMPILER} " Release: " ${CMAKE_Fortran_COMPILER_VERSION})
 message(STATUS " * Install prefix: " ${CMAKE_INSTALL_PREFIX})

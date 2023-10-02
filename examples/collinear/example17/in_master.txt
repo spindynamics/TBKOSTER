@@ -22,8 +22,8 @@
  i_stoner_d(2) = 0.8 
  /
 &element_tb
- filename(1) = '/home/barreto/github_work/DyNaMol/tb_parameters/ni_par_fcc_bcc_sc_gga_fl'
- filename(2) = '/home/barreto/github_work/DyNaMol/tb_parameters/au_par_fcc_bcc_sc_lda_fl'
+ filename(1) = '/home/barreto/github_work/TBKOSTER/tb_parameters/ni_par_fcc_bcc_sc_gga_fl'
+ filename(2) = '/home/barreto/github_work/TBKOSTER/tb_parameters/au_par_fcc_bcc_sc_lda_fl'
  /
 &lattice
  v_factor = 2.88499566724111

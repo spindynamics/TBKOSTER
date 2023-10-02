@@ -18,7 +18,7 @@
  xi_so_d(1) = 0.0
  /
 &element_tb
- filename(1) = '/home/barreto/github_work/DyNaMol/tb_parameters/rh_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github_work/TBKOSTER/tb_parameters/rh_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v_factor = 3.80

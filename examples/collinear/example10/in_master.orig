@@ -16,7 +16,7 @@ i_stoner_d(1) = 0.95
 xi_so_d(1) = 0.06
 /
 &element_tb
-filename(1) = 'DYNAMOL_ROOT_DIRECTORY/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+filename(1) = 'TBKOSTER_ROOT_DIRECTORY/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
 /
 &lattice
 v_factor = 2.27

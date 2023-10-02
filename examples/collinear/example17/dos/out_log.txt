@@ -40,8 +40,8 @@
  mass(2) = 196.96650000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github_work/DyNaMol/tb_parameters/ni_par_fcc_bcc_sc_gga_fl'
- filename(2) = '/home/barreto/github_work/DyNaMol/tb_parameters/au_par_fcc_bcc_sc_lda_fl'
+ filename(1) = '/home/barreto/github_work/TBKOSTER/tb_parameters/ni_par_fcc_bcc_sc_gga_fl'
+ filename(2) = '/home/barreto/github_work/TBKOSTER/tb_parameters/au_par_fcc_bcc_sc_lda_fl'
  /
 &lattice
  v(1,:) = 2.8849956672411099, 0.0000000000000000, 0.0000000000000000

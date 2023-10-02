@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  atom_tb.f90
-!  DyNaMol
+!  TBKOSTER
 module atom_tb_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use constant_mod, only :e_ry

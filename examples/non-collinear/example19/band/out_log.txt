@@ -40,8 +40,8 @@
  mass(2) = 1.0079000000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
- filename(2) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
+ filename(1) = '/home/barreto/github/Public/TBKOSTER/tb_parameters/dd_t2g_par'
+ filename(2) = '/home/barreto/github/Public/TBKOSTER/tb_parameters/dd_t2g_par'
  /
 &lattice
  v(1,:) = 3.9400000000000004, 0.0000000000000000, 0.0000000000000000

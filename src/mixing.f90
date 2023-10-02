@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  mixing.f90
-!  DyNaMol
+!  TBKOSTER
 module mixing_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_mod
@@ -41,7 +41,7 @@ module mixing_mod
   use element_mod
   use math_mod, only: i_unit,inverse,is_hermitian_r4,nm2rho,rho2nm
   use precision_mod, only: rp
-  use string_mod, only: sl, int2str, lower, real2str, dynamol_flush
+  use string_mod, only: sl, int2str, lower, real2str, TBKOSTER_flush
   implicit none
   private
 
@@ -927,7 +927,7 @@ contains
     n_hist = obj%n_hist
 
     write(unit_rt,nml=mixing)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)
@@ -997,7 +997,7 @@ contains
       write(unit_rt,'(a)') ' /'
     end if
 
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)

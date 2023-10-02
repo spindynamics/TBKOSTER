@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  calculation.f90
-!  DyNaMol
+!  TBKOSTER
 module calculation_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_tb_mod
@@ -52,7 +52,7 @@ module calculation_mod
   use precision_mod, only: rp
   use self_consistent_field_mod
   use spin_dynamics_mod
-  use string_mod, only: dynamol_flush, int2str, lower, sl
+  use string_mod, only: TBKOSTER_flush, int2str, lower, sl
   use units_mod
   implicit none
   private
@@ -68,8 +68,8 @@ module calculation_mod
    ]
 
   type,public :: calculation
-    !> DyNaMol executable directory
-    character(len=sl) :: dynamol_dir
+    !> TBKOSTER executable directory
+    character(len=sl) :: TBKOSTER_dir
     !> Pre-processing ; options:
     !>  'none' (default)
     !>  'atom': plot the atomic structure
@@ -126,14 +126,14 @@ contains
     type(calculation) :: obj
     integer :: i
 
-    call get_command_argument(0,obj%dynamol_dir)
-    if(obj%dynamol_dir(1:1) /= '/') then
-      write(error_unit,*) 'calculation%constructor(): DyNaMol must be started &
+    call get_command_argument(0,obj%TBKOSTER_dir)
+    if(obj%TBKOSTER_dir(1:1) /= '/') then
+      write(error_unit,*) 'calculation%constructor(): TBKOSTER must be started &
        &using its absolute path'
       error stop
     end if
-    i = index(obj%dynamol_dir,'/',.true.)
-    obj%dynamol_dir = obj%dynamol_dir(1:i-1)
+    i = index(obj%TBKOSTER_dir,'/',.true.)
+    obj%TBKOSTER_dir = obj%TBKOSTER_dir(1:i-1)
   end function constructor
 
   subroutine check_post_processing(post_processing)
@@ -307,7 +307,7 @@ contains
     ! Run
     write(unit,'(a)') ''
     write(unit,'(a)') 'calculation%run(): Post-processing band'
-    call dynamol_flush(unit)
+    call TBKOSTER_flush(unit)
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
     call scf_obj%run(unit,obj%post_processing)
@@ -320,9 +320,9 @@ contains
      property=[character(len=sl) :: 'en_k'])
 
     ! Plot band structure
-    ! call execute_command_line('python ' // trim(obj%dynamol_dir) &
+    ! call execute_command_line('python ' // trim(obj%TBKOSTER_dir) &
     ! // '/../python/plot_band.py')
-    call execute_command_line(trim(obj%dynamol_dir) // '/bands.x ')
+    call execute_command_line(trim(obj%TBKOSTER_dir) // '/bands.x ')
 
   end subroutine post_process_band
 
@@ -412,7 +412,7 @@ contains
     ! Run
     write(unit,'(a)') ''
     write(unit,'(a)') 'calculation%run(): Post-processing dos'
-    call dynamol_flush(unit)
+    call TBKOSTER_flush(unit)
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
     call scf_obj%run(unit,obj%post_processing)
@@ -431,10 +431,10 @@ contains
     end if
 
     !    Plot density of states
-    !    call execute_command_line('python ' // trim(obj%dynamol_dir) &
+    !    call execute_command_line('python ' // trim(obj%TBKOSTER_dir) &
     !     // '/../python/plot_dos.py')
 
-    call execute_command_line(trim(obj%dynamol_dir) // '/pdos.x ')
+    call execute_command_line(trim(obj%TBKOSTER_dir) // '/pdos.x ')
   end subroutine post_process_dos
 
   subroutine post_process_forces(obj)
@@ -527,7 +527,7 @@ contains
     ! Run
     write(unit,'(a)') ''
     write(unit,'(a)') 'calculation%run(): Post-processing forces'
-    call dynamol_flush(unit)
+    call TBKOSTER_flush(unit)
 
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
@@ -866,7 +866,7 @@ contains
     ! Run
     write(unit,'(a)') ''
     write(unit,'(a)') 'calculation%run(): Processing scf'
-    call dynamol_flush(unit)
+    call TBKOSTER_flush(unit)
 
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
@@ -1124,10 +1124,10 @@ contains
     write(unit_rt,nml=calculation)
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt)
   end subroutine write_txt
@@ -1179,9 +1179,9 @@ contains
 
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
-      case('dynamol_dir')
-        write(unit_rt,'(a)') ' dynamol_dir = ''' &
-         // trim(obj%dynamol_dir) // ''''
+      case('TBKOSTER_dir')
+        write(unit_rt,'(a)') ' TBKOSTER_dir = ''' &
+         // trim(obj%TBKOSTER_dir) // ''''
       case('post_processing')
         write(unit_rt,'(a)') ' post_processing = ''' &
          // trim(obj%post_processing) // ''''
@@ -1204,10 +1204,10 @@ contains
     end if
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
 
     !deallocate(file_rt,property_rt)

@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  spin_dynamics.f90
-!  DyNaMol
+!  TBKOSTER
 module spin_dynamics_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_mod
@@ -45,7 +45,7 @@ module spin_dynamics_mod
   rho2nm, sph2cart, two_pi
   use precision_mod, only: rp
   use self_consistent_field_mod
-  use string_mod, only: dynamol_flush, int2str, log2str, lower, real2str, sl
+  use string_mod, only: TBKOSTER_flush, int2str, log2str, lower, real2str, sl
   use units_mod
 #if defined(INTEL_COMPILER)
   use ifport
@@ -792,10 +792,10 @@ contains
     write(unit_rt,nml=sd)
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt)
   end subroutine write_txt
@@ -887,10 +887,10 @@ contains
       write(unit_rt,'(a)') ' /'
     end if
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt,property_rt)
   end subroutine write_txt_formatted

@@ -22,7 +22,7 @@
  xi_so_d(1) = 5.9999999999999998E-002
  /
 &element_tb
- filename(1) = '/home/barreto/github.com/DyNaMol/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github.com/TBKOSTER/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v(1,:) = 22.699999999999999, 0.0000000000000000, 0.0000000000000000

@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  forces.f90
-!  DyNaMol
+!  TBKOSTER
 module forces_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_tb_mod
@@ -42,7 +42,7 @@ module forces_mod
   use lattice_mod
   use math_mod, only: fermi_function
   use precision_mod, only: rp
-  use string_mod, only: dynamol_flush, fixedreal2str, int2str, lower, real2str, sl, &
+  use string_mod, only: TBKOSTER_flush, fixedreal2str, int2str, lower, real2str, sl, &
                         cmplx2str, log2str
   use self_consistent_field_mod
   use units_mod
@@ -423,7 +423,7 @@ contains
            // fixedreal2str(obj%f_at(ia,1)*factor) // ', ' &
            // fixedreal2str(obj%f_at(ia,2)*factor) // ', ' &
            // fixedreal2str(obj%f_at(ia,3)*factor)
-      call dynamol_flush(unit=unit)
+      call TBKOSTER_flush(unit=unit)
     end do 
   end subroutine print_forces
   
@@ -500,7 +500,7 @@ contains
     computed = obj%computed
 
     write(unit_rt,nml=forces)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
     if(.not. present(unit)) then
       close(unit_rt)
     end if
@@ -564,7 +564,7 @@ contains
       write(unit_rt,'(a)') ' /'
     end if
     
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
     
     if(.not. present(unit)) then
       close(unit_rt)

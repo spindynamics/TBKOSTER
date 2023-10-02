@@ -23,8 +23,8 @@
  xi_so_d(2) = 0.45
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
- filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/pt_par_fcc_bcc_sc_lda_fl'
+ filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
+ filename(2) = '/home/barreto/github/TBKOSTER/tb_parameters/pt_par_fcc_bcc_sc_lda_fl'
  /
 &lattice
  v_factor = 2.77185858225127

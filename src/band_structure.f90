@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  band_structure.f90
-!  DyNaMol
+!  TBKOSTER
 module band_structure_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_mod
@@ -46,7 +46,7 @@ module band_structure_mod
   use omp_lib
 #endif
   use precision_mod, only: rp,ip
-  use string_mod, only: dynamol_flush, int2str, lower, real2str, sl, cmplx2str
+  use string_mod, only: TBKOSTER_flush, int2str, lower, real2str, sl, cmplx2str
   use units_mod
   implicit none
   private
@@ -275,7 +275,7 @@ contains
     ia_band = obj%ia_band
 
     write(unit_rt,nml=band)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)
@@ -378,10 +378,10 @@ contains
       write(unit_rt,'(a)') ' /'
     end if
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt,property_rt)
   end subroutine write_txt_formatted

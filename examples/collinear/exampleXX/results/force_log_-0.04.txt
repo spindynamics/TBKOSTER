@@ -24,7 +24,7 @@
  mass(1) = 58.933199999999999
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol//tb_parameters/Co_no_onsite.par'
+ filename(1) = '/home/barreto/github/TBKOSTER//tb_parameters/Co_no_onsite.par'
  /
 &lattice
  v(1,:) = 2.0299999999999998, 0.0000000000000000, 0.0000000000000000

@@ -9,7 +9,7 @@ if test "`echo -e`" = "-e" ; then ECHO=echo ; else ECHO="echo -e" ; fi
 $ECHO
 $ECHO "$EXAMPLE_DIR : starting"
 $ECHO
-$ECHO "This example shows how to use DyNaMol.x to compute the forces on a trimer"
+$ECHO "This example shows how to use TBKOSTER.x to compute the forces on a trimer"
 
 # checking scf folder existence
 if [ ! -d "./scf" ]; then 
@@ -89,12 +89,12 @@ cat > in_master2.txt<<EOF
  /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
+# Set TBKOSTER root directory in in_master.txt
 sed "s|TBPARAM_DIR|$TBPARAM_DIR|g" in_master2.txt >in_master.txt
 rm -f in_master2.txt
 
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x
 
 en=$(grep "en =" ./out_energy.txt | cut -d"=" -f2)
 

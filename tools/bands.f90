@@ -3,7 +3,7 @@
 ! Cyrille Barreteau <mailto:cyrille.barreteau@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -32,7 +32,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  bands.f90
-!  DyNaMol
+!  TBKOSTER
 PROGRAM bands
     USE, INTRINSIC :: iso_fortran_env, ONLY: output_unit
     USE precision_mod

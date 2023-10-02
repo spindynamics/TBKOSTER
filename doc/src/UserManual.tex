@@ -42,7 +42,7 @@
 }
 \makeatother
 
-\title{{\textbf{\huge\textcolor{nicered}{DyNaMol}}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
+\title{{\textbf{\huge\textcolor{nicered}{TBKOSTER}}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
 \author{C. Barreteau, P. Thibaudeau\thanks{Supported by CEA}}
 \date{Release 0.0.3\\ \today}
 
@@ -58,25 +58,25 @@
 \mainmatter
 \chapter{Background theory}
 \chapter{Installation}
-The first step is to download the latest release of DyNaMol from its github repository. To proceed, you have to check that git is installed~:
+The first step is to download the latest release of TBKOSTER from its github repository. To proceed, you have to check that git is installed~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
 $ locate git
 \end{lstlisting}
 Then, clone the distant repository to your local one~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
-$ git clone https://github.com/araven/DyNaMol.git
+$ git clone https://github.com/araven/TBKOSTER.git
 \end{lstlisting}
 In order to build this documentation, a LaTeX distribution is mandatory, including some external packages such as pdflatex, bibtex and htlatex.
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{Linux}
-Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile dynamol. Be sure to get the mandatory related dependencies of these packages.
+Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ sudo apt install cmake gfortran clang doxygen graphviz \
 libblas-dev liblapack-dev libomp-dev texlive-latex-base \
 texlive-latex-extra tex4ht
 \end{lstlisting}
 Be sure to update to cmake release 3.9 or higher.
-In order to build the code, to the root of dynamol directory~:
+In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ if ! test -d linux; then mkdir linux; fi
 $ cd linux
@@ -107,7 +107,7 @@ Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfort
 $ sudo port install cmake gcc6 libgcc6 gcc_select \
 llvm-3.9 llvm_select lapack libomp
 \end{lstlisting}
-In order to build the code, to the root of dynamol directory~:
+In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ if ! test -d macos; then mkdir macos; fi
 $ cd macos
@@ -150,14 +150,14 @@ get the cmake program to control the software compilation process using simple p
 $ pacman -S cmake
 \end{lstlisting}
 
-In order to build the code, open a MSYS MINGW 64-bit console. To the root of dynamol directory~:
+In order to build the code, open a MSYS MINGW 64-bit console. To the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ if ! test -d win; then mkdir win; fi
 $ cd win
 $ cmake -G"MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
 $ mingw32-make
 \end{lstlisting}
-In order to run dynamol.exe, be sure you have the TERM and TERMINFO environment variables up to date into your .bashrc file~:
+In order to run TBKOSTER.exe, be sure you have the TERM and TERMINFO environment variables up to date into your .bashrc file~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ export TERM=xterm
 $ export TERMINFO=/c/Program Files/msys/mingw64/share/terminfo

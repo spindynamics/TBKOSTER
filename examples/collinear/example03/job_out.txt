@@ -1,4 +1,4 @@
-Starting DyNaMol release 1.9.0.1
+Starting TBKOSTER release 1.9.0.1
 Copyright (2018) Cyrille Barreteau, Mathieu Cesar and Pascal Thibaudeau
 OMP max threads is 24
 
@@ -10,7 +10,7 @@ OMP max threads is 24
  post_processing_dir = './band'
  /
 
-Starting DyNaMol release 1.9.0.1
+Starting TBKOSTER release 1.9.0.1
 Copyright (2018) Cyrille Barreteau, Mathieu Cesar and Pascal Thibaudeau
 OMP max threads is 24
 
@@ -22,7 +22,7 @@ OMP max threads is 24
  post_processing_dir = './band'
  /
 
-Starting DyNaMol release 1.9.0.1
+Starting TBKOSTER release 1.9.0.1
 Copyright (2018) Cyrille Barreteau, Mathieu Cesar and Pascal Thibaudeau
 OMP max threads is 24
 
@@ -34,7 +34,7 @@ OMP max threads is 24
  post_processing_dir = './band'
  /
 
-Starting DyNaMol release 1.9.0.1
+Starting TBKOSTER release 1.9.0.1
 Copyright (2018) Cyrille Barreteau, Mathieu Cesar and Pascal Thibaudeau
 OMP max threads is 24
 
@@ -46,7 +46,7 @@ OMP max threads is 24
  post_processing_dir = './band'
  /
 
-Starting DyNaMol release 1.9.0.1
+Starting TBKOSTER release 1.9.0.1
 Copyright (2018) Cyrille Barreteau, Mathieu Cesar and Pascal Thibaudeau
 OMP max threads is 24
 

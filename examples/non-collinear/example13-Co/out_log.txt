@@ -24,7 +24,7 @@
  mass(1) = 58.933199999999999
  /
 &element_tb
- filename(1) = '/home/barreto/github/Public/DyNaMol/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github/Public/TBKOSTER/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v(1,:) = 22.000000000000000, 0.0000000000000000, 0.0000000000000000

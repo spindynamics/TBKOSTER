@@ -44,8 +44,8 @@ post_processing='band'
  mass(2) = 12.010700000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
- filename(2) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_test'
+ filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/miscellaneous/c_par_test'
+ filename(2) = '/home/barreto/github/TBKOSTER/tb_parameters/miscellaneous/c_par_test'
  /
 &lattice
  v(1,:) = 2.1299999999999999, 1.2297560733739030, 0.0000000000000000

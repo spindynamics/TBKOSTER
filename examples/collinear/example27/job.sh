@@ -9,7 +9,7 @@ if test "`echo -e`" = "-e" ; then ECHO=echo ; else ECHO="echo -e" ; fi
 $ECHO
 $ECHO "$EXAMPLE_DIR : starting"
 $ECHO
-$ECHO "This example shows how to use DyNaMol.x to calculate the total energy vs a of Ptfcc"
+$ECHO "This example shows how to use TBKOSTER.x to calculate the total energy vs a of Ptfcc"
 
 # set the needed environment variables
 . ../../environment_variables
@@ -118,11 +118,11 @@ cat > band/in_dos.txt<<EOF
  /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
-sed "s|DYNAMOL_ROOT_DIR|$DYNAMOL_ROOT_DIR|g" in_master.txt >in_master2.txt
+# Set TBKOSTER root directory in in_master.txt
+sed "s|TBKOSTER_ROOT_DIR|$TBKOSTER_ROOT_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x 
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x 
 
 done
 

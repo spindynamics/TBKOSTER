@@ -10,6 +10,6 @@
 &element_4
  /
 &element_tb
- filename(1) = "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga"
- filename(2) = "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/c_par_105"
+ filename(1) = "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga"
+ filename(2) = "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/c_par_105"
  /

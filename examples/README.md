@@ -96,10 +96,10 @@ Fe-Pt L10
 Etot(c/a) for FM and AF
 
 * **example25**
-This example shows how to use DyNaMol.x to calculate the total energy of zirconium fcc, bcc and hcp(c/a)
+This example shows how to use TBKOSTER.x to calculate the total energy of zirconium fcc, bcc and hcp(c/a)
 
 * **example26**
-This example shows how to use DyNaMol.x to explore the magnetic configuration FM and AFM (+ continuous transition between the two) of B2 FeRh. For lattice parameters below a=3A the system is AFM while it becomes FM above a=3A. This is in perfect agreement with DFT calculations.
+This example shows how to use TBKOSTER.x to explore the magnetic configuration FM and AFM (+ continuous transition between the two) of B2 FeRh. For lattice parameters below a=3A the system is AFM while it becomes FM above a=3A. This is in perfect agreement with DFT calculations.
 
 # Non collinear spin examples (ns=4)
 
@@ -192,7 +192,7 @@ SCF calculation of Cr trimer. Neel configuration is found (depending on the inpu
 verbose=.true. and the relaxation process is saved in scf->vizualization with ovito
 
 * **example17**
-This example shows how to use DyNaMol.x to calculate a Fe cuboctahedron cluster
+This example shows how to use TBKOSTER.x to calculate a Fe cuboctahedron cluster
 verbose=.true. and the relaxation process is saved in scf->vizualization with ovito"
 
 

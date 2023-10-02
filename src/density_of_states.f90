@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  density_of_states.f90
-!  DyNaMol
+!  TBKOSTER
 module density_of_states_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_mod
@@ -46,7 +46,7 @@ module density_of_states_mod
   use omp_lib
 #endif
   use precision_mod, only: rp
-  use string_mod, only: dynamol_flush, int2str, lower, real2str, sl, cmplx2str
+  use string_mod, only: TBKOSTER_flush, int2str, lower, real2str, sl, cmplx2str
   use units_mod
   implicit none
   private
@@ -560,7 +560,7 @@ contains
     ia = obj%ia
 
     write(unit_rt,nml=dos)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)
@@ -756,7 +756,7 @@ contains
     if(tag_rt) then
       write(unit_rt,'(a)') ' /'
     end if
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)

@@ -37,7 +37,7 @@ RUN \
           git-core && \
   rm -rf /var/lib/apt/lists/*
 
-ARG USERNAME=dynamol
+ARG USERNAME=TBKOSTER
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
@@ -49,8 +49,8 @@ USER $USERNAME
 WORKDIR /home/$USERNAME
 
 # clone the repo and build the executables
-RUN git clone https://github.com/spindynamics/DyNaMol.git
-WORKDIR /home/$USERNAME/DyNaMol
+RUN git clone https://github.com/spindynamics/TBKOSTER.git
+WORKDIR /home/$USERNAME/TBKOSTER
 RUN \
     mkdir build && \
     cmake -B build . && \

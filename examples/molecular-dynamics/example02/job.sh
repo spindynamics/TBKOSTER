@@ -9,7 +9,7 @@ if test "`echo -e`" = "-e" ; then ECHO=echo ; else ECHO="echo -e" ; fi
 $ECHO
 $ECHO "$EXAMPLE_DIR : starting"
 $ECHO
-$ECHO "This example shows how to use DyNaMol.x to compute the forces"
+$ECHO "This example shows how to use TBKOSTER.x to compute the forces"
 
 # set the needed environment variables
 . ../../environment_variables
@@ -88,12 +88,12 @@ cat > in_master.txt<<EOF
  /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
+# Set TBKOSTER root directory in in_master.txt
 sed "s|TBPARAM_DIR|$TBPARAM_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
 
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x
 
 Fx1=$(grep "Atom 1" ./scf/out_log.txt | cut -d"=" -f2 | cut -d"F" -f1)
 Fy1=$(grep "Atom 1" ./scf/out_log.txt | cut -d"=" -f3 | cut -d"F" -f1)

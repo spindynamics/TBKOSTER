@@ -1,4 +1,4 @@
-# environment_variables -- settings for running DyNaMol examples
+# environment_variables -- settings for running TBKOSTER examples
 
 LC_ALL=C
 export LC_ALL
@@ -7,7 +7,7 @@ export LC_ALL
 
 # BIN_DIR = path of compiled executables
 #     Usually this is $PREFIX/build/bin, where $PREFIX is the root of the
-#     DyNaMol source tree.
+#     TBKOSTER source tree.
 # TBPARAM_DIR = directory to be used to get the Tight-Binding parameters,
 #     where a collection of various files is used to run the provided 
 #     examples
