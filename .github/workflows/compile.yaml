@@ -1,4 +1,4 @@
-name: DyNaMol Compilation
+name: TBKOSTER Compilation
 on: [push]
 jobs:
   Compilation-Actions:

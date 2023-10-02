@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  atom.f90
-!  DyNaMol
+!  TBKOSTER
 module atom_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
 !  use element_mod
@@ -41,7 +41,7 @@ module atom_mod
   use lattice_mod
   use math_mod, only: deg2rad, epsilon, i_unit, pi, rad2deg, sph2cart
   use precision_mod, only: rp
-  use string_mod, only: sl, int2str, lower, real2str, fixedreal2str, unique_str, dynamol_flush
+  use string_mod, only: sl, int2str, lower, real2str, fixedreal2str, unique_str, TBKOSTER_flush
   use units_mod
   use constant_mod, only: a_0
   implicit none
@@ -576,12 +576,12 @@ contains
         m_y=obj%m(ia,2)
         m_z=obj%m(ia,3)
         !        write(6,*) "=> here mx my mz", m_x,m_y,m_z
-        !        call dynamol_flush(6)
+        !        call TBKOSTER_flush(6)
         m_r=sqrt(m_x*m_x+m_y*m_y+m_z*m_z)
         m_theta=acos(m_z/m_r)
         m_phi=atan(m_y/m_x)
         !        write(6,*) "=> here mr mtheta mphi", m_r,m_theta,m_phi
-        !        call dynamol_flush(6)
+        !        call TBKOSTER_flush(6)
         obj%m(ia,1)=m_r
         obj%m(ia,2)=m_theta
         obj%m(ia,3)=m_phi
@@ -595,12 +595,12 @@ contains
         m_theta=obj%m(ia,2)
         m_phi=obj%m(ia,3)
         !        write(6,*) "=> here mr mtheta mphi ", m_r,m_theta,m_phi
-        !        call dynamol_flush(6)
+        !        call TBKOSTER_flush(6)
         m_x=m_r*sin(m_theta)*cos(m_phi)
         m_y=m_r*sin(m_theta)*sin(m_phi)
         m_z=m_r*cos(m_theta)
         !        write(6,*) "=> here mx my mz", m_x,m_y,m_z
-        !        call dynamol_flush(6)
+        !        call TBKOSTER_flush(6)
         obj%m(ia,1)=m_x
         obj%m(ia,2)=m_y
         obj%m(ia,3)=m_z
@@ -899,7 +899,7 @@ contains
       real2str(obj%r(ia,3)*obj%u%convert_length('from','hau'))//' '//&
       real2str(m(1))//' '//real2str(m(2))//' '//real2str(m(3))
     end do
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
     if(.not. present(unit)) then
       close(unit_rt)
     endif
@@ -968,10 +968,10 @@ contains
     write(unit_rt,nml=atom)
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt)
   end subroutine write_txt
@@ -1140,10 +1140,10 @@ contains
       write(unit_rt,'(a)') ' /'
     endif
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt,property_rt)
   end subroutine write_txt_formatted
@@ -1201,10 +1201,10 @@ contains
     enddo
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
     !deallocate(file_rt)
   end subroutine write_xyz

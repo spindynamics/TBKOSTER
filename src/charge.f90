@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,14 +33,14 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  charge.f90
-!  DyNaMol
+!  TBKOSTER
 module charge_mod
    use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
    use atom_mod
    use element_mod
    use math_mod, only: i_unit, rad2deg, sqrt_three, cart2sph, sph2cart, nm2rho, rho2nm
    use precision_mod, only: rp
-   use string_mod, only: sl, cmplx2str, dynamol_flush, int2str, log2str, lower, real2str
+   use string_mod, only: sl, cmplx2str, TBKOSTER_flush, int2str, log2str, lower, real2str
    implicit none
    private
 
@@ -829,7 +829,7 @@ contains
          write (unit_rt, fmt2) '| m_r_tot = ', m_r_tot, repeat(' ', 49)//'|'
          write (unit_rt, '(a)') line
       end select
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
    end subroutine write_mulliken_charge_analysis
 
    subroutine write_orbital_moment_analysis(obj, unit)
@@ -912,7 +912,7 @@ contains
       write (unit_rt, fmt2) '| om_r_tot = ', om_r_tot, repeat(' ', 49)//'|'
       write (unit_rt, '(a)') line
 
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
    end subroutine write_orbital_moment_analysis
 
    subroutine write_atom_mag_on_the_fly(obj, file, intent)
@@ -1084,7 +1084,7 @@ contains
       end do
 
       write (unit_rt, '(a)') ' /'
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close (unit_rt)
 
    end subroutine write_atom_mag_on_the_fly
@@ -1123,7 +1123,7 @@ contains
       rho_net = obj%rho_net_out
 
       write (unit_rt, nml=charge)
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
 
       if (.not. present(unit)) then
          close (unit_rt)
@@ -1236,7 +1236,7 @@ contains
          write (unit_rt, '(a)') ' /'
       end if
 
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
 
       if (.not. present(unit)) then
          close (unit_rt)

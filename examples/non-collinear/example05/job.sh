@@ -106,13 +106,13 @@ ni_max=500
 /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
+# Set TBKOSTER root directory in in_master.txt
 sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
 
 
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x 
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x 
 
 cat > tempo << EOF
 theta= $theta

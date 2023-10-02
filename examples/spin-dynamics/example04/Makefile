@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-DYNAMOL_ROOT_DIR=${HOME}/github.com/DyNaMol
-EXE = DyNaMol.x
-DYNAMOL = ${DYNAMOL_ROOT_DIR}/linux/bin/${EXE}
-TBPARAM_DIR=${DYNAMOL_ROOT_DIR}/tb_parameters
+TBKOSTER_ROOT_DIR=${HOME}/github.com/TBKOSTER
+EXE = TBKOSTER.x
+TBKOSTER = ${TBKOSTER_ROOT_DIR}/linux/bin/${EXE}
+TBPARAM_DIR=${TBKOSTER_ROOT_DIR}/tb_parameters
 
 
 define generate_file =
@@ -29,7 +29,7 @@ define generate_file =
  xi_so_d(1) = 5.9999999999999998E-002
  /
 &element_tb
- filename(1) = '/home/barreto/github.com/DyNaMol/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github.com/TBKOSTER/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v_factor = 2.27
@@ -101,7 +101,7 @@ define content =
         rm temp
         mv ${i}/in_master_${i}.txt ${i}/in_master.txt
         cd ${i}
-	/home/barreto/github.com/DyNaMol/linux/bin/DyNaMol.x >job_out_${i}.txt
+	/home/barreto/github.com/TBKOSTER/linux/bin/TBKOSTER.x >job_out_${i}.txt
 	cd ..
 	done
 endef
@@ -115,7 +115,7 @@ run: in_master
 	@echo 'SCF collinear spin calculation of a 5-atom Fe wire with magnetic penalization on atom 1'
 	@echo ${TBPARAM_DIR}
 	@cp in_master.orig in_master.txt
-	@${DYNAMOL} >job_out.txt
+	@${TBKOSTER} >job_out.txt
 
 loop: in_master
 	@echo "Perform a spindynamics on a loop when the space between the atoms is varying"

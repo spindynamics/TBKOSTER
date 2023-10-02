@@ -17,8 +17,8 @@ subroutine test_constructor()
 
 	character(len= 2),dimension(2) :: symbol = (/'Fe','C '/)
 	character(len=sl),dimension(2) :: filename = [character(len=sl) :: &
-     "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga", &
-     "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/c_par_105"]
+     "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga", &
+     "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/c_par_105"]
 	type(element_tb) :: obj
 
 	print *, "test_constructor()"
@@ -71,8 +71,8 @@ subroutine test_write_namelist()
 
 	character(len= 2),dimension(2) :: symbol = (/'Fe','C '/)
 	character(len=sl),dimension(2) :: filename = [character(len=sl) :: &
-     "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga", &
-     "/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/c_par_105"]
+     "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga", &
+     "/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/c_par_105"]
 	type(element_tb) :: obj
 
 	print *, "test_write_namelist()"

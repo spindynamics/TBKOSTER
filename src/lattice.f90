@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  lattice.f90
-!  DyNaMol
+!  TBKOSTER
 module lattice_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
 !#if defined(BLAS95_FOUND)
@@ -41,7 +41,7 @@ module lattice_mod
 !#endif
   use math_mod, only: two_pi, cross_product, determinant, inverse_3x3
   use precision_mod, only: rp
-  use string_mod, only: sl, int2str, lower, real2str, dynamol_flush
+  use string_mod, only: sl, int2str, lower, real2str, TBKOSTER_flush
   use units_mod
   implicit none
   private
@@ -231,7 +231,7 @@ contains
     v = obj%v * obj%u%convert_length('from','hau')
 
     write(unit_rt,nml=lattice)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)
@@ -309,7 +309,7 @@ contains
 
     if(status_rt) then
       write(unit_rt,'(a)') ' /'
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       if(.not. present(unit)) then
         close(unit_rt)
       end if

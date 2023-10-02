@@ -17,8 +17,8 @@ processing = 'scf'
  i_stoner_d(2) = 0.85
  /
 &element_tb
- filename(1) = '/home/barreto/github_work/DyNaMol/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
- filename(2) = '/home/barreto/github_work/DyNaMol/tb_parameters/rh_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github_work/TBKOSTER/tb_parameters/fe_par_fcc_bcc_sc_gga_fl'
+ filename(2) = '/home/barreto/github_work/TBKOSTER/tb_parameters/rh_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
 v_factor = 3.1

@@ -9,7 +9,7 @@ if test "`echo -e`" = "-e" ; then ECHO=echo ; else ECHO="echo -e" ; fi
 $ECHO
 $ECHO "$EXAMPLE_DIR : starting"
 $ECHO
-$ECHO "This example shows how to use DyNaMol.x to model Crbcc AF by two approaches"
+$ECHO "This example shows how to use TBKOSTER.x to model Crbcc AF by two approaches"
 $ECHO "super-cell spin collinear (up down) or non-collinear spin spiral with k_spiral in zone border"
 
 # set the needed environment variables
@@ -83,13 +83,13 @@ m(2,:) = -1.0, 0.0, 0.0
  /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
+# Set TBKOSTER root directory in in_master.txt
 sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
 
 
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x 
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x 
 
 cp out_log.txt results/out_log_super_cell.txt
 
@@ -154,12 +154,12 @@ m(1,:) =  1.0, 90.0, 0.0
  /
 EOF
 
-# Set DyNaMol root directory in in_master.txt
+# Set TBKOSTER root directory in in_master.txt
 sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
 
 
-# Run DyNaMol
-$BIN_DIR/DyNaMol.x 
+# Run TBKOSTER
+$BIN_DIR/TBKOSTER.x 
 
 cp out_log.txt results/out_log_bcc.txt

@@ -13,7 +13,7 @@ ne=1
 symbol(1)='C'
 /
 &element_tb
-filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
+filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/miscellaneous/c_par_fixed_diag'
 /
 &lattice
 v_factor = 2.45951214674780575679

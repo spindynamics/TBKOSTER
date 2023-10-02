@@ -2,10 +2,10 @@ SHELL:=bash
 .ONESHELL:
 .NOTPARALLEL:
 
-DYNAMOL_ROOT_DIRECTORY=/home/barreto/github/DyNaMol/
-DYNAMOL_COMMAND=$(DYNAMOL_ROOT_DIRECTORY)/linux/bin/DyNaMol.x
-TBPARAM_DIR=$(DYNAMOL_ROOT_DIRECTORY)/tb_parameters
-EXAMPLE_DIR=$(DYNAMOL_ROOT_DIRECTORY)/linux/exampleXX
+TBKOSTER_ROOT_DIRECTORY=/home/barreto/github/TBKOSTER/
+TBKOSTER_COMMAND=$(TBKOSTER_ROOT_DIRECTORY)/linux/bin/TBKOSTER.x
+TBPARAM_DIR=$(TBKOSTER_ROOT_DIRECTORY)/tb_parameters
+EXAMPLE_DIR=$(TBKOSTER_ROOT_DIRECTORY)/linux/exampleXX
 
 define get_x =
 $(shell grep 'r(1,:) =' $(EXAMPLE_DIR)/results/force_log_$(1).txt | cut -d"=" -f2 | cut -d"," -f1)
@@ -30,7 +30,7 @@ endef
 define corpse =
 $(call generate_file,$(TBPARAM_DIR),$(1),1)
 @mv in_master.orig in_master.txt	
-@$(DYNAMOL_COMMAND) >/dev/null
+@$(TBKOSTER_COMMAND) >/dev/null
 @mv scf/out_log.txt results/force_log_$(1).txt
 @mv out_energy.txt results/out_energy_$(1).txt
 endef
@@ -140,15 +140,15 @@ post_proc:
 	@$(call get_variable,0.05)
 	
 verify:
-	@$(info $$DYNAMOL_ROOT_DIRECTORY is [$(DYNAMOL_ROOT_DIRECTORY)])
-	@$(info $$DYNAMOL_COMMAND is [$(DYNAMOL_COMMAND)])
+	@$(info $$TBKOSTER_ROOT_DIRECTORY is [$(TBKOSTER_ROOT_DIRECTORY)])
+	@$(info $$TBKOSTER_COMMAND is [$(TBKOSTER_COMMAND)])
 
 in_master:
-ifeq ($(DYNAMOL_ROOT_DIRECTORY),)
-@$(error DYNAMOL_ROOT_DIRECTORY is not set)
+ifeq ($(TBKOSTER_ROOT_DIRECTORY),)
+@$(error TBKOSTER_ROOT_DIRECTORY is not set)
 endif
-ifeq ($(DYNAMOL_COMMAND),)
-@$(error DYNAMOL_COMMAND is not set)
+ifeq ($(TBKOSTER_COMMAND),)
+@$(error TBKOSTER_COMMAND is not set)
 endif
 
 clean:

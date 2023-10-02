@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,12 +33,12 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  element_tb.f90
-!  DyNaMol
+!  TBKOSTER
 module element_tb_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use element_mod
   use precision_mod, only: rp
-  use string_mod, only: sl, int2str, lower, dynamol_flush
+  use string_mod, only: sl, int2str, lower, TBKOSTER_flush
   use units_mod
   implicit none
   private
@@ -355,10 +355,10 @@ contains
     write(unit_rt,nml=element_tb)
 
     if(.not. present(unit)) then
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       close(unit_rt)
     else
-      call dynamol_flush(unit)
+      call TBKOSTER_flush(unit)
     end if
 
     !deallocate(file_rt)
@@ -450,7 +450,7 @@ contains
     if(tag_rt) then
       write(unit_rt,'(a)') ' /'
     end if
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
     if(.not. present(unit)) then
       close(unit_rt)
     end if

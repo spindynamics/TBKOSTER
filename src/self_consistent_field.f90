@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  self_consistent_field.f90
-!  DyNaMol
+!  TBKOSTER
 module self_consistent_field_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_mod
@@ -48,7 +48,7 @@ module self_consistent_field_mod
   use omp_lib
 #endif
   use precision_mod, only: rp
-  use string_mod, only: dynamol_flush, int2str, log2str, lower, real2str, sl
+  use string_mod, only: TBKOSTER_flush, int2str, log2str, lower, real2str, sl
   use units_mod
   implicit none
   private
@@ -315,7 +315,7 @@ contains
     do i=1,obj%ni_max ! begin self consistent loop
       write(unit_rt,'(a)') '===== self_consistent_field%run(): iteration ' &
        // int2str(i) // ' ====='
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
       !=========================================================================
       !                        BUILD RENORMALIZATION
       !=========================================================================
@@ -349,7 +349,7 @@ contains
     if(obj%verbose) then
       write(unit_rt,'(a)') 'self_consistent_field%run(): &
         &Time for k-loop 1 is ' // real2str(time) // ' s'
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
     end if
     !=========================================================================
     !                      END K-POINT AND SPIN LOOPS
@@ -365,7 +365,7 @@ contains
     if(obj%verbose) then
       call obj%en%write_txt_formatted(unit=unit_rt,property= &
        [character(len=sl) :: 'en_k_min','en_k_max','en_f'],tag=.false.)
-       call dynamol_flush(unit_rt)
+       call TBKOSTER_flush(unit_rt)
     end if
 
     call obj%q%nullify_charge_out()
@@ -434,7 +434,7 @@ contains
     if(obj%verbose) then
       write(unit_rt,'(a)') 'self_consistent_field%run(): &
         &Time for k-loop 2 is ' // real2str(time) // ' s'
-      call dynamol_flush(unit_rt)
+      call TBKOSTER_flush(unit_rt)
     end if
     !=========================================================================
     !                      END K-POINT AND SPIN LOOPS
@@ -509,7 +509,7 @@ contains
       call obj%q%write_orbital_moment_analysis(unit_rt)
     endif
  !   write(*,*) obj%en%w_en_band_local
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
   end subroutine run
 
   !> Write object in text format to unit (default: 10), if it's a file
@@ -549,7 +549,7 @@ contains
     verbose = obj%verbose
 
     write(unit_rt,nml=scf)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
   
     if(.not. present(unit)) then
       close(unit_rt)
@@ -622,7 +622,7 @@ contains
       write(unit_rt,'(a)') ' /'
     end if
 
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then   
       close(unit_rt)

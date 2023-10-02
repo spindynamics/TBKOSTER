@@ -16,7 +16,7 @@
  i_stoner_d(1) = 1.10
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
+ filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/co_par_fcc_bcc_sc_gga_fl'
  /
 &lattice
  v_factor = 4.0

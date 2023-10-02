@@ -4,7 +4,7 @@ set auto-load safe-path /
 python
 # Imports
 import sys
-sys.path.append("/home/github.com/DyNaMol/python")
+sys.path.append("/home/github.com/TBKOSTER/python")
 from pretty_printers import register_pretty_printers
 
 # User instructions

@@ -19,8 +19,8 @@
  o(2,1) =  5
  /
 &element_tb
- filename(1) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
- filename(2) = '/home/barreto/github/Public/DyNaMol/tb_parameters/dd_t2g_par'
+ filename(1) = '/home/barreto/github/Public/TBKOSTER/tb_parameters/dd_t2g_par'
+ filename(2) = '/home/barreto/github/Public/TBKOSTER/tb_parameters/dd_t2g_par'
  /
 &lattice
  v_factor = 3.94

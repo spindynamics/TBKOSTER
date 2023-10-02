@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  hamiltonian_tb.f90
-!  DyNaMol
+!  TBKOSTER
 module hamiltonian_tb_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
   use atom_tb_mod
@@ -49,7 +49,7 @@ module hamiltonian_tb_mod
    sph2cart
   use mesh_mod
   use precision_mod, only: rp
-  use string_mod, only: sl, cmplx2str, int2str, lower, real2str, dynamol_flush
+  use string_mod, only: sl, cmplx2str, int2str, lower, real2str, TBKOSTER_flush
   use units_mod
   implicit none
   private
@@ -1376,7 +1376,7 @@ contains
     m_penalization = obj%m_penalization
 
     write(unit_rt,nml=hamiltonian_tb)
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)
@@ -1520,7 +1520,7 @@ contains
     if(tag_rt) then
       write(unit_rt,'(a)') ' /'
     end if
-    call dynamol_flush(unit_rt)
+    call TBKOSTER_flush(unit_rt)
 
     if(.not. present(unit)) then
       close(unit_rt)

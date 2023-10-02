@@ -24,7 +24,7 @@
  mass(1) = 12.010700000000000
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/miscellaneous/c_par_fixed_diag'
+ filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/miscellaneous/c_par_fixed_diag'
  /
 &lattice
  v(1,:) = 2.1299999999999999, 1.2297560733739030, 0.0000000000000000

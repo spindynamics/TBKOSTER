@@ -3,7 +3,7 @@
 ! Cyrille Barreteau <mailto:cyrille.barreteau@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -32,22 +32,22 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  main.f90
-!  DyNaMol
+!  TBKOSTER
 program main
   use, intrinsic :: iso_fortran_env, only: output_unit
   use calculation_mod
 #if defined(OpenMP_Fortran_FOUND)
   use omp_lib
 #endif
-  use string_mod, only: dynamol_flush, int2str
+  use string_mod, only: TBKOSTER_flush, int2str
   implicit none
 
   type(calculation) :: calculation_obj
   character(len=*),parameter :: master_file = 'in_master.txt'
   logical :: master_file_existence
 
-  ! Write DyNaMol version and copyright
-  write(output_unit,'(a)') 'Starting DyNaMol release ${DYNAMOL_VERSION}'
+  ! Write TBKOSTER version and copyright
+  write(output_unit,'(a)') 'Starting TBKOSTER release ${TBKOSTER_VERSION}'
   write(output_unit,'(a)') 'Copyright (2020) Cyrille Barreteau, Mathieu Cesar, &
    &Ramon Cardias and Pascal Thibaudeau'
 
@@ -72,6 +72,6 @@ program main
 
   ! Run
   write(output_unit,'(a)') ''
-  call dynamol_flush(output_unit)
+  call TBKOSTER_flush(output_unit)
   call calculation_obj%process()
 end program main

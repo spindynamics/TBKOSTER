@@ -24,7 +24,7 @@
  mass(1) = 91.224000000000004
  /
 &element_tb
- filename(1) = '/home/barreto/github/DyNaMol/tb_parameters/zr_par'
+ filename(1) = '/home/barreto/github/TBKOSTER/tb_parameters/zr_par'
  /
 &lattice
  v(1,:) = -1.9341234017852462, 1.9341234017852462, 1.9341234017852462

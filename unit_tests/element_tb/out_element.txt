@@ -26,5 +26,5 @@
  U_DD= 2*0.0000000000000000       ,
  /
 &ELEMENT_TB
- FILENAME="/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga                                                        ","/mnt/Data/Dropbox/github.com/DyNaMol/Codes/TB/TB_PARAM/c_par_105                                                                    ",
+ FILENAME="/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/fe_par_fcc_bcc_sc_gga                                                        ","/mnt/Data/Dropbox/github.com/TBKOSTER/Codes/TB/TB_PARAM/c_par_105                                                                    ",
  /

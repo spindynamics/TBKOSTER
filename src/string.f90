@@ -4,7 +4,7 @@
 ! Mathieu Cesar <mailto:mathieu.cesar@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,7 +33,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  string.f90
-!  DyNaMol
+!  TBKOSTER
 module string_mod
   use iso_fortran_env, only: error_unit
   use precision_mod, only: il, ip, rl, rp
@@ -69,12 +69,12 @@ contains
   end function cmplx2str
 
  !> Custom flush subroutine to activate with a flag
-  subroutine dynamol_flush(unit)
+  subroutine TBKOSTER_flush(unit)
     integer, intent(in)  :: unit
 #if defined(Enable_flush)
     call flush(unit=unit)
 #endif
-  end subroutine dynamol_flush
+  end subroutine TBKOSTER_flush
 
   !> Convert integer to character string
   function int2str(i) result(str)
