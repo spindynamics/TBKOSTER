@@ -199,21 +199,23 @@ SUBROUTINE build_band_path_weight(x, en_k,w_en_band_local,iband2io,na_band,no_ma
         DO ia_band=1,na_band
         WRITE (unit_band, *) '@# atom no', ia_band,'number of orbitals', iband2io(ia_band)
         sk = 0.0_rp
-           FMT = TRIM('('//int2str(2+ iband2io(ia_band))//'F12.7'//')')         	
+           FMT = TRIM('('//int2str(3+ iband2io(ia_band))//'F12.7'//')')         	
               do ih=1,nh
-               WRITE (unit_band, FMT) sk, en_k(ih, 1, isl),(w_en_band_local(ia_band,io,1,ih,isl),io=1,iband2io(ia_band))
+               WRITE (unit_band, FMT) sk, en_k(ih, 1, isl),sum(w_en_band_local(ia_band,:,1,ih,isl)),&
+                                     (w_en_band_local(ia_band,io,1,ih,isl),io=1,iband2io(ia_band))
               end do
               DO ix = 2, nx
                 sk = sk + SQRT(SUM((x(ix, :) - x(ix - 1, :))**2))
                 do ih=1,nh
-                  WRITE (unit_band, FMT) sk, en_k(ih, ix, isl),(w_en_band_local(ia_band,io,ix,ih,isl),io=1,iband2io(ia_band))
+                  WRITE (unit_band, FMT) sk, en_k(ih, ix, isl),sum(w_en_band_local(ia_band,:,ix,ih,isl)),&
+                                         (w_en_band_local(ia_band,io,ix,ih,isl),io=1,iband2io(ia_band))
                 end do
             END DO
         END DO
     END DO
-    WRITE (unit_band, *) '@# k   EF=0'
-    WRITE (unit_band, '(2F8.3)') 0.0_rp, 0.0_rp
-    WRITE (unit_band, '(2F8.3)') sk, 0.0_rp
+!    WRITE (unit_band, *) '@# k   EF=0'
+!    WRITE (unit_band, '(2F8.3)') 0.0_rp, 0.0_rp
+!    WRITE (unit_band, '(2F8.3)') sk, 0.0_rp
     CLOSE (unit_band)
 END SUBROUTINE build_band_path_weight
 
