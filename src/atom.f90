@@ -257,8 +257,13 @@ contains
     integer,dimension(size(tag)) :: ia2ie
     character(len=len(tag)),dimension(:),allocatable :: cdummy
     integer,dimension(:),allocatable :: idummy
- 
-    call unique_str(tag(:)(1:2),cdummy,idummy,ia2ie)
+
+    ! copy array of strings of exactly 2 characters to avoid gfortran warning
+    character(len=2),dimension(:),pointer :: tug
+    allocate(tug(size(tag)))
+    tug(:)=tag(:)(1:2)
+    call unique_str(tug,cdummy,idummy,ia2ie)
+
   end function build_ia2ie
 
   function build_c_k(obj,k) result(c_k)
