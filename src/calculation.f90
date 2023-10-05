@@ -323,7 +323,7 @@ contains
     ! call execute_command_line('python ' // trim(obj%TBKOSTER_dir) &
     ! // '/../python/plot_band.py')
     call execute_command_line(trim(obj%TBKOSTER_dir) // '/bands.x ')
-
+    if(band_obj%na_band>0) call execute_command_line('gnuplot band_weight.gnuplot ')
   end subroutine post_process_band
 
   subroutine post_process_dos(obj)

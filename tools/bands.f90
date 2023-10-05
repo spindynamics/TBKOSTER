@@ -3,7 +3,7 @@
 ! Cyrille Barreteau <mailto:cyrille.barreteau@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is TBKOSTER.
+! This software is a computer program whose purpose is DyNaMol.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -32,7 +32,7 @@
 ! knowledge of the CeCILL license and that you accept its terms.
 !
 !  bands.f90
-!  TBKOSTER
+!  DyNaMol
 PROGRAM bands
     USE, INTRINSIC :: iso_fortran_env, ONLY: output_unit
     USE precision_mod
@@ -131,13 +131,16 @@ PROGRAM bands
        no_max=maxval(iband2io)
        DEALLOCATE(w_en_band_local)
        REWIND(unit_band_out)
-       ALLOCATE(w_en_band_local(na_band,no_max,nx,nh,ns))
+       ALLOCATE(w_en_band_local(na_band,no_max,nx,nh,nsl))
        READ (unit_band_out, nml=band_out, iostat=iostatus) 
     end if
     CLOSE (unit_band_out)
     CALL get_Fermi_scf(en_f)
     en_k = en_k - en_f
     CALL build_band_path(x, en_k, nh, nx, nsl)
+     if(na_band>0) then
+     CALL build_band_path_weight(x, en_k,w_en_band_local,iband2io,na_band,no_max, nh, nx, nsl)
+     endif
 END PROGRAM bands
 
 SUBROUTINE build_band_path(x, en_k, nh, nx, nsl)
@@ -155,8 +158,7 @@ SUBROUTINE build_band_path(x, en_k, nh, nx, nsl)
     CHARACTER(len=80) :: FMT
 
     OPEN (unit=unit_band, file=dir//file_band, action='write')
-    !write(number,'(I3)') nh+1
-    FMT = TRIM('('//int2str(nh + 1)//'F23.16'//')')
+    FMT = TRIM('('//int2str(nh + 1)//'F12.7'//')')
 
     DO isl = 1, nsl
         WRITE (unit_band, *) '@# k   band (eV)'
@@ -172,6 +174,51 @@ SUBROUTINE build_band_path(x, en_k, nh, nx, nsl)
     WRITE (unit_band, '(2F8.3)') sk, 0.0_rp
     CLOSE (unit_band)
 END SUBROUTINE build_band_path
+
+
+SUBROUTINE build_band_path_weight(x, en_k,w_en_band_local,iband2io,na_band,no_max, nh, nx, nsl)
+    USE precision_mod
+    USE string_mod
+    IMPLICIT NONE
+    INTEGER, intent(in) :: na_band,no_max,nh, nx, nsl
+    INTEGER, intent(in) :: iband2io(na_band)
+    REAL(rp), intent(in) :: x(nx, 3), en_k(nh, nx, nsl)
+    REAL(rp), intent(in) :: w_en_band_local(na_band,no_max,nx,nh,nsl)   
+    INTEGER :: ih, ix, isl,ia_band,io
+    INTEGER, PARAMETER :: unit_band = 10
+    REAL(rp) :: sk
+    CHARACTER(len=*), PARAMETER :: dir = 'band/'
+    CHARACTER(len=*), PARAMETER :: file_band_weight = 'band_weight.dat'
+    CHARACTER(len=80) :: FMT
+
+    OPEN (unit=unit_band, file=dir//file_band_weight, action='write')
+    
+
+    DO isl = 1, nsl
+        WRITE (unit_band, *) '@# k   band (eV)'
+        DO ia_band=1,na_band
+        WRITE (unit_band, *) '@# atom no', ia_band,'number of orbitals', iband2io(ia_band)
+        sk = 0.0_rp
+           FMT = TRIM('('//int2str(3+ iband2io(ia_band))//'F12.7'//')')         	
+              do ih=1,nh
+               WRITE (unit_band, FMT) sk, en_k(ih, 1, isl),sum(w_en_band_local(ia_band,:,1,ih,isl)),&
+                                     (w_en_band_local(ia_band,io,1,ih,isl),io=1,iband2io(ia_band))
+              end do
+              DO ix = 2, nx
+                sk = sk + SQRT(SUM((x(ix, :) - x(ix - 1, :))**2))
+                do ih=1,nh
+                  WRITE (unit_band, FMT) sk, en_k(ih, ix, isl),sum(w_en_band_local(ia_band,:,ix,ih,isl)),&
+                                         (w_en_band_local(ia_band,io,ix,ih,isl),io=1,iband2io(ia_band))
+                end do
+            END DO
+        END DO
+    END DO
+!    WRITE (unit_band, *) '@# k   EF=0'
+!    WRITE (unit_band, '(2F8.3)') 0.0_rp, 0.0_rp
+!    WRITE (unit_band, '(2F8.3)') sk, 0.0_rp
+    CLOSE (unit_band)
+END SUBROUTINE build_band_path_weight
+
 
 SUBROUTINE get_Fermi_scf(en_f)
     USE precision_mod
