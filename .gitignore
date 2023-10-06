@@ -72,6 +72,8 @@ examples/**/*.txt
 examples/**/*.xyz
 examples/**/*.dat
 examples/**/*.orig
+examples/**/*.gnuplot
+examples/**/*.png
 examples/collinear/example06/Etot_vs_mag
 
 
