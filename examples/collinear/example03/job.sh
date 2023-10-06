@@ -14,12 +14,14 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate the band structure 
 # set the needed environment variables
 . ../../environment_variables
 
-mkdir -p band scf 
+# remove the previous content if existing
+rm -fr band scf *.txt
 
-export OMP_NUM_THREADS=22
+# create the appropriate folders if not existing
+mkdir band scf 
 
+# set the lattice parameter
 a=2.77185858225127
-rm -f out* band/out*
 
 cat > in_master.txt<<EOF
 &calculation
@@ -91,12 +93,11 @@ cat > in_master.txt<<EOF
  /
 EOF
 
-
 cat > band/in_mesh.txt<<EOF
 &mesh
  type = 'path'
  nxs = 4
- gxs =100
+ gxs = 100
  xs_label(1) = 'G'
  xs_label(2) = 'X'
  xs_label(3) = 'M'
@@ -105,19 +106,15 @@ cat > band/in_mesh.txt<<EOF
  xs(2,:) = 0.5 , 0 , 0
  xs(3,:) = 0.666666666 , 0.33333333 , 0
  xs(4,:) = 0 ,  0 , 0
-/
+ /
 EOF
 
 cat > band/in_band.txt<<EOF
 &band
-na_band=1
-ia_band=1
-/
+ na_band=1
+ ia_band=1
+ /
 EOF
-
-# Set TBKOSTER root directory in in_master.txt
-sed "s|TBKOSTER_ROOT_DIR|$TBKOSTER_ROOT_DIR|g" in_master.txt >in_master2.txt
-mv -f in_master2.txt in_master.txt
 
 # Run TBKOSTER
 $BIN_DIR/TBKOSTER.x 
@@ -126,4 +123,10 @@ $BIN_DIR/TBKOSTER.x
 $BIN_DIR/bands.x
 
 # Display the results
-gnuplot $PREFIX/tools/band_weight.gnuplot
+if ! command -v gnuplot &> /dev/null
+then 
+    $ECHO "The gnuplot command cound not be found. Please install gnuplot."
+    exit 1
+else 
+    gnuplot $PREFIX/tools/band_weight.gnuplot
+fi
