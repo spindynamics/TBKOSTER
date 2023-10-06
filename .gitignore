@@ -68,3 +68,11 @@ unit_tests/string/CMakeFiles/*
 *.synctex.gz
 *.toc
 
+examples/**/*.txt
+examples/**/*.xyz
+examples/**/*.dat
+examples/**/*.orig
+examples/collinear/example06/Etot_vs_mag
+
+
+
