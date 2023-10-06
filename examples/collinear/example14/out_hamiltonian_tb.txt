@@ -1,4 +1,0 @@
-&hamiltonian_tb
- nh = 450
- ns = 1
- /
