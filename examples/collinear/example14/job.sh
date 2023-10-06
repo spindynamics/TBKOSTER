@@ -15,7 +15,7 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate the PDOS for Au(111
 . ../../environment_variables
 a=2.88499566724111
 
-mkdir dos
+mkdir dos scf
 
 cat > in_master.txt<<EOF
 &calculation
