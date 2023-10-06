@@ -14,6 +14,9 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate the band structure 
 # set the needed environment variables
 . ../../environment_variables
 
+mkdir -p band scf 
+
+export OMP_NUM_THREADS=22
 
 a=2.77185858225127
 rm -f out* band/out*
@@ -33,7 +36,6 @@ cat > in_master.txt<<EOF
  ne = 1
  symbol(1) = 'Pt'
  q(1)   = 10.0
- q_d(1) = 8.8
  u_lcn(1)=20
  /
 &element_tb
@@ -89,14 +91,6 @@ cat > in_master.txt<<EOF
  /
 EOF
 
-cat > band/in_energy.txt<<EOF
-&energy
- smearing = 'mv'
- degauss = 0.2
- en_min = -10.0
- en_max =  10.0
- /
-EOF
 
 cat > band/in_mesh.txt<<EOF
 &mesh
@@ -114,24 +108,22 @@ cat > band/in_mesh.txt<<EOF
 /
 EOF
 
-cat > band/in_dos.txt<<EOF
-&dos
- nen=100
- na_dos=1
- ia= 1
- en_min=-10
- en_max=10
- /
+cat > band/in_band.txt<<EOF
+&band
+na_band=1
+ia_band=1
+/
 EOF
-
-
 
 # Set TBKOSTER root directory in in_master.txt
 sed "s|TBKOSTER_ROOT_DIR|$TBKOSTER_ROOT_DIR|g" in_master.txt >in_master2.txt
 mv -f in_master2.txt in_master.txt
 
-
 # Run TBKOSTER
 $BIN_DIR/TBKOSTER.x 
 
+# Run bands.x
+$BIN_DIR/bands.x
 
+# Display the results
+gnuplot $PREFIX/tools/band_weight.gnuplot
