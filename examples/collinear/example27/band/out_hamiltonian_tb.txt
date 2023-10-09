@@ -1,4 +1,0 @@
-&hamiltonian_tb
- nh = 4
- ns = 1
- /
