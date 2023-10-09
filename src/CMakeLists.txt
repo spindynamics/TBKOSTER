@@ -39,7 +39,8 @@ add_executable(
 # Enable the check bounds
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -fcheck=all -fbacktrace")
-  set(CMAKE_Fortran_FLAGS_RELEASE "-DNDEBUG -Ofast") 
+  set(CMAKE_Fortran_FLAGS_RELEASE "-DNDEBUG -Ofast")
+#  set(CMAKE_Fortran_FLAGS_RELEASE "-Ofast -fcheck=all -fbacktrace")
 endif()
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -DINTEL_COMPILER=true")

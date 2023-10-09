@@ -195,7 +195,7 @@ contains
     character(len=rl) :: str_temp
     character(len=:),allocatable :: str
 
-    write(str_temp,"(F18.14)") r
+    write(str_temp,"(F20.15)") r
     str = trim(adjustl(str_temp))
   end function fixedreal2str
 

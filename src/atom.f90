@@ -263,7 +263,7 @@ contains
     allocate(tug(size(tag)))
     tug(:)=tag(:)(1:2)
     call unique_str(tug,cdummy,idummy,ia2ie)
-
+    deallocate(tug)
   end function build_ia2ie
 
   function build_c_k(obj,k) result(c_k)

@@ -13,27 +13,29 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate the PDOS for Au(111
 
 # set the needed environment variables
 . ../../environment_variables
+export OMP_NUM_THREADS=1 
 a=2.88499566724111
 
+rm -fr dos scf *.txt
 mkdir dos scf
 
 cat > in_master.txt<<EOF
 &calculation
  processing = 'scf'
- post_processing='dos'
+ post_processing = 'dos'
  /
 &units
- length='ang'
- energy='ev'
- time='fs'
- mass='hau'
+ length = 'ang'
+ energy = 'ev'
+ time = 'fs'
+ mass = 'hau'
  /
 &element
  ne = 1
  symbol(1) = 'Au'
  q(1)   = 11.0
  q_d(1) = 10
- u_lcn(1)=20
+ u_lcn(1) = 20
  /
 &element_tb
  filename(1) = '$TBPARAM_DIR/au_par_fcc_bcc_sc_lda_fl'
@@ -42,14 +44,14 @@ cat > in_master.txt<<EOF
  v_factor = $a
  v(1,:) = 1.0 0.0 0.0
  v(2,:) =-0.5 0.866025403784438 0
- v(3,:) = 0.0 0.0 0.1061445555206044D+02 
+ v(3,:) = 0.0 0.0 0.1061445555206044E+02 
  /
 &atom
  ns = 1
  na = 50
  ntag = 1
  tag(1) = 'Au'
- stag(1)=50
+ stag(1) = 50
  pbc = 5, 5, 0
  r_coord='cartesian'
  r(1,:) =      0.0000000     0.0000000     0.0000000
@@ -118,20 +120,20 @@ cat > in_master.txt<<EOF
  alpha = 0.1
  /
 &scf
- delta_en=0.0001
- delta_q=0.0001
- verbose=.false.
- ni_max=200
+ delta_en = 0.0001
+ delta_q = 0.0001
+ verbose = .true.
+ ni_max = 200
  /
 EOF
 
 cat > dos/in_dos.txt<<EOF
 &dos
- nen=200
- na_dos=2
- ia= 1 , 25
- en_min=-10
- en_max=10
+ nen = 200
+ na_dos = 2
+ ia = 1,25
+ en_min = -10
+ en_max = 10
  /
 EOF
 
@@ -154,8 +156,8 @@ EOF
 
 
 # Set TBKOSTER root directory in in_master.txt
-sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
-mv -f in_master2.txt in_master.txt
+#sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
+#mv -f in_master2.txt in_master.txt
 
 
 # Run TBKOSTER
