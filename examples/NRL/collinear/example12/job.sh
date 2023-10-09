@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to the total energy and magnetization versus a for Cofcc"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f tempo tempo2 tempo3 tempo4
 rm -f out*

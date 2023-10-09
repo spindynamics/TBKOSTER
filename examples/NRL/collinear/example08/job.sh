@@ -8,7 +8,7 @@ if test "`echo -e`" = "-e" ; then ECHO=echo ; else ECHO="echo -e" ; fi
 
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 
 $ECHO

@@ -14,7 +14,7 @@ $ECHO "non-collinear calculation with 18 atoms per unit cell and theta_pen(i)=20
 $ECHO "spin spiral calculation with one atom per unit-cell and  k_spiral=(0,0,1/2) (xyz)=(-1/2,1/2,1/2) (direct)"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 rm -rf results

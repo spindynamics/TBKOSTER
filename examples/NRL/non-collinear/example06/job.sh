@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to calculate band structure of a Fe wire with SOC"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -rf results
 mkdir results

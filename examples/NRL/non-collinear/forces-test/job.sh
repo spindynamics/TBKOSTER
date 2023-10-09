@@ -15,7 +15,7 @@ $ECHO
 $ECHO "Damped Spin Dynamics of a Cr dimer."
 
 # set the needed environment variables
-#. ../../../environment_variables
+#. ../../environment_variables
 
 rm -f tempo tempo2
 rm -f Etot_vs_force*

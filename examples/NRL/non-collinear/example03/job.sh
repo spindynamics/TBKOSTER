@@ -14,7 +14,7 @@ $ECHO "The initial magnetization of atom 1 is opposite to other 4 atoms "
 $ECHO "this the simplest magnetic excitation"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 mkdir scf
 rm -f out*

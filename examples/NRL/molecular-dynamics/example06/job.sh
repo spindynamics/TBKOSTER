@@ -13,7 +13,7 @@ $ECHO
 $ECHO "Forces for the Cr triangular trimer to a non-collinear magnetic calculation."
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 rm -f scf/*

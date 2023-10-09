@@ -12,7 +12,7 @@ $ECHO
 $ECHO "Single spin dynamics of a 5 atoms Fe chain. (no damping)"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 rm -f sd/*

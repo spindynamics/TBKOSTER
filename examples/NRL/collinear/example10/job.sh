@@ -13,7 +13,7 @@ $ECHO 'SCF collinear spin calculation of a 5-atom Fe wire with magnetic penaliza
 $ECHO "penalization technique"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 
 

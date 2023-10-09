@@ -14,7 +14,7 @@ $ECHO "the calculation are made at various Stoner parameters"
 
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 

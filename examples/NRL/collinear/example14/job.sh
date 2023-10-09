@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to calculate the PDOS for Au(111) "
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 export OMP_NUM_THREADS=1 
 a=2.88499566724111
 

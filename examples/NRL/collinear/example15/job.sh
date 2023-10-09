@@ -14,7 +14,7 @@ $ECHO  "To accelerate the scf calculation the out_charge.txt of example 14 is co
 
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 a=2.88499566724111
 rm -f out*
