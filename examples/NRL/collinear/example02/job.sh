@@ -15,7 +15,8 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate PDOS of a Pt(111) s
 . ../../environment_variables
 
 a=2.77185858225127
-mkdir xyz
+rm -fr xyz dos scf *.txt
+mkdir xyz dos scf
 
 cat > in_master.txt<<EOF
 &calculation
@@ -117,11 +118,6 @@ cat > dos/in_mesh.txt<<EOF
  dx = 0, 0, 0
  /
 EOF
-
-# Set TBKOSTER root directory in in_master.txt
-sed "s|TBKOSTER_ROOT_DIR|$TBKOSTER_ROOT_DIR|g" in_master.txt >in_master2.txt
-mv -f in_master2.txt in_master.txt
-
 
 # Run TBKOSTER
 $BIN_DIR/TBKOSTER.x 
