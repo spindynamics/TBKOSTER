@@ -1671,7 +1671,7 @@ contains
         do ie=1,obj%ne
           write(unit_rt,'(' // int2str(obj%no(ie)) // 'a)') ' o(' // int2str(ie) &
            // ',1:' // int2str(obj%no(ie)) // ') = ' // int2str(obj%o(ie,1)), &
-           (', ' // int2str(obj%o(ie,io)), io=2, obj%no(ie))
+           (', ' // int2str(obj%o(ie,io)), io=1, obj%no(ie))
         end do
       case('q')
         do ie=1,obj%ne
