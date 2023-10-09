@@ -88,147 +88,159 @@ contains
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
-    integer,dimension(3) :: x   
     integer, dimension(:), allocatable ::  weight   
-    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,ip1,ip2,ip3,i1,i2,i3,imat1,imat2,icase,ncase,norb
+    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy,icase,ncase,norb
     real(rp) :: Btemp
+    logical :: file_existence, isopen
 
     select case(obj%e_tb%tb_type)
-    case('nrl')
-    do ia1=1,obj%na
-      ie1 = obj%ia2ie(ia1)
-      do in=1,obj%nn(ia1)
-        ia2 = obj%ian2ia(ia1,in)
-        ie2 = obj%ia2ie(ia2)
+      case('nrl')
+        do ia1=1,obj%na
+          ie1 = obj%ia2ie(ia1)
+          do in=1,obj%nn(ia1)
+            ia2 = obj%ian2ia(ia1,in)
+            ie2 = obj%ia2ie(ia2)
 
-        RR(:) = obj%rn(ia1,in,:)
-        R = norm2(RR)
+            RR(:) = obj%rn(ia1,in,:)
+            R = norm2(RR)
 
-        select case(obj%e_tb%nrl_type(ie1))
-        case('old','new','cyr')
-          do lbeta=1,10
-            step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_nrl(&
-            obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
-            obj%e_tb%p(ie1,20+step),obj%e_tb%p(ie1,21+step),R)
-          end do
-        case('pow')
-          do lbeta=1,10
-            step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_pow(&
-            obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
-            obj%e_tb%p(ie1,21+step),R)
-          end do
-        end select
+            select case(obj%e_tb%nrl_type(ie1))
+              case('old','new','cyr')
+                do lbeta=1,10
+                  step = 4*(lbeta-1)
+                  Overlap(lbeta)=integral_parametrization_nrl(&
+                  obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
+                  obj%e_tb%p(ie1,20+step),obj%e_tb%p(ie1,21+step),R)
+                end do
+              case('pow')
+              do lbeta=1,10
+                step = 4*(lbeta-1)
+                Overlap(lbeta)=integral_parametrization_pow(&
+                obj%e_tb%p(ie1,18+step),obj%e_tb%p(ie1,19+step),&
+                obj%e_tb%p(ie1,21+step),R)
+              end do
+            end select
 
-        f_cut = fermi_function(R-obj%e_tb%r_0(ie1), 1/obj%e_tb%r_l(ie1))
-        Overlap(:)=f_cut*Overlap(:)
+            f_cut = fermi_function(R-obj%e_tb%r_0(ie1), 1/obj%e_tb%r_l(ie1))
+            Overlap(:)=f_cut*Overlap(:)
 
-        if(ie1/=ie2) then
-          
-          select case(obj%e_tb%nrl_type(ie2))
-          case('old','new','cyr')
-            do lbeta=1,10
-              step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_nrl(&
-              obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
-              obj%e_tb%p(ie2,20+step),obj%e_tb%p(ie2,21+step),R)
+            if(ie1/=ie2) then
+              
+              select case(obj%e_tb%nrl_type(ie2))
+                case('old','new','cyr')
+                  do lbeta=1,10
+                    step = 4*(lbeta-1)
+                    I_Overlap(lbeta)=integral_parametrization_nrl(&
+                    obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
+                    obj%e_tb%p(ie2,20+step),obj%e_tb%p(ie2,21+step),R)
+                  end do
+                case('pow')
+                do lbeta=1,10
+                  step = 4*(lbeta-1)
+                  I_Overlap(lbeta)=integral_parametrization_pow(&
+                  obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
+                  obj%e_tb%p(ie2,21+step),R)
+                end do
+              end select
+
+              f_cut = fermi_function(R-obj%e_tb%r_0(ie2), 1/obj%e_tb%r_l(ie2))
+              I_Overlap(:)=f_cut*I_Overlap(:)
+
+              do lbeta=1,10
+                Overlap(lbeta)=0.5_rp*(Overlap(lbeta)+I_Overlap(lbeta))
+              end do
+            end if
+      
+            temp = slater_koster(RR(:)/R,Overlap)
+
+            do io1=1,obj%e%no(ie1)
+              do io2=1,obj%e%no(ie2)
+                B(ia1,in,io1,io2) = temp(obj%e%o(ie1,io1),obj%e%o(ie2,io2))
+              end do
             end do
-          case('pow')
-            do lbeta=1,10
-              step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_pow(&
-              obj%e_tb%p(ie2,18+step),obj%e_tb%p(ie2,19+step),&
-              obj%e_tb%p(ie2,21+step),R)
-            end do
-          end select
-
-          f_cut = fermi_function(R-obj%e_tb%r_0(ie2), 1/obj%e_tb%r_l(ie2))
-          I_Overlap(:)=f_cut*I_Overlap(:)
-
-          do lbeta=1,10
-            Overlap(lbeta)=0.5_rp*(Overlap(lbeta)+I_Overlap(lbeta))
-          end do
-        end if
-  
-        temp = slater_koster(RR(:)/R,Overlap)
-
-        do io1=1,obj%e%no(ie1)
-          do io2=1,obj%e%no(ie2)
-            B(ia1,in,io1,io2) = temp(obj%e%o(ie1,io1),obj%e%o(ie2,io2))
           end do
         end do
-      end do
-    end do
 
-  case('wan')
-   open(unit=10,file='hr.dat',action='read')
-   B=0.0
-   read(10,*)
-   read(10,*) norb
-   read(10,*)  ncase
-   allocate(weight(ncase))
-   read(10,*) (weight(icase),icase=1,ncase)
+      case('wan')
+        inquire(file='hr.dat',exist=file_existence)
+        if (.not.file_existence) then
+          write(error_unit,*) 'file hr.dat not present'
+          error stop
+        endif
+        inquire(unit=10,opened=isopen)
+        if (isopen) then
+          write(error_unit,'(a)') 'build_b_r : Unit 10 is already open'
+          error stop
+        endif
+        open(unit=10,file='hr.dat',action='read')
+        read(10,*)
+        read(10,*) norb
+        read(10,*) ncase
+        allocate(weight(ncase))
+        read(10,*) (weight(icase),icase=1,ncase)
 
-   do icase=1,ncase
-         do ia2=1,obj%na 
+        do icase=1,ncase
+          do ia2=1,obj%na 
             ie2 = obj%ia2ie(ia2)
             do io2=1,obj%e%no(ie2)
-               do ia1=1,obj%na
-                 ie1 = obj%ia2ie(ia1)
+                do ia1=1,obj%na
+                  ie1 = obj%ia2ie(ia1)
                   do io1=1,obj%e%no(ie1)
-                   read(10,*) i1,i2,i3,imat1,imat2,Btemp
-                     ip1=i1+obj%pbc(1)+1
-                     ip2=i2+obj%pbc(2)+1
-                     ip3=i3+obj%pbc(3)+1	      
-                    in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
-! Unit conversion from eV atomic units to Hartree atomic units       
+                    read(10,*) i1,i2,i3,dummy,dummy,Btemp
+                    in=obj%iapbc2in(ia1,ia2,i1+obj%pbc(1)+1,i2+obj%pbc(2)+1,i3+obj%pbc(3)+1)
+                    ! Unit conversion from eV atomic units to Hartree atomic units       
                     B(ia1,in,io1,io2)=Btemp/weight(icase)*0.5_rp/e_ry
-           	      end do
+                  end do
                 end do
             end do 
           end do  
-    end do  
+        end do  
 
-  deallocate(weight)
+        deallocate(weight)
+        close(unit=10)
 
- !   do ip1=1,2*obj%pbc(1)+1
- !    do ip2=1,2*obj%pbc(2)+1
- !     do ip3=1,2*obj%pbc(3)+1
- !        do ia2=1,obj%na 
- !           ie2 = obj%ia2ie(ia2)
- !           do io2=1,obj%e%no(ie2)
- !            do ia1=1,obj%na
- !               ie1 = obj%ia2ie(ia1)
- !               do io1=1,obj%e%no(ie1)
- !                read(10,*) i1,i2,i3,imat1,imat2,Btemp
- !                in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
-  ! Unit conversion from eV atomic units to Hartree atomic units             
- !                B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
- !               end do 
- !             end do
- !           end do
- !         end do
- !      end do
- !     end do
- !   end do
-
-
-  close(10)
-    
-case('mod')
-  open(unit=10,file='mod.dat',action='read')
-  B=0.0
-  read(10,*) ncase
-   do icase=1,ncase
-       read(10,*) i1,i2,i3,ia1,io1,ia2,io2,Btemp
-      x=(/i1,i2,i3/)+obj%pbc+1
-       in=obj%iapbc2in(ia1,ia2,x(1),x(2),x(3))
-   ! Unit conversion from eV atomic units to Hartree atomic units             
-        B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
-   end do
- close(10)
-  end select
+        !   do ip1=1,2*obj%pbc(1)+1
+        !    do ip2=1,2*obj%pbc(2)+1
+        !     do ip3=1,2*obj%pbc(3)+1
+        !        do ia2=1,obj%na 
+        !           ie2 = obj%ia2ie(ia2)
+        !           do io2=1,obj%e%no(ie2)
+        !            do ia1=1,obj%na
+        !               ie1 = obj%ia2ie(ia1)
+        !               do io1=1,obj%e%no(ie1)
+        !                read(10,*) i1,i2,i3,imat1,imat2,Btemp
+        !                in=obj%iapbc2in(ia1,ia2,ip1,ip2,ip3)
+        ! Unit conversion from eV atomic units to Hartree atomic units             
+        !                B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
+        !               end do 
+        !             end do
+        !           end do
+        !         end do
+        !      end do
+        !     end do
+        !   end do
+      
+      case('mod')
+        inquire(file='mod.dat',exist=file_existence)
+        if (.not.file_existence) then
+          write(error_unit,*) 'file mod.dat not present'
+          error stop
+        endif
+        inquire(unit=10,opened=isopen)
+        if (isopen) then
+          write(error_unit,'(a)') 'build_b_r : Unit 10 is already open'
+          error stop
+        endif
+        open(unit=10,file='mod.dat',action='read')
+        read(10,*) ncase
+        do icase=1,ncase
+          read(10,*) i1,i2,i3,ia1,io1,ia2,io2,Btemp
+          in=obj%iapbc2in(ia1,ia2,i1+obj%pbc(1)+1,i2+obj%pbc(2)+1,i3+obj%pbc(3)+1)
+          ! Unit conversion from eV atomic units to Hartree atomic units             
+          B(ia1,in,io1,io2)=Btemp*0.5_rp/e_ry
+        end do
+        close(unit=10)
+    end select
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 
