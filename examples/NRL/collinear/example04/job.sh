@@ -14,9 +14,7 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate the total energy vs
 # set the needed environment variables
 . ../../environment_variables
 
-
-rm -f tempo tempo2 tempo3 tempo4
-rm -f out*
+rm -fr tempo tempo2 tempo3 tempo4 *.txt scf *.dat
 mkdir scf
 
 cat > Etot_vs_a.dat << EOF
@@ -27,17 +25,9 @@ cat > M_vs_a.dat << EOF
 @#  a(A)  Mtot(muB)
 EOF
 
-
-cat > Etot_vs_a.dat << EOF
-@#  a  Etot
-EOF
-
 for a in 2.30 2.35 2.40 2.45 2.50 2.55 2.60 2.70 2.80 2.87 2.90 3.0 3.10 3.20 3.30 3.40; do
 
   echo "a= $a"
-cat > Etot_vs_a << EOF
-@#  a(A)  Etot(eV)
-EOF
 
 cat > in_master.txt<<EOF
 &calculation
@@ -97,11 +87,6 @@ cat > in_master.txt<<EOF
  /
 EOF
 
-# Set TBKOSTER root directory in in_master.txt
-sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
-mv -f in_master2.txt in_master.txt
-
-
 # Run TBKOSTER
 $BIN_DIR/TBKOSTER.x 
 
@@ -113,8 +98,6 @@ grep m_r_tot out_log.txt | tail -1 >tempo3
 
 cat tempo out_energy.txt>>tempo2
 cat tempo tempo3>>tempo4
-
-
 
 done
 grep -e 'a=' -e 'en =' tempo2 | awk '/a/{a = $(NF)}/en/{print a, $(NF)}' >> Etot_vs_a.dat

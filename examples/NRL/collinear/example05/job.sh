@@ -15,19 +15,16 @@ $ECHO "fixed spin moment calculation"
 # set the needed environment variables
 . ../../environment_variables
 
-
-rm -f tempo tempo2
-rm -f out*
+rm -fr scf tempo tempo2 *.txt *.dat 
 
 cat > Etot_vs_mag.dat << EOF
-@#  mag(muB)  Etot(eV)
+#  mag(muB)  Etot(eV)
 EOF
-
 
 a=2.87
 for mag in 0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 2.2 2.3 2.35 2.4 2.45 2.5 2.6 2.8 3.0; do
 
-  echo "mag= $mag"
+echo "mag= $mag"
 
 cat > in_master.txt<<EOF
 &calculation
@@ -88,11 +85,6 @@ cat > in_master.txt<<EOF
  /
 EOF
 
-# Set TBKOSTER root directory in in_master.txt
-sed "s|BIN_DIR|$BIN_DIR|g" in_master.txt >in_master2.txt
-mv -f in_master2.txt in_master.txt
-
-
 # Run TBKOSTER
 $BIN_DIR/TBKOSTER.x 
 
@@ -102,8 +94,18 @@ EOF
 
 cat tempo out_energy.txt>>tempo2
 
-
 done
+
 grep -e 'mag=' -e 'en =' tempo2 | awk '/mag/{mag = $(NF)}/en/{print mag, $(NF)}' >> Etot_vs_mag.dat
 
 rm -f tempo tempo2
+
+cat > mag.gnuplot<<EOF
+set terminal png
+set output "mag.png"
+set xlabel "magnetization (muB)"
+set ylabel "Etot (eV)"
+plot "Etot_vs_mag.dat" w lines
+EOF
+
+gnuplot mag.gnuplot
