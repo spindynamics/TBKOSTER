@@ -22,7 +22,6 @@ cat > Etot_vs_a.dat <<EOF
 EOF
 
 for a in 3.80 3.82 3.84 3.86 3.88 3.90 3.92 3.94 3.96 3.98 4.00; do
-    rm -f tempo tempo2
     cat > in_master.txt<<EOF
     &calculation
     processing = 'scf'
