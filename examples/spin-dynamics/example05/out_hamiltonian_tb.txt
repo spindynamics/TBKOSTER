@@ -1,4 +1,0 @@
-&hamiltonian_tb
- nh = 54
- ns = 4
- /

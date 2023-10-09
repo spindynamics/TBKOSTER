@@ -1,4 +1,4 @@
-# Collinear spin examples (ns=1 and 2)
+# Collinear spin examples (ns=1 and 2) NRL
 
 Two types of constraints:
 
@@ -239,4 +239,8 @@ Damped Spin Dynamics of a Fe trimer-> Converge towards FM structure.
 
 * **example05**
 
+# WANMOD compute examples for Wannier or model types
 
+* **example01**
+  
+Calculate band structure of simple s-band cubic model.
