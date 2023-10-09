@@ -295,7 +295,6 @@ contains
       open(unit=11,file=dir // '/out_log.txt',action='write')
     end if
 
-
     call units_obj%write_txt_formatted(unit=unit)
     call element_tb_obj%write_txt_formatted(unit=unit)
     call lattice_r%write_txt_formatted(unit=unit)
@@ -314,16 +313,9 @@ contains
     ! Close log
     close(unit)
 
-
     ! Write band structure
     call band_obj%write_txt_formatted(file=dir // '/out_band.txt', &
      property=[character(len=sl) :: 'en_k'])
-
-    ! Plot band structure
-    ! call execute_command_line('python ' // trim(obj%TBKOSTER_dir) &
-    ! // '/../python/plot_band.py')
-    ! call execute_command_line(trim(obj%TBKOSTER_dir) // '/bands.x ')
-    ! if(band_obj%na_band>0) call execute_command_line('gnuplot band_weight.gnuplot ')
   end subroutine post_process_band
 
   subroutine post_process_dos(obj)
