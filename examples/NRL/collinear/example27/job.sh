@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to calculate the total energy vs a of Ptfcc"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 
 for a in  3.94 ; do

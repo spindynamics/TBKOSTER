@@ -14,7 +14,7 @@ $ECHO "The initial magnetization is a spin spiral of period 5a "
 $ECHO "Due to periodic boundary conditions the spin spiral configuration is kept during scf"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 mkdir scf
 rm -rf results

@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to compute the forces"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 # checking scf folder existence
 if [ ! -d "./scf" ]; then 

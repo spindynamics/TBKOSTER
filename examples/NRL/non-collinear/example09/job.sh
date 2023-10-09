@@ -14,7 +14,7 @@ $ECHO
 
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 a=2.88499566724111
 

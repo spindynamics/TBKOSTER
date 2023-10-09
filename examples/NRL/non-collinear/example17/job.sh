@@ -13,7 +13,7 @@ $ECHO "This example shows how to use TBKOSTER.x to calculate a Fe cuboctahedron 
 $ECHO "verbose=.true. and the relaxation process is saved in scf->vizualization with ovito"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -rf scf
 mkdir scf

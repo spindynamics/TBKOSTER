@@ -20,7 +20,7 @@ fi
 rm -f out_* in_master* results.dat
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 y=$(echo "sqrt(3.0)" | bc -l)
 

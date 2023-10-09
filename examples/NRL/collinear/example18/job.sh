@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to calculate the PDOS of Co-Pt L10"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 a=2.68378136158666993601
 covera=1.35340237919105196170
