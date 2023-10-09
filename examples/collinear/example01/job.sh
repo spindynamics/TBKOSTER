@@ -93,11 +93,12 @@ then
     exit 1
 else
     cat > Etot_vs_a.gnuplot<<EOF
-    set xlabel "Lattice Parameter (ang)"
-    set ylabel "Energy (eV)"
-    set terminal png
-    set output "Etot_vs_a.png"
-    plot 'Etot_vs_a.dat' w lines lw 2
+	set encoding utf8
+	set xlabel "Lattice Parameter (ang)"
+	set ylabel "Energy (eV)"
+	set terminal png
+	set output "Etot_vs_a.png"
+	plot 'Etot_vs_a.dat' w lines lw 2
 EOF
     gnuplot Etot_vs_a.gnuplot
 fi
