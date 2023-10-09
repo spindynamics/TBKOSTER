@@ -409,21 +409,21 @@ contains
         R = norm2(RR(:))
 
         select case(obj%e_tb%nrl_type(ie1))
-        case('old','cyr')
-          do lbeta=1,10
-            step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_nrl(&
-            obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
-            obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
-          end do
-        case('new')
-          do lbeta=1,10
-            step = 4*(lbeta-1)
-            Overlap(lbeta)=integral_parametrization_nrl_new1(&
-            obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
-            obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
-          end do
-        case('pow')
+          case('old','cyr')
+            do lbeta=1,10
+              step = 4*(lbeta-1)
+              Overlap(lbeta)=integral_parametrization_nrl(&
+              obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
+              obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
+            end do
+          case('new')
+            do lbeta=1,10
+              step = 4*(lbeta-1)
+              Overlap(lbeta)=integral_parametrization_nrl_new1(&
+              obj%e_tb%p(ie1,58+step),obj%e_tb%p(ie1,59+step),&
+              obj%e_tb%p(ie1,60+step),obj%e_tb%p(ie1,61+step),R)
+            end do
+          case('pow')
           do lbeta=1,10
             step = 4*(lbeta-1)
             Overlap(lbeta)=integral_parametrization_pow(&
@@ -432,28 +432,27 @@ contains
           end do
         end select
 
-        !
         f_cut = fermi_function(R-obj%e_tb%r_0(ie1), 1/obj%e_tb%r_l(ie1))
         Overlap(:)=f_cut*Overlap(:)
 
         if(ie1/=ie2) then
           select case(obj%e_tb%nrl_type(ie2))
-          case('old','cyr')
-            do lbeta=1,10
-              step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_nrl(&
-              obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
-              obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
-            end do
-            
-          case('new')
-            do lbeta=1,10
-              step = 4*(lbeta-1)
-              I_Overlap(lbeta)=integral_parametrization_nrl_new1(&
-              obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
-              obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
-            end do 
-          case('pow')
+            case('old','cyr')
+              do lbeta=1,10
+                step = 4*(lbeta-1)
+                I_Overlap(lbeta)=integral_parametrization_nrl(&
+                obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
+                obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
+              end do
+              
+            case('new')
+              do lbeta=1,10
+                step = 4*(lbeta-1)
+                I_Overlap(lbeta)=integral_parametrization_nrl_new1(&
+                obj%e_tb%p(ie2,58+step),obj%e_tb%p(ie2,59+step),&
+                obj%e_tb%p(ie2,60+step),obj%e_tb%p(ie2,61+step),R)
+              end do 
+            case('pow')
             do lbeta=1,10
               step = 4*(lbeta-1)
               I_Overlap(lbeta)=integral_parametrization_pow(&
@@ -480,9 +479,9 @@ contains
       end do
     end do
 
-  case('mod','wan')
-   S=0.0D0
-  end select
+    case('mod','wan')
+      S=0.0_rp
+    end select
   end function build_s_r
 
   function build_d_s_r(obj) result(d_S)
@@ -787,8 +786,7 @@ contains
 
   function integral_parametrization_nrl_new1(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R
-    real(rp) :: p
-    real(rp) :: R2,R3
+    real(rp) :: p, R2, R3
 
     R2=R*R
     R3=R*R2
@@ -798,8 +796,7 @@ contains
 
   function integral_parametrization_nrl_new2(e,f,fbar,g,R) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R
-    real(rp) :: p
-    real(rp) :: R2,R3
+    real(rp) :: p, R2, R3
 
     R2=R*R
     R3=R*R2
@@ -811,8 +808,7 @@ contains
   !dynamics
   function d_integral_parametrization_nrl_new(e,f,fbar,g,R,newparam) result(p)
     real(rp),intent(in) :: e,f,fbar,g,R,newparam
-    real(rp) :: p
-    real(rp) :: R2,R3,g2
+    real(rp) :: p, R2, R3, g2
 
     g2=g*g
     R2=R*R
@@ -832,7 +828,7 @@ contains
     endif
   end function integral_parametrization_pow
 
-  !Function d_integral_parametrization_pow to be used in the molecular dynamics  
+  ! Function d_integral_parametrization_pow to be used in the molecular dynamics  
   function d_integral_parametrization_pow(e,f,g,R) result(p)
     real(rp),intent(in) :: e,f,g,R
     real(rp) :: p

@@ -39,9 +39,9 @@ macro(set_config_option VARNAME STRING)
   message(STATUS "Found " ${STRING})
 endmacro(set_config_option)
 
-opt(DOXYGEN "Enable Doxygen engine for source documentation" ON)
+opt(DOXYGEN "Enable Doxygen engine for source documentation" OFF)
 opt(FLUSH "Enable manually flush files" OFF)
-opt(LATEX "Enable LaTeX engine for documentation" ON)
+opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" ON)
 opt(TESTS "Enable tests" OFF)
 
