@@ -12,7 +12,7 @@ $ECHO
 $ECHO "This example shows how to use TBKOSTER.x to calculate the band structure of Pt(111)"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 # remove the previous content if existing
 rm -fr band scf *.txt

@@ -13,7 +13,7 @@ $ECHO "This example shows how to use TBKOSTER.x to model Crbcc AF by two approac
 $ECHO "super-cell spin collinear (up down) or non-collinear spin spiral with k_spiral in zone border"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 rm -rf results

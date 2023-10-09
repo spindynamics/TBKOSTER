@@ -13,7 +13,7 @@ $ECHO "This example shows how to use TBKOSTER.x to evaluate the influence of num
 
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f tempo tempo2
 rm -f out*

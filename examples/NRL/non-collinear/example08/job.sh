@@ -14,7 +14,7 @@ $ECHO " The E(theta) curve is evaluated for various elecronic interaction"
 $ECHO " Stoner and UJB "
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -rf results
 mkdir results

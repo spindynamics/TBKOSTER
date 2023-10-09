@@ -14,7 +14,7 @@ $ECHO "The penalization on atome 1 is theta,phi=(30,0) and the other atoms are f
 $ECHO "during scf the spin tend do align and the magnetization of atom 1 is the same as the other atoms"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 mkdir scf
 rm -f out*

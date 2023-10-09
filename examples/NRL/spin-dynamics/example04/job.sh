@@ -12,7 +12,7 @@ $ECHO
 $ECHO "Damped Spin Dynamics of a Fe trimer-> Problem of convergence (because magnetization amplitude fixed)"
 
 # set the needed environment variables
-. ../../../environment_variables
+. ../../environment_variables
 
 rm -f out*
 rm -f sd/*
