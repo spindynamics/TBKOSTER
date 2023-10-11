@@ -1183,15 +1183,15 @@ contains
     write(unit_rt,'(a)') int2str(obj%na)
     ! Serie of key/value pairs
     write(unit_rt,'(a)') 'Lattice="' &
-     // real2str(obj%l_r%v(1,1)) // ' ' &
-     // real2str(obj%l_r%v(1,2)) // ' ' &
-     // real2str(obj%l_r%v(1,3)) // ' ' &
-     // real2str(obj%l_r%v(2,1)) // ' ' &
-     // real2str(obj%l_r%v(2,2)) // ' ' &
-     // real2str(obj%l_r%v(2,3)) // ' ' &
-     // real2str(obj%l_r%v(3,1)) // ' ' &
-     // real2str(obj%l_r%v(3,2)) // ' ' &
-     // real2str(obj%l_r%v(3,3)) // '" ' &
+     // real2str(obj%l_r%v(1,1)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(1,2)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(1,3)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(2,1)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(2,2)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(2,3)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(3,1)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(3,2)* obj%u%convert_length('from','hau')) // ' ' &
+     // real2str(obj%l_r%v(3,3)* obj%u%convert_length('from','hau')) // '" ' &
      // 'Properties=species:S:1:pos:R:3:dipoles:R:3'
     ! Atoms
     do ia=1,obj%na

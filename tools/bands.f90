@@ -108,7 +108,7 @@ PROGRAM bands
     CASE (4)
         nsl = 1
     END SELECT
-
+    na_band=0
     ALLOCATE(ia_band(0))
     READ(unit_band_in, nml=band, iostat=iostatus)
     DEALLOCATE(ia_band)
@@ -117,12 +117,10 @@ PROGRAM bands
     READ(unit_band_in, nml=band, iostat=iostatus)
     CLOSE(unit_band_in) 
 
-
     ALLOCATE (en_k(nh, nx, nsl))
     READ (unit_band_out, nml=band_out, iostat=iostatus)
 
     REWIND(unit_band_out)
-    
     if(na_band>0) then
        ALLOCATE(iband2io(na_band))   
        iband2io=0 
@@ -192,7 +190,6 @@ SUBROUTINE build_band_path_weight(x, en_k,w_en_band_local,iband2io,na_band,no_ma
     CHARACTER(len=80) :: FMT
 
     OPEN (unit=unit_band, file=dir//file_band_weight, action='write')
-    
 
     DO isl = 1, nsl
         WRITE (unit_band, *) '@# k   band (eV)'
