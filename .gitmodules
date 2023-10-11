@@ -1,0 +1,3 @@
+[submodule "TBKExamples"]
+	path = TBKExamples
+	url = https://github.com/spindynamics/TBKExamples.git
