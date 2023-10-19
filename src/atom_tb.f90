@@ -93,7 +93,7 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy1,dummy2,icase,ncase,norb
     real(rp) :: Btemp
     logical :: file_existence, isopen
-    write(6,*) 'DEBUG == enter build_b_r'
+    write(6,*) 'DEBUG == entering build_b_r'
     call TBKOSTER_flush(6)
     B = 0.0_rp
     select case(obj%e_tb%tb_type)
@@ -243,8 +243,8 @@ contains
         end do
         close(unit=10)
     end select
-    write(6,*) "DEBUG: B(1,1,1,1) = ", B(1,1,1,1)
-    write(6,*) 'DEBUG: exit build_b_r'
+    write(6,*) "DEBUG B(1,1,1,1) = ", B(1,1,1,1)
+    write(6,*) 'DEBUG == exiting build_b_r'
     call TBKOSTER_flush(6)
   end function build_b_r
 

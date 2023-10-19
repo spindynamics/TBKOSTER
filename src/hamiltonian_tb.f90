@@ -1160,11 +1160,11 @@ contains
     ! LOCAL
     integer :: ia,ie,io
 
+    write(6,*) 'DEBUG == entering calculate_h_r'
+    call TBKOSTER_flush(6)
     select case(obj%e_tb%tb_type)
     case('nrl')
       obj%en_intra = obj%a_tb%build_en_intra()
-      write(6,*) 'DEBUG in calculate_h_r now call build_b_r'
-      call TBKOSTER_flush(6)
       obj%h_r = obj%a_tb%build_b_r()
       write(6,*) 'DEBUG in calculate h_r end of call build_b_r'
       call TBKOSTER_flush(6)
