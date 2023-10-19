@@ -42,6 +42,7 @@ module atom_tb_mod
   use lattice_mod
   use math_mod, only: sqrt_three, fermi_function, one_third, two_third, fermi_function_derivative
   use precision_mod, only: rp
+  use string_mod, only : TBKOSTER_flush
   implicit none
   private
 
@@ -93,7 +94,7 @@ contains
     real(rp) :: Btemp
     logical :: file_existence, isopen
     write(6,*) 'DEBUG == enter build_b_r'
-    call TBKOSTER_flush(unit=6)
+    call TBKOSTER_flush(6)
     B = 0.0_rp
     select case(obj%e_tb%tb_type)
       case('nrl')
@@ -244,7 +245,7 @@ contains
     end select
     write(6,*) "DEBUG: B(1,1,1,1) = ", B(1,1,1,1)
     write(6,*) 'DEBUG: exit build_b_r'
-    call TBKOSTER_flush(unit=6)
+    call TBKOSTER_flush(6)
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 
