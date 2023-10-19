@@ -40,9 +40,9 @@ macro(set_config_option VARNAME STRING)
 endmacro(set_config_option)
 
 opt(DOXYGEN "Enable Doxygen engine for source documentation" OFF)
-opt(FLUSH "Enable manually flush files" OFF)
+opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" OFF)
-opt(OPENMP "Enable OpenMP support" ON)
+opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
 
 

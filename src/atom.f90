@@ -580,13 +580,13 @@ contains
         m_x=obj%m(ia,1)
         m_y=obj%m(ia,2)
         m_z=obj%m(ia,3)
-        !        write(6,*) "=> here mx my mz", m_x,m_y,m_z
-        !        call TBKOSTER_flush(6)
+        !        write(output_unit,*) "=> here mx my mz", m_x,m_y,m_z
+        !        call TBKOSTER_flush(output_unit)
         m_r=sqrt(m_x*m_x+m_y*m_y+m_z*m_z)
         m_theta=acos(m_z/m_r)
         m_phi=atan(m_y/m_x)
-        !        write(6,*) "=> here mr mtheta mphi", m_r,m_theta,m_phi
-        !        call TBKOSTER_flush(6)
+        !        write(output_unit,*) "=> here mr mtheta mphi", m_r,m_theta,m_phi
+        !        call TBKOSTER_flush(output_unit)
         obj%m(ia,1)=m_r
         obj%m(ia,2)=m_theta
         obj%m(ia,3)=m_phi
@@ -599,12 +599,12 @@ contains
         m_r=obj%m(ia,1)
         m_theta=obj%m(ia,2)
         m_phi=obj%m(ia,3)
-        !        write(6,*) "=> here mr mtheta mphi ", m_r,m_theta,m_phi
+        !        write(output_unit,*) "=> here mr mtheta mphi ", m_r,m_theta,m_phi
         !        call TBKOSTER_flush(6)
         m_x=m_r*sin(m_theta)*cos(m_phi)
         m_y=m_r*sin(m_theta)*sin(m_phi)
         m_z=m_r*cos(m_theta)
-        !        write(6,*) "=> here mx my mz", m_x,m_y,m_z
+        !        write(output_unit,*) "=> here mx my mz", m_x,m_y,m_z
         !        call TBKOSTER_flush(6)
         obj%m(ia,1)=m_x
         obj%m(ia,2)=m_y

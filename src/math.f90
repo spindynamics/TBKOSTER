@@ -384,8 +384,8 @@ contains
         end if
       end if
     end if
-   ! write(6,*) "v_cart=",v_cart(:)
-   ! write(6,*) "v_sph=",v_sph(:)
+   ! write(output_unit,*) "v_cart=",v_cart(:)
+   ! write(output_unit,*) "v_sph=",v_sph(:)
   end function cart2sph
 
   !> Returns a cartesian vector \f$ v_{\mathrm{cart}} = (v_x,v_y,v_z) \f$ from a

@@ -156,7 +156,7 @@ SUBROUTINE build_band_path(x, en_k, nh, nx, nsl)
     CHARACTER(len=80) :: FMT
 
     OPEN (unit=unit_band, file=dir//file_band, action='write')
-    FMT = TRIM('('//int2str(nh + 1)//'F12.7'//')')
+    FMT = TRIM('('//int2str(nh + 1)//'F14.7'//')')
 
     DO isl = 1, nsl
         WRITE (unit_band, *) '@# k   band (eV)'
