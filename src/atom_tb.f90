@@ -93,7 +93,7 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy1,dummy2,icase,ncase,norb
     real(rp) :: Btemp
     logical :: file_existence, isopen
-    write(6,*) 'DEBUG == entering build_b_r'
+    write(output_unit,*) 'DEBUG == entering build_b_r'
     call TBKOSTER_flush(6)
     B = 0.0_rp
     select case(obj%e_tb%tb_type)
@@ -243,9 +243,9 @@ contains
         end do
         close(unit=10)
     end select
-    write(6,*) "DEBUG B(1,1,1,1) = ", B(1,1,1,1)
-    write(6,*) 'DEBUG == exiting build_b_r'
-    call TBKOSTER_flush(6)
+    write(output_unit,*) "DEBUG B(1,1,1,1) = ", B(1,1,1,1)
+    write(output_unit,*) 'DEBUG == exiting build_b_r'
+    call TBKOSTER_flush(output_unit)
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 

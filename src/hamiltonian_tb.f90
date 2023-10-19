@@ -578,7 +578,7 @@ contains
     real(rp) :: m_z, m_r
     real(rp),dimension(3) :: m_cart, m_sph, b_pen_1, b_pen_2
 
-   !write(6,*) "====> Entering calculate_b_pen"
+   !write(output_unit,*) "====> Entering calculate_b_pen"
 
     obj%a_tb%b_pen = 0.0_rp
 
@@ -1160,14 +1160,14 @@ contains
     ! LOCAL
     integer :: ia,ie,io
 
-    write(6,*) 'DEBUG == entering calculate_h_r'
+    write(output_unit,*) 'DEBUG == entering calculate_h_r'
     call TBKOSTER_flush(6)
     select case(obj%e_tb%tb_type)
     case('nrl')
       obj%en_intra = obj%a_tb%build_en_intra()
       obj%h_r = obj%a_tb%build_b_r()
-      write(6,*) 'DEBUG in calculate h_r end of call build_b_r'
-      call TBKOSTER_flush(6)
+      write(output_unit,*) 'DEBUG in calculate h_r end of call build_b_r'
+      call TBKOSTER_flush(output_unit)
       obj%h_r(:,0,:,:) = 0.0_rp
       do ia=1,obj%a_tb%na
         ie=obj%a_tb%ia2ie(ia)
@@ -1177,7 +1177,9 @@ contains
       end do
     case('wan','mod')
       obj%h_r = obj%a_tb%build_b_r()
-    end select  
+    end select
+    write(output_unit,*) 'DEBUG == exiting calculate_h_r'
+    call TBKOSTER_flush(output_unit)  
   end subroutine calculate_h_r
   
   subroutine calculate_s_r(obj)

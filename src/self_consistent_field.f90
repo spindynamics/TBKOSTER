@@ -637,7 +637,7 @@ subroutine update_m(obj)
   real(rp) :: m_s, m_p, m_d, m
   real(rp),dimension(3) :: m_sph, m_cart
 
-  !write(6,*) "====> Entering update_m"
+  !write(output_unit,*) "====> Entering update_m"
 
   select case(obj%a%ns)
   case(1)
