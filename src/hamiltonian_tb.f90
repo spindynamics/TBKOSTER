@@ -1163,7 +1163,11 @@ contains
     select case(obj%e_tb%tb_type)
     case('nrl')
       obj%en_intra = obj%a_tb%build_en_intra()
+      write(6,*) 'DEBUG in calculate_h_r now call build_b_r'
+      call TBKOSTER_flush(unit=6)
       obj%h_r = obj%a_tb%build_b_r()
+      write(6,*) 'DEBUG in calculate h_r end of call build_b_r'
+      call TBKOSTER_flush(unit=6)
       obj%h_r(:,0,:,:) = 0.0_rp
       do ia=1,obj%a_tb%na
         ie=obj%a_tb%ia2ie(ia)
@@ -1175,7 +1179,7 @@ contains
       obj%h_r = obj%a_tb%build_b_r()
     end select  
   end subroutine calculate_h_r
-
+  
   subroutine calculate_s_r(obj)
     ! INPUT
     class(hamiltonian_tb),intent(inout) :: obj

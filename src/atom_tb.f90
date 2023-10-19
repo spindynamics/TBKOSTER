@@ -83,16 +83,18 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: B
+    real(rp), dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: B
     ! LOCAL
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
     integer, dimension(:), allocatable ::  weight   
-    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy,icase,ncase,norb
+    integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy1,dummy2,icase,ncase,norb
     real(rp) :: Btemp
     logical :: file_existence, isopen
-
+    write(6,*) 'DEBUG == enter build_b_r'
+    call TBKOSTER_flush(unit=6)
+    B = 0.0_rp
     select case(obj%e_tb%tb_type)
       case('nrl')
         do ia1=1,obj%na
@@ -160,7 +162,6 @@ contains
             end do
           end do
         end do
-
       case('wan')
         inquire(file='hr.dat',exist=file_existence)
         if (.not.file_existence) then
@@ -186,7 +187,7 @@ contains
                 do ia1=1,obj%na
                   ie1 = obj%ia2ie(ia1)
                   do io1=1,obj%e%no(ie1)
-                    read(10,*) i1,i2,i3,dummy,dummy,Btemp
+                    read(10,*) i1,i2,i3,dummy1,dummy2,Btemp
                     in=obj%iapbc2in(ia1,ia2,i1+obj%pbc(1)+1,i2+obj%pbc(2)+1,i3+obj%pbc(3)+1)
                     ! Unit conversion from eV atomic units to Hartree atomic units       
                     B(ia1,in,io1,io2)=Btemp/weight(icase)*0.5_rp/e_ry
@@ -241,6 +242,9 @@ contains
         end do
         close(unit=10)
     end select
+    write(6,*) "DEBUG: B(1,1,1,1) = ", B(1,1,1,1)
+    write(6,*) 'DEBUG: exit build_b_r'
+    call TBKOSTER_flush(unit=6)
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 
