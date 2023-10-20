@@ -691,6 +691,7 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io
 
     en_intra = 0.0_rp
+
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       rho = 0.0_rp
@@ -736,6 +737,7 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io,ix
 
     d_en_intra = 0.0_rp
+    
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       rho = 0.0_rp
