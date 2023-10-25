@@ -84,7 +84,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp), dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: B
+    real(rp), dimension(:,:,:,:), allocatable :: B
     ! LOCAL
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
@@ -95,6 +95,8 @@ contains
     logical :: file_existence, isopen
     write(output_unit,*) 'DEBUG == Entering atom_tb & build_b_r'
     call TBKOSTER_flush(output_unit)
+
+    if (.not.allocated(B)) allocate(B(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max))
     B = 0.0_rp
     select case(obj%e_tb%tb_type)
       case('nrl')
@@ -253,7 +255,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3) ::d_B
+    real(rp), dimension(:,:,:,:,:), allocatable :: d_B
     ! LOCAL
     real(rp) :: AA(3),RR(3),R,f_cut,d_f_cut
     real(rp) :: d_Btemp(9,9,3) 
@@ -261,6 +263,8 @@ contains
     real(rp) :: I_Overlap(10),d_I_Overlap(10,3),d_I_Overlaptemp(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
 
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,ix,step
+
+    if (.not.allocated(d_B)) allocate(d_B(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3))
 
     d_Btemp = 0.0_rp ; Overlap = 0.0_rp ; d_Overlap = 0.0_rp ; d_Overlaptemp = 0.0_rp
     d_B = 0.0_rp ; I_Overlap = 0.0_rp ; d_I_Overlap = 0.0_rp ; d_I_Overlaptemp = 0.0_rp
@@ -394,13 +398,14 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: S
+    real(rp), dimension(:,:,:,:), allocatable :: S
     ! LOCAL
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10)
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step
 
+    if (.not.allocated(S)) allocate(S(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max))
     select case(obj%e_tb%tb_type)
     case('nrl')
 
@@ -493,7 +498,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3) :: d_S
+    real(rp), dimension(:,:,:,:,:), allocatable :: d_S
     ! LOCAL
     real(rp) :: AA(3),RR(3),R,f_cut,d_f_cut,newparamtype
     real(rp) :: d_Stemp(9,9,3)
@@ -501,6 +506,8 @@ contains
     real(rp) :: I_Overlap(10),d_I_Overlap(10,3),d_I_Overlaptemp(10) !SS,SP,PP(2),SD,PD(2),DD(3)
 
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,ix,step
+
+    if(.not.allocated(d_S)) allocate(d_S(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3))
 
     d_Stemp = 0.0_rp ; Overlap = 0.0_rp ; d_Overlap = 0.0_rp ; d_Overlaptemp = 0.0_rp
     d_S = 0.0_rp ; I_Overlap = 0.0_rp ; d_I_Overlap = 0.0_rp ; d_I_Overlaptemp = 0.0_rp  
@@ -1050,7 +1057,6 @@ contains
     d_DD(1,:)=d_Overlap(8,:)
     d_DD(2,:)=d_Overlap(9,:)
     d_DD(3,:)=d_Overlap(10,:)
-
 
     cx=x
     cy=y

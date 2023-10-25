@@ -203,8 +203,10 @@ contains
     ! LOCAL
     integer :: ia1,ia2,ie1,ie2,io1,io2,l1,l2,ispin,jspin
     integer :: imat,jmat,imat_ispin,imat_jspin,jmat_ispin,jmat_jspin
-    complex(rp),dimension(obj%a_tb%na,3,obj%a_tb%ns) :: delta_v_ov
+    complex(rp),dimension(:,:,:),allocatable :: delta_v_ov
     complex(rp),dimension(obj%nh,obj%nh) :: delta_h_ov
+
+    if (.not.allocated(delta_v_ov)) allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns))
 
     delta_v_ov = obj%delta_v_lcn + obj%delta_v_pen
     delta_h_ov = cmplx(0.0_rp,0.0_rp,kind=rp)
@@ -258,6 +260,7 @@ contains
     end select
 
     h_k = h_k + delta_h_ov
+    if (allocated(delta_v_ov)) deallocate(delta_v_ov)
   end subroutine add_delta_h_ov
 
   subroutine add_delta_h_so(obj,h_k)
@@ -1044,7 +1047,10 @@ contains
     real(rp) :: dn,dn_d
     integer :: ia,ie,l,ispin,ispin_rev
 
+    if (.not.allocated(obj%delta_v_lcn)) allocate(obj%delta_v_lcn(obj%a_tb%na,3,obj%a_tb%ns))
+
     obj%delta_v_lcn = cmplx(0.0_rp,0.0_rp,kind=rp)
+
 
     select case(obj%a_tb%ns)
     case(1)
@@ -1115,6 +1121,7 @@ contains
     ! LOCAL
     integer :: ia,l,ispin,jspin,sigma
 
+    if (.not.allocated(obj%delta_v_pen)) allocate(obj%delta_v_pen(obj%a_tb%na,3,obj%a_tb%ns))
     obj%delta_v_pen = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     if(obj%m_penalization/= 'none') then
@@ -1143,8 +1150,8 @@ contains
                 obj%delta_v_pen(ia,l,obj%a_tb%iss2is(ispin,jspin))&
                  = obj%delta_v_pen(ia,l,obj%a_tb%iss2is(ispin,jspin))&
                  - (obj%a_tb%b_pen(ia,1)*sigma_x(ispin,jspin)&
-                 + obj%a_tb%b_pen(ia,2)*sigma_y(ispin,jspin)&
-                 + obj%a_tb%b_pen(ia,3)*sigma_z(ispin,jspin))
+                  + obj%a_tb%b_pen(ia,2)*sigma_y(ispin,jspin)&
+                  + obj%a_tb%b_pen(ia,3)*sigma_z(ispin,jspin))
               end do
             end do
           end do ! subshell loop
@@ -1174,7 +1181,7 @@ contains
       call TBKOSTER_flush(output_unit)
 
       obj%h_r(:,0,:,:) = 0.0_rp
-      
+
       do ia=1,obj%a_tb%na
         ie=obj%a_tb%ia2ie(ia)
         do io=1,obj%e_tb%no(ie)
