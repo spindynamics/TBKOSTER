@@ -1160,8 +1160,9 @@ contains
     ! LOCAL
     integer :: ia,ie,io
 
-    write(output_unit,*) 'DEBUG == entering calculate_h_r'
-    call TBKOSTER_flush(6)
+    write(output_unit,*) 'DEBUG == Entering calculate_h_r'
+    call TBKOSTER_flush(output_unit)
+
     select case(obj%e_tb%tb_type)
     case('nrl')
       obj%en_intra = obj%a_tb%build_en_intra()
@@ -1178,8 +1179,10 @@ contains
     case('wan','mod')
       obj%h_r = obj%a_tb%build_b_r()
     end select
-    write(output_unit,*) 'DEBUG == exiting calculate_h_r'
-    call TBKOSTER_flush(output_unit)  
+
+    write(output_unit,*) 'DEBUG == Exiting calculate_h_r'
+    call TBKOSTER_flush(output_unit)
+
   end subroutine calculate_h_r
   
   subroutine calculate_s_r(obj)
