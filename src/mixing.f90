@@ -746,7 +746,7 @@ contains
         !     Re-load so that the ordering is in increasing iteration count
         !=======================================================================
         do j=1,obj%n_hist-1
-          !          write(6,'('' IN BROY_SAV: j,j+1 '',2is2)') j,j+1
+          !          write(output_unit,'('' IN BROY_SAV: j,j+1 '',2is2)') j,j+1
           do i=1,obj%vlen
             obj%u(i,j) = obj%u(i,j+1)
           end do
@@ -821,7 +821,7 @@ contains
       call dgetrf(nn,nn,b,obj%n_hist,ipiv,info)
       call dgetri(nn,b,obj%n_hist,ipiv,d,nn,info)
       !b = inverse(b)
-      !  write(6,*) ' optimum lwork', d(1,1)
+      !  write(output_unit,*) ' optimum lwork', d(1,1)
       !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< uses lapack
       !---- mix vectors:
 

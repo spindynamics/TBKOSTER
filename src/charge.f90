@@ -607,7 +607,7 @@ contains
       real(rp), dimension(3) :: m_tot, v_sph
       real(rp) :: m_r_tot
 
-      !write(6,*) "====> Entering write_mulliken_charge_analysis"
+      !write(output_unit,*) "====> Entering write_mulliken_charge_analysis"
 
       if (present(unit)) then
          unit_rt = unit
@@ -743,13 +743,13 @@ contains
                m_cart_p = obj%q_mul_in(ia, 2, 1:3)
                m_cart_d = obj%q_mul_in(ia, 3, 1:3)
                m_cart = m_cart_s + m_cart_p + m_cart_d
-               !write(6,*) "===>"
-               !write(6,*) "m_cart_s =", m_cart_s
-               !write(6,*) "m_cart_p =", m_cart_p
-               !write(6,*) "m_cart_d =", m_cart_d
-               !write(6,*) "m_cart   =", m_cart
+               !write(output_unit,*) "===>"
+               !write(output_unit,*) "m_cart_s =", m_cart_s
+               !write(output_unit,*) "m_cart_p =", m_cart_p
+               !write(output_unit,*) "m_cart_d =", m_cart_d
+               !write(output_unit,*) "m_cart   =", m_cart
                m_sph = cart2sph(m_cart)
-               !write(6,*) "===>"
+               !write(output_unit,*) "===>"
                m_sph_s = cart2sph(m_cart_s)
                m_sph_p = cart2sph(m_cart_p)
                m_sph_d = cart2sph(m_cart_d)
@@ -843,7 +843,7 @@ contains
       real(rp), dimension(3) :: om_tot, v_sph
       real(rp) :: om_r_tot
 
-      !write(6,*) "====> Entering write_mulliken_charge_analysis"
+      !write(output_unit,*) "====> Entering write_mulliken_charge_analysis"
 
       if (present(unit)) then
          unit_rt = unit

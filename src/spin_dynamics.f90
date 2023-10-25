@@ -221,7 +221,7 @@ contains
 
     b_2 = dot_product(b,b)
     dt_2 = dt*dt
-    !write(6,"(a,g10.4)") "bt_2*dt_2=", sqrt(b_2*dt_2)
+    !write(output_unit,"(a,g10.4)") "bt_2*dt_2=", sqrt(b_2*dt_2)
 
     !write(unit,'(a)') 'spin_dynamics%advance_st(): m_o = ' &
     ! // real2str(obj%a%m(ia,1)) &

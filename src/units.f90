@@ -380,6 +380,9 @@ contains
     ! Namelist
     namelist /units/ energy,length,time,mass
 
+    write(output_unit,*) "DEBUG == Entering units & read_txt"
+    call TBKOSTER_flush(output_unit)
+    
     if(present(file)) then
       file_rt = trim(file)
     else
@@ -416,6 +419,8 @@ contains
 
     close(unit=10)
     !deallocate(file_rt)
+    write(output_unit,*) "DEBUG == Exiting units & read_txt"
+    call TBKOSTER_flush(output_unit)
   end subroutine read_txt
 
   !> Write object in text format to unit (default: 10), if it's a file

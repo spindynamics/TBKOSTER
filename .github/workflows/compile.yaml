@@ -5,11 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "The workflow is now ready to test your code on the runner."
       - name: Upgrade packages
-        run: sudo apt-get install -y gettext doxygen texlive tex4ht texlive-latex-extra biber ghostscript poppler-utils
+        run: sudo apt-get update && sudo apt-get install -y gettext doxygen texlive tex4ht texlive-latex-extra biber ghostscript poppler-utils
       - run: mkdir build
       - name: Prepare environment
         run: cmake -B build .
@@ -20,9 +20,8 @@ jobs:
       - name: 'Generate artifacts'
         uses: actions/upload-artifact@v2
         with:
-          name: Binary for ubuntu and user manual
+          name: Binary for ubuntu
           path: |
-            build/bin/*.x
-            build/doc/UserManual.pdf
+            build/build/bin/*.x
           retention-days: 5
       - run: echo "🍏 This job's status is ${{ job.status }}."
