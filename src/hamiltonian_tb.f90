@@ -146,13 +146,13 @@ contains
   subroutine destructor(obj)
     type(hamiltonian_tb) :: obj
 
-    if(allocated(obj%iaos2ih))     deallocate(obj%iaos2ih)
-    if(allocated(obj%en_intra))    deallocate(obj%en_intra)
-    if(allocated(obj%h_r))         deallocate(obj%h_r)
-    if(allocated(obj%s_r))         deallocate(obj%s_r)
-    if(allocated(obj%delta_h_eei)) deallocate(obj%delta_h_eei)
-    if(allocated(obj%delta_v_lcn)) deallocate(obj%delta_v_lcn)
     if(allocated(obj%delta_v_pen)) deallocate(obj%delta_v_pen)
+    if(allocated(obj%delta_v_lcn)) deallocate(obj%delta_v_lcn)
+    if(allocated(obj%delta_h_eei)) deallocate(obj%delta_h_eei)
+    if(allocated(obj%s_r))         deallocate(obj%s_r)
+    if(allocated(obj%h_r))         deallocate(obj%h_r)
+    if(allocated(obj%en_intra))    deallocate(obj%en_intra)
+    if(allocated(obj%iaos2ih))     deallocate(obj%iaos2ih)
   end subroutine destructor
 
   subroutine add_delta_h_eei(obj,isl,h_k)
@@ -203,10 +203,11 @@ contains
     ! LOCAL
     integer :: ia1,ia2,ie1,ie2,io1,io2,l1,l2,ispin,jspin
     integer :: imat,jmat,imat_ispin,imat_jspin,jmat_ispin,jmat_jspin
-    complex(rp),dimension(:,:,:),allocatable :: delta_v_ov
+    complex(rp),dimension(:,:,:), allocatable :: delta_v_ov
     complex(rp),dimension(obj%nh,obj%nh) :: delta_h_ov
 
-    if (.not.allocated(delta_v_ov)) allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns))
+    if (allocated(delta_v_ov)) deallocate(delta_v_ov)
+    allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns))
 
     delta_v_ov = obj%delta_v_lcn + obj%delta_v_pen
     delta_h_ov = cmplx(0.0_rp,0.0_rp,kind=rp)
@@ -533,8 +534,8 @@ contains
   end function build_v_k
 
   function build_w_k(obj,ik,isl) result(w_k)
-    class(hamiltonian_tb),intent(in) :: obj
     ! INPUT
+    class(hamiltonian_tb),intent(in) :: obj
     integer,intent(in) :: ik,isl
     ! OUTPUT
     real(rp),dimension(obj%nh) :: w_k
@@ -1050,7 +1051,6 @@ contains
     if (.not.allocated(obj%delta_v_lcn)) allocate(obj%delta_v_lcn(obj%a_tb%na,3,obj%a_tb%ns))
 
     obj%delta_v_lcn = cmplx(0.0_rp,0.0_rp,kind=rp)
-
 
     select case(obj%a_tb%ns)
     case(1)
