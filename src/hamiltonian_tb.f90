@@ -146,13 +146,13 @@ contains
   subroutine destructor(obj)
     type(hamiltonian_tb) :: obj
 
-    if(allocated(obj%iaos2ih))     deallocate(obj%iaos2ih)
-    if(allocated(obj%en_intra))    deallocate(obj%en_intra)
-    if(allocated(obj%h_r))         deallocate(obj%h_r)
-    if(allocated(obj%s_r))         deallocate(obj%s_r)
-    if(allocated(obj%delta_h_eei)) deallocate(obj%delta_h_eei)
-    if(allocated(obj%delta_v_lcn)) deallocate(obj%delta_v_lcn)
     if(allocated(obj%delta_v_pen)) deallocate(obj%delta_v_pen)
+    if(allocated(obj%delta_v_lcn)) deallocate(obj%delta_v_lcn)
+    if(allocated(obj%delta_h_eei)) deallocate(obj%delta_h_eei)
+    if(allocated(obj%s_r))         deallocate(obj%s_r)
+    if(allocated(obj%h_r))         deallocate(obj%h_r)
+    if(allocated(obj%en_intra))    deallocate(obj%en_intra)
+    if(allocated(obj%iaos2ih))     deallocate(obj%iaos2ih)
   end subroutine destructor
 
   subroutine add_delta_h_eei(obj,isl,h_k)
@@ -203,8 +203,11 @@ contains
     ! LOCAL
     integer :: ia1,ia2,ie1,ie2,io1,io2,l1,l2,ispin,jspin
     integer :: imat,jmat,imat_ispin,imat_jspin,jmat_ispin,jmat_jspin
-    complex(rp),dimension(obj%a_tb%na,3,obj%a_tb%ns) :: delta_v_ov
+    complex(rp),dimension(:,:,:), allocatable :: delta_v_ov
     complex(rp),dimension(obj%nh,obj%nh) :: delta_h_ov
+
+    if (allocated(delta_v_ov)) deallocate(delta_v_ov)
+    allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns))
 
     delta_v_ov = obj%delta_v_lcn + obj%delta_v_pen
     delta_h_ov = cmplx(0.0_rp,0.0_rp,kind=rp)
@@ -258,6 +261,7 @@ contains
     end select
 
     h_k = h_k + delta_h_ov
+    if (allocated(delta_v_ov)) deallocate(delta_v_ov)
   end subroutine add_delta_h_ov
 
   subroutine add_delta_h_so(obj,h_k)
@@ -530,8 +534,8 @@ contains
   end function build_v_k
 
   function build_w_k(obj,ik,isl) result(w_k)
-    class(hamiltonian_tb),intent(in) :: obj
     ! INPUT
+    class(hamiltonian_tb),intent(in) :: obj
     integer,intent(in) :: ik,isl
     ! OUTPUT
     real(rp),dimension(obj%nh) :: w_k
@@ -1044,6 +1048,8 @@ contains
     real(rp) :: dn,dn_d
     integer :: ia,ie,l,ispin,ispin_rev
 
+    if (.not.allocated(obj%delta_v_lcn)) allocate(obj%delta_v_lcn(obj%a_tb%na,3,obj%a_tb%ns))
+
     obj%delta_v_lcn = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     select case(obj%a_tb%ns)
@@ -1115,6 +1121,7 @@ contains
     ! LOCAL
     integer :: ia,l,ispin,jspin,sigma
 
+    if (.not.allocated(obj%delta_v_pen)) allocate(obj%delta_v_pen(obj%a_tb%na,3,obj%a_tb%ns))
     obj%delta_v_pen = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     if(obj%m_penalization/= 'none') then
@@ -1143,8 +1150,8 @@ contains
                 obj%delta_v_pen(ia,l,obj%a_tb%iss2is(ispin,jspin))&
                  = obj%delta_v_pen(ia,l,obj%a_tb%iss2is(ispin,jspin))&
                  - (obj%a_tb%b_pen(ia,1)*sigma_x(ispin,jspin)&
-                 + obj%a_tb%b_pen(ia,2)*sigma_y(ispin,jspin)&
-                 + obj%a_tb%b_pen(ia,3)*sigma_z(ispin,jspin))
+                  + obj%a_tb%b_pen(ia,2)*sigma_y(ispin,jspin)&
+                  + obj%a_tb%b_pen(ia,3)*sigma_z(ispin,jspin))
               end do
             end do
           end do ! subshell loop
@@ -1166,10 +1173,15 @@ contains
     select case(obj%e_tb%tb_type)
     case('nrl')
       obj%en_intra = obj%a_tb%build_en_intra()
-      obj%h_r = obj%a_tb%build_b_r()
-      write(output_unit,*) 'DEBUG in calculate h_r end of call build_b_r'
+
+      write(output_unit,*) 'DEBUG == calculate h_r & call build_b_r'
       call TBKOSTER_flush(output_unit)
+      obj%h_r = obj%a_tb%build_b_r()
+      write(output_unit,*) 'DEBUG == calculate h_r & end of call build_b_r'
+      call TBKOSTER_flush(output_unit)
+
       obj%h_r(:,0,:,:) = 0.0_rp
+
       do ia=1,obj%a_tb%na
         ie=obj%a_tb%ia2ie(ia)
         do io=1,obj%e_tb%no(ie)
@@ -1233,9 +1245,11 @@ contains
     class(hamiltonian_tb),intent(inout) :: obj
     integer :: ih,ia,ie,io,is
 
+    if(allocated(obj%iaos2ih)) deallocate(obj%iaos2ih)
+
     select case(obj%a_tb%ns)
     case(1,2)
-      if(allocated(obj%iaos2ih)) deallocate(obj%iaos2ih)
+      
       allocate(obj%iaos2ih(obj%a_tb%na,obj%e_tb%no_max,obj%a_tb%ns))
 
       ih = 0
@@ -1250,7 +1264,7 @@ contains
       end do
       obj%nh = ih
     case(4)
-      if(allocated(obj%iaos2ih)) deallocate(obj%iaos2ih)
+      
       allocate(obj%iaos2ih(obj%a_tb%na,obj%e_tb%no_max,2))
 
       ih = 0
@@ -1269,14 +1283,11 @@ contains
     if(allocated(obj%en_intra)) deallocate(obj%en_intra)
     allocate(obj%en_intra(obj%a_tb%na,obj%e_tb%no_max))
     if(allocated(obj%h_r)) deallocate(obj%h_r)
-    allocate(obj%h_r(obj%a_tb%na,0:obj%a_tb%nn_max,obj%e_tb%no_max, &
-     obj%e_tb%no_max))
+    allocate(obj%h_r(obj%a_tb%na, 0:obj%a_tb%nn_max, obj%e_tb%no_max, obj%e_tb%no_max))
     if(allocated(obj%s_r)) deallocate(obj%s_r)
-    allocate(obj%s_r(obj%a_tb%na,0:obj%a_tb%nn_max,obj%e_tb%no_max, &
-     obj%e_tb%no_max))
+    allocate(obj%s_r(obj%a_tb%na, 0:obj%a_tb%nn_max, obj%e_tb%no_max, obj%e_tb%no_max))
     if(allocated(obj%delta_h_eei)) deallocate(obj%delta_h_eei)
-    allocate(obj%delta_h_eei(obj%a_tb%na,obj%e_tb%no_max,obj%e_tb%no_max, &
-     obj%a_tb%ns))
+    allocate(obj%delta_h_eei(obj%a_tb%na, obj%e_tb%no_max, obj%e_tb%no_max, obj%a_tb%ns))
     if(allocated(obj%delta_v_lcn)) deallocate(obj%delta_v_lcn)
     allocate(obj%delta_v_lcn(obj%a_tb%na,3,obj%a_tb%ns))
     if(allocated(obj%delta_v_pen)) deallocate(obj%delta_v_pen)
