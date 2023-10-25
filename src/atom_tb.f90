@@ -180,7 +180,7 @@ contains
         read(10,*)
         read(10,*) norb
         read(10,*) ncase
-        allocate(weight(ncase))
+        if (.not.allocated(weight)) allocate(weight(ncase))
         read(10,*) (weight(icase),icase=1,ncase)
 
         do icase=1,ncase
@@ -200,7 +200,7 @@ contains
           end do  
         end do  
 
-        deallocate(weight)
+        if (allocated(weight)) deallocate(weight)
         close(unit=10)
 
         !   do ip1=1,2*obj%pbc(1)+1
@@ -692,7 +692,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,obj%e%no_max) :: en_intra
+    real(rp), dimension(:,:), allocatable :: en_intra
     ! LOCAL
     real(rp) :: rho,r,r_0,r_l,f_cut,en_intra_s,en_intra_p,en_intra_d
     integer  :: ia1,ia2,in,ie1,ie2,io
@@ -700,6 +700,7 @@ contains
     write(output_unit,*) 'DEBUG == Entering atom_tb & build_en_intra'
     call TBKOSTER_flush(output_unit)
 
+    if (.not.allocated(en_intra)) allocate(en_intra(obj%na,obj%e%no_max))
     en_intra = 0.0_rp
 
     do ia1=1,obj%na
