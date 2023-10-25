@@ -690,6 +690,9 @@ contains
     real(rp) :: rho,r,r_0,r_l,f_cut,en_intra_s,en_intra_p,en_intra_d
     integer  :: ia1,ia2,in,ie1,ie2,io
 
+    write(output_unit,*) 'DEBUG == Entering atom_tb & build_en_intra'
+    call TBKOSTER_flush(output_unit)
+
     en_intra = 0.0_rp
 
     do ia1=1,obj%na
@@ -722,7 +725,10 @@ contains
         end if
       end do
     end do
-    !write(*,*)'onsite',sum(en_intra(1,:))
+    write(output_unit,*) 'DEBUG == onsite sum(en_intra(1,:))=',sum(en_intra(1,:))
+    write(output_unit,*) 'DEBUG == Exiting atom_tb & build_en_intra'
+    call TBKOSTER_flush(output_unit)
+    
   end function build_en_intra
 
   ! Function build_d_en_intra to be used on the molecular dynamics
