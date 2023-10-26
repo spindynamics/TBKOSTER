@@ -1428,42 +1428,40 @@ contains
     rewind(10)
     read(10,nml=element,iostat=iostatus)
     first_c=lower(trim(symbol(1)))
-        if(first_c=='j') then
-          allocate(no(ne),o(ne,0))
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          no_max=maxval(no)
-          deallocate(o)
-          allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
-          allocate(name(ne),number(ne),mass(ne))
-          name(:)='model'
-          number(:)=0
-          mass(:)=0
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          call initialize_lcn(ne,u_lcn,u_lcn_d)
-          call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-          call initialize_so(ne,xi_so_p,xi_so_d)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-        else
-          call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
-          call initialize_o(ne,symbol,no_max,o,os)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          call initialize_lcn(ne,u_lcn,u_lcn_d)
-          call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-          call initialize_so(ne,xi_so_p,xi_so_d)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-         no_max = maxval(no)
-      endif
+    if(first_c=='j') then
+      allocate(no(ne),o(ne,0))
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max=maxval(no)
+      deallocate(o)
+      allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
+      allocate(name(ne),number(ne),mass(ne))
+      name(:)='model'
+      number(:)=0
+      mass(:)=0
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+    else
+      call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
+      call initialize_o(ne,symbol,no_max,o,os)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max = maxval(no)
+    end if
    
     ! Charge initialization recipe
     do ie=1,ne
       os(ie) = parse_orbital_to_string(o(ie,:))
-    end do
-    do ie=1,ne
       select case(os(ie))
       case('spd')
         q_d(ie) = q_d(ie)
