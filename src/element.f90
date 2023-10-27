@@ -628,15 +628,15 @@ contains
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
-  !      first_c=lower(trim(symbol(ie)))
-   !     if(first_c=='j') then
-       ! TB model
-    !      o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
-    !    else
-        write(error_unit,*) 'element%parse_symbol(): element symbol ', &
+!     first_c=lower(trim(symbol(ie)))
+!     if(first_c=='j') then
+! TB model
+!     o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
+!    else
+        write(error_unit,*) 'element%initialize_o parse_symbol(): element symbol ', &
          symbol(ie), ' not known'
         error stop
-    !    endif
+!    endif
       end select
       os(ie) = parse_orbital_to_string(o(ie,:))
     end do
@@ -1323,22 +1323,22 @@ contains
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
       case default
-  !      first_c=lower(trim(symbol(ie)))
-  !     if(first_c=='j') then
-     ! TB model
-   !     name(ie) = lower(trim(symbol(ie)))
-   !     number(ie) = 0
-   !     no(ie) = 9
-   !     q(ie)   = 1.0_rp
-   !     q_s(ie) = 1.0_rp
-   !     q_p(ie) = 0.0_rp
-   !     q_d(ie) = 0.0_rp
-   !     mass(ie)= 0.0_rp
-   !   else
-        write(error_unit,*) 'element%parse_symbol(): element symbol ', &
+!     first_c=lower(trim(symbol(ie)))
+!     if(first_c=='j') then
+! TB model
+!     name(ie) = lower(trim(symbol(ie)))
+!     number(ie) = 0
+!     no(ie) = 9
+!     q(ie)   = 1.0_rp
+!     q_s(ie) = 1.0_rp
+!     q_p(ie) = 0.0_rp
+!     q_d(ie) = 0.0_rp
+!     mass(ie)= 0.0_rp
+!   else
+        write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
          symbol(ie), 'not known'
          error stop
-    !  endif
+!  endif
       end select
     end do
     no_max = maxval(no)
@@ -1381,6 +1381,7 @@ contains
     character(len=:),allocatable :: file_rt
     integer :: iostatus
     logical :: isopen
+    character(len=512) :: msg
     ! Namelist variables
     integer :: ne
     character(len=2),dimension(:),allocatable :: symbol
@@ -1400,7 +1401,7 @@ contains
      i_stoner_d, b, j_dd, u_dd, xi_so_p, xi_so_d, mass
     ! Local variables
     integer :: ie
-    character(len=1) :: first_c
+    !character(len=1) :: first_c
 
     if(present(file)) then
       file_rt = trim(file)
@@ -1414,50 +1415,76 @@ contains
       error stop
     else
       open(unit=10,file=file_rt,action='read',iostat=iostatus,status='old')
-    end if
-
-    if(iostatus /= 0) then
-      write(error_unit,*) 'element%read_txt(): file ', file_rt, ' not found'
-      error stop
+      if(iostatus /= 0) then
+        write(error_unit,*) 'element%read_txt(): file ', file_rt, ' not found'
+        error stop
+      end if
     end if
 
     allocate(symbol(0))
-    read(10,nml=element,iostat=iostatus)
+    read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
     deallocate(symbol)
     allocate(symbol(ne))
-    rewind(10)
-    read(10,nml=element,iostat=iostatus)
-    first_c=lower(trim(symbol(1)))
-    if(first_c=='j') then
-      allocate(no(ne),o(ne,0))
-      rewind(10)
-      read(10,nml=element,iostat=iostatus)
-      no_max=maxval(no)
-      deallocate(o)
-      allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
-      allocate(name(ne),number(ne),mass(ne))
-      name(:)='model'
-      number(:)=0
-      mass(:)=0
-      rewind(10)
-      read(10,nml=element,iostat=iostatus)
-      call initialize_lcn(ne,u_lcn,u_lcn_d)
-      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-      call initialize_so(ne,xi_so_p,xi_so_d)
-      rewind(10)
-      read(10,nml=element,iostat=iostatus)
-    else
-      call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
-      call initialize_o(ne,symbol,no_max,o,os)
-      rewind(10)
-      read(10,nml=element,iostat=iostatus)
-      call initialize_lcn(ne,u_lcn,u_lcn_d)
-      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-      call initialize_so(ne,xi_so_p,xi_so_d)
-      rewind(10)
-      read(10,nml=element,iostat=iostatus)
-      no_max = maxval(no)
-    end if
+    allocate(no(0))
+    rewind(unit=10)
+    read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
+    deallocate(no)
+    call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
+    call initialize_o(ne,symbol,no_max,o,os)
+    call initialize_lcn(ne,u_lcn,u_lcn_d)
+    call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+    call initialize_so(ne,xi_so_p,xi_so_d)
+    rewind(unit=10)
+    read(10,nml=element,iostat=iostatus,iomsg=msg)
+    no_max = maxval(no)
+
+    ! allocate(symbol(1))
+    ! allocate(u_lcn(1))
+
+    ! read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
+    ! write(*,*) "ne=",ne
+    ! if(iostatus /= 0) then
+    !   write(error_unit,*) 'element%read_txt(): Error in namelist. ',trim(msg)
+    !   error stop
+    ! end if
+    ! if (allocated(symbol)) deallocate(symbol)
+    ! allocate(symbol(ne))
+    ! if (allocated(u_lcn)) deallocate(u_lcn)
+    ! allocate(u_lcn(ne))
+
+    ! rewind(unit=10)
+    ! read(10,nml=element,iostat=iostatus,iomsg=msg)
+    ! first_c=lower(trim(symbol(1)))
+    ! if(first_c=='j') then
+    !   allocate(no(ne),o(ne,0))
+    !   rewind(10)
+    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
+    !   no_max=maxval(no)
+    !   deallocate(o)
+    !   allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
+    !   allocate(name(ne),number(ne),mass(ne))
+    !   name(:)='model'
+    !   number(:)=0
+    !   mass(:)=0
+    !   rewind(10)
+    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
+    !   call initialize_lcn(ne,u_lcn,u_lcn_d)
+    !   call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+    !   call initialize_so(ne,xi_so_p,xi_so_d)
+    !   rewind(10)
+    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
+    ! else
+    !   call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
+    !   call initialize_o(ne,symbol,no_max,o,os)
+    !   rewind(unit=10)
+    !   read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
+    !   call initialize_lcn(ne,u_lcn,u_lcn_d)
+    !   call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+    !   call initialize_so(ne,xi_so_p,xi_so_d)
+    !   rewind(unit=10)
+    !   read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
+    !   no_max = maxval(no)
+    ! end if
    
     ! Charge initialization recipe
     do ie=1,ne
@@ -1496,6 +1523,7 @@ contains
 
     obj%ne = ne
     call move_alloc(symbol,obj%symbol)
+    !obj%symbol = symbol 
     call move_alloc(name,obj%name)
     call move_alloc(number,obj%number)
     call move_alloc(mass,obj%mass)

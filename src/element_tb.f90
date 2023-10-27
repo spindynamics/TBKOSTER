@@ -78,7 +78,7 @@ module element_tb_mod
     !> TB parameter filenames
     character(len=sl),dimension(:),allocatable :: filename
     !> TB model types ; options: 'nrl', 'mod', 'wan'
-    character(len=3):: tb_type
+    character(len=3) :: tb_type
     !> TB parameter types ; options: 'old', 'new', 'cyr', 'pow'
     character(len=3),dimension(:),allocatable :: nrl_type
     !> TB parameters of NRL type
@@ -201,18 +201,16 @@ contains
     do ie=1,obj%ne
       inquire(unit=10,opened=isopen)
       if (isopen) then
-       write(error_unit,'(a)') 'element_tb%read_txt() : Unit 10 is already open'
+        write(error_unit,'(a)') 'element_tb%read_file_nrl() : Unit 10 is already open'
         error stop
       else
-        open(unit=10,file=obj%filename(ie),action='read',iostat=iostatus, &
-       status='old')
+        open(unit=10,file=obj%filename(ie),action='read',iostat=iostatus, status='old')
+        if(iostatus /= 0) then
+          write(error_unit,*) 'element_tb%read_file_nrl(): file ', obj%filename(ie), ' not found'
+          error stop
+        end if
       end if
-      if(iostatus /= 0) then
-        write(error_unit,*) 'element_tb%read_file_nrl(): file ', obj%filename(ie), &
-         ' not found'
-        error stop
-      end if
-
+    
       read(10,*) obj%nrl_type(ie)
       read(10,*)
       read(10,*)
@@ -263,11 +261,12 @@ contains
     character(len=:),allocatable :: file_rt
     integer :: iostatus
     logical :: isopen
+    character(len=512) :: msg
     ! Namelist variables
-    character(len=3)::tb_type
+    character(len=3) :: tb_type
     character(len=sl),dimension(:),allocatable :: filename
     ! Namelist
-    namelist /element_tb/tb_type,filename
+    namelist /element_tb/ tb_type, filename
 
     write(output_unit,*) 'DEBUG == Entering element_tb & read_txt'
     call TBKOSTER_flush(output_unit)
@@ -288,14 +287,14 @@ contains
       error stop
     else
       open(unit=10,file=file_rt,action='read',iostat=iostatus,status='old')
-    end if
-    if(iostatus /= 0) then
-      write(error_unit,*) 'element_tb%read_txt(): file ', file_rt, ' not found'
-      error stop
+      if(iostatus /= 0) then
+        write(error_unit,*) 'element_tb%read_txt(): file ', file_rt, ' not found'
+        error stop
+      end if
     end if
 
     allocate(filename(obj%ne))
-    read(10,nml=element_tb)
+    read(unit=10,nml=element_tb,iostat=iostatus,iomsg=msg)
     obj%tb_type=tb_type
 
     if(trim(tb_type)=='nrl') then
@@ -313,15 +312,16 @@ contains
       filename='hr.dat'
       obj%filename=filename
       call move_alloc(filename,obj%filename)
-       write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
+      write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
     elseif(lower(trim(obj%tb_type))=='mod') then
       deallocate(filename)
       allocate(filename(1))
       filename='mod.dat'
       obj%filename=filename
       call move_alloc(filename,obj%filename)
-       write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
+      write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
     endif
+
     close(unit=10)
 
     write(output_unit,*) 'DEBUG == Exiting element_tb & read_txt'
