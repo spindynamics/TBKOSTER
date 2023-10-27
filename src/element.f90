@@ -463,12 +463,14 @@ contains
 
   ! Initialize orbitals
   subroutine initialize_o(ne, symbol, no_max, o, os)
+    ! input/output variables
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
-    character(len=1) :: first_c
     integer,intent(in) :: no_max
     integer,dimension(:,:),allocatable,intent(out) :: o
     character(len=3),dimension(:),allocatable,intent(out) :: os
+    ! local variables
+    character(len=1) :: first_c
     integer :: ie
 
     allocate(o(ne,no_max))
@@ -628,32 +630,33 @@ contains
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
-!     first_c=lower(trim(symbol(ie)))
-!     if(first_c=='j') then
-! TB model
-!     o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
-!    else
+      !     first_c=lower(trim(symbol(ie)))
+      !     if(first_c=='j') then
+      ! TB model
+      !     o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
+      !    else
         write(error_unit,*) 'element%initialize_o parse_symbol(): element symbol ', &
          symbol(ie), ' not known'
         error stop
-!    endif
+      !    endif
       end select
       os(ie) = parse_orbital_to_string(o(ie,:))
     end do
   end subroutine initialize_o
 
   ! Initialize charge-related variables
-  subroutine initialize_q(ne, symbol, name, number, no, no_max, q, q_s, q_p, &
-   q_d, mass)
+  subroutine initialize_q(ne, symbol, name, number, no, no_max, q, q_s, q_p, q_d, mass)
+    ! Input/output variables
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
-    character(len=1) :: first_c
     character(len=sl),dimension(:),allocatable,intent(out) :: name
     integer,dimension(:),allocatable,intent(out) :: number
     integer,dimension(:),allocatable,intent(out) :: no
     integer,intent(out) :: no_max
     real(rp),dimension(:),allocatable,intent(out) :: q, q_s, q_p, q_d
     real(rp),dimension(:),allocatable,intent(out) :: mass
+    ! Local variables
+    character(len=1) :: first_c
     integer :: ie
 
     allocate(name(ne))
@@ -1323,22 +1326,22 @@ contains
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
       case default
-!     first_c=lower(trim(symbol(ie)))
-!     if(first_c=='j') then
-! TB model
-!     name(ie) = lower(trim(symbol(ie)))
-!     number(ie) = 0
-!     no(ie) = 9
-!     q(ie)   = 1.0_rp
-!     q_s(ie) = 1.0_rp
-!     q_p(ie) = 0.0_rp
-!     q_d(ie) = 0.0_rp
-!     mass(ie)= 0.0_rp
-!   else
-        write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
-         symbol(ie), 'not known'
-         error stop
-!  endif
+      !     first_c=lower(trim(symbol(ie)))
+      !     if(first_c=='j') then
+      ! TB model
+      !     name(ie) = lower(trim(symbol(ie)))
+      !     number(ie) = 0
+      !     no(ie) = 9
+      !     q(ie)   = 1.0_rp
+      !     q_s(ie) = 1.0_rp
+      !     q_p(ie) = 0.0_rp
+      !     q_d(ie) = 0.0_rp
+      !     mass(ie)= 0.0_rp
+      !   else
+              write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
+              symbol(ie), 'not known'
+              error stop
+      !  endif
       end select
     end do
     no_max = maxval(no)
