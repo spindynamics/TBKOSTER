@@ -413,7 +413,7 @@ contains
                 iapbc2in(ia1,ia2,ip1,ip2,ip3)=in
                 rn(ia1,in,:) = r
               end if
-              if(r_2<epsilon) then
+              if(r_2<=epsilon) then
                 iapbc2in(ia1,ia2,ip1,ip2,ip3)=0
               end if
             end do
@@ -600,12 +600,12 @@ contains
         m_theta=obj%m(ia,2)
         m_phi=obj%m(ia,3)
         !        write(output_unit,*) "=> here mr mtheta mphi ", m_r,m_theta,m_phi
-        !        call TBKOSTER_flush(6)
+        !        call TBKOSTER_flush(output_unit)
         m_x=m_r*sin(m_theta)*cos(m_phi)
         m_y=m_r*sin(m_theta)*sin(m_phi)
         m_z=m_r*cos(m_theta)
         !        write(output_unit,*) "=> here mx my mz", m_x,m_y,m_z
-        !        call TBKOSTER_flush(6)
+        !        call TBKOSTER_flush(output_unit)
         obj%m(ia,1)=m_x
         obj%m(ia,2)=m_y
         obj%m(ia,3)=m_z

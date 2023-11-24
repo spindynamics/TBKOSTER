@@ -84,7 +84,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp), dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: B
+    real(rp), dimension(:,:,:,:), allocatable :: B
     ! LOCAL
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
@@ -93,8 +93,10 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy1,dummy2,icase,ncase,norb
     real(rp) :: Btemp
     logical :: file_existence, isopen
-    write(output_unit,*) 'DEBUG == entering build_b_r'
-    call TBKOSTER_flush(6)
+    write(output_unit,*) 'DEBUG == Entering atom_tb & build_b_r'
+    call TBKOSTER_flush(output_unit)
+
+    if (.not.allocated(B)) allocate(B(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max))
     B = 0.0_rp
     select case(obj%e_tb%tb_type)
       case('nrl')
@@ -178,7 +180,7 @@ contains
         read(10,*)
         read(10,*) norb
         read(10,*) ncase
-        allocate(weight(ncase))
+        if (.not.allocated(weight)) allocate(weight(ncase))
         read(10,*) (weight(icase),icase=1,ncase)
 
         do icase=1,ncase
@@ -198,7 +200,7 @@ contains
           end do  
         end do  
 
-        deallocate(weight)
+        if (allocated(weight)) deallocate(weight)
         close(unit=10)
 
         !   do ip1=1,2*obj%pbc(1)+1
@@ -244,7 +246,7 @@ contains
         close(unit=10)
     end select
     write(output_unit,*) "DEBUG B(1,1,1,1) = ", B(1,1,1,1)
-    write(output_unit,*) 'DEBUG == exiting build_b_r'
+    write(output_unit,*) 'DEBUG == Exiting atom_tb & build_b_r'
     call TBKOSTER_flush(output_unit)
   end function build_b_r
 
@@ -253,7 +255,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3) ::d_B
+    real(rp), dimension(:,:,:,:,:), allocatable :: d_B
     ! LOCAL
     real(rp) :: AA(3),RR(3),R,f_cut,d_f_cut
     real(rp) :: d_Btemp(9,9,3) 
@@ -261,6 +263,8 @@ contains
     real(rp) :: I_Overlap(10),d_I_Overlap(10,3),d_I_Overlaptemp(10) ! SS,SP,PP(2),SD,PD(2),DD(3)
 
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,ix,step
+
+    if (.not.allocated(d_B)) allocate(d_B(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3))
 
     d_Btemp = 0.0_rp ; Overlap = 0.0_rp ; d_Overlap = 0.0_rp ; d_Overlaptemp = 0.0_rp
     d_B = 0.0_rp ; I_Overlap = 0.0_rp ; d_I_Overlap = 0.0_rp ; d_I_Overlaptemp = 0.0_rp
@@ -394,13 +398,14 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max) :: S
+    real(rp), dimension(:,:,:,:), allocatable :: S
     ! LOCAL
     real(rp) :: RR(3),R,f_cut
     real(rp) :: temp(9,9)
     real(rp) :: Overlap(10),I_Overlap(10)
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step
 
+    if (.not.allocated(S)) allocate(S(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max))
     select case(obj%e_tb%tb_type)
     case('nrl')
 
@@ -493,7 +498,7 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3) :: d_S
+    real(rp), dimension(:,:,:,:,:), allocatable :: d_S
     ! LOCAL
     real(rp) :: AA(3),RR(3),R,f_cut,d_f_cut,newparamtype
     real(rp) :: d_Stemp(9,9,3)
@@ -501,6 +506,8 @@ contains
     real(rp) :: I_Overlap(10),d_I_Overlap(10,3),d_I_Overlaptemp(10) !SS,SP,PP(2),SD,PD(2),DD(3)
 
     integer :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,ix,step
+
+    if(.not.allocated(d_S)) allocate(d_S(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max,3))
 
     d_Stemp = 0.0_rp ; Overlap = 0.0_rp ; d_Overlap = 0.0_rp ; d_Overlaptemp = 0.0_rp
     d_S = 0.0_rp ; I_Overlap = 0.0_rp ; d_I_Overlap = 0.0_rp ; d_I_Overlaptemp = 0.0_rp  
@@ -685,12 +692,17 @@ contains
     ! INPUT
     class(atom_tb),intent(in) :: obj
     ! OUTPUT
-    real(rp),dimension(obj%na,obj%e%no_max) :: en_intra
+    real(rp), dimension(:,:), allocatable :: en_intra
     ! LOCAL
     real(rp) :: rho,r,r_0,r_l,f_cut,en_intra_s,en_intra_p,en_intra_d
     integer  :: ia1,ia2,in,ie1,ie2,io
 
+    write(output_unit,*) 'DEBUG == Entering atom_tb & build_en_intra'
+    call TBKOSTER_flush(output_unit)
+
+    if (.not.allocated(en_intra)) allocate(en_intra(obj%na,obj%e%no_max))
     en_intra = 0.0_rp
+
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       rho = 0.0_rp
@@ -721,7 +733,10 @@ contains
         end if
       end do
     end do
-    !write(*,*)'onsite',sum(en_intra(1,:))
+    write(output_unit,*) 'DEBUG == onsite sum(en_intra(1,:))=',sum(en_intra(1,:))
+    write(output_unit,*) 'DEBUG == Exiting atom_tb & build_en_intra'
+    call TBKOSTER_flush(output_unit)
+    
   end function build_en_intra
 
   ! Function build_d_en_intra to be used on the molecular dynamics
@@ -736,6 +751,7 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io,ix
 
     d_en_intra = 0.0_rp
+    
     do ia1=1,obj%na
       ie1 = obj%ia2ie(ia1)
       rho = 0.0_rp
@@ -1042,7 +1058,6 @@ contains
     d_DD(1,:)=d_Overlap(8,:)
     d_DD(2,:)=d_Overlap(9,:)
     d_DD(3,:)=d_Overlap(10,:)
-
 
     cx=x
     cy=y

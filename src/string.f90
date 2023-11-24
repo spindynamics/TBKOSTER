@@ -72,7 +72,7 @@ contains
   subroutine TBKOSTER_flush(unit)
     integer, intent(in)  :: unit
 #if defined(Enable_flush)
-    call flush(unit=unit)
+    flush(unit=unit)
 #endif
   end subroutine TBKOSTER_flush
 
