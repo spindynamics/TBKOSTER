@@ -163,6 +163,8 @@ contains
     ! LOCAL
     integer :: ia,ie,io1,io2,ispin,jspin,imat,jmat
 
+    write(output_unit,*) 'DEBUG == Entering add_delta_h_eei'
+
     select case(obj%a_tb%ns)
     case(1,2)
       do ia=1,obj%a_tb%na
@@ -205,6 +207,8 @@ contains
     integer :: imat,jmat,imat_ispin,imat_jspin,jmat_ispin,jmat_jspin
     complex(rp),dimension(:,:,:), allocatable :: delta_v_ov
     complex(rp),dimension(:,:), allocatable  :: delta_h_ov
+
+    write(output_unit,*) 'DEBUG == Entering add_delta_h_ov'
 
     if (allocated(delta_v_ov)) deallocate(delta_v_ov)
     if (allocated(delta_h_ov)) deallocate(delta_h_ov)
@@ -483,9 +487,9 @@ contains
     complex(rp),dimension(2,obj%nh,obj%nh) :: v_k
     ! LOCAL
     complex(rp),dimension(:,:,:), allocatable :: c_k
-    complex(rp),dimension(:,:), allocatable :: s_k, s_k_work
-    real(rp),dimension(:), allocatable :: w_k
-    complex(rp),dimension(:,:), allocatable :: v_k1,v_k2
+    complex(rp),dimension(:,:), allocatable   :: s_k, s_k_work
+    real(rp),dimension(:), allocatable        :: w_k
+    complex(rp),dimension(:,:), allocatable   :: v_k1,v_k2
     real(rp),dimension(3) :: k_point ! a k-point
 
 #if !defined(LAPACK95_FOUND)
@@ -498,10 +502,12 @@ contains
 #endif
     write(output_unit,*) 'DEBUG == Entering build_v_k'
     write(output_unit,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
-    allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
-    allocate(s_k(obj%nh,obj%nh),s_k_work(obj%nh,obj%nh))
-    allocate(w_k(obj%nh))
-    allocate(v_k1(obj%nh,obj%nh),v_k2(obj%nh,obj%nh))
+    if (.not.allocated(c_k))      allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
+    if (.not.allocated(s_k))      allocate(s_k(obj%nh,obj%nh))
+    if (.not.allocated(s_k_work)) allocate(s_k_work(obj%nh,obj%nh))
+    if (.not.allocated(w_k))      allocate(w_k(obj%nh))
+    if (.not.allocated(v_k1))     allocate(v_k1(obj%nh,obj%nh))
+    if (.not.allocated(v_k2))     allocate(v_k2(obj%nh,obj%nh))
 
     ! Build reciprocal space projections
     k_point(:) = obj%k%x(ik,:)
