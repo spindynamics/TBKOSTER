@@ -629,16 +629,13 @@ contains
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
+      case('j')
+        ! TB Model, fake element for Wannier and Model
+        o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
-      !     first_c=lower(trim(symbol(ie)))
-      !     if(first_c=='j') then
-      ! TB model
-      !     o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
-      !    else
         write(error_unit,*) 'element%initialize_o parse_symbol(): element symbol ', &
          symbol(ie), ' not known'
         error stop
-      !    endif
       end select
       os(ie) = parse_orbital_to_string(o(ie,:))
     end do
@@ -1325,23 +1322,20 @@ contains
         q_p(ie) = 6.0_rp
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
+      case('j')
+      ! TB models : Wannier and model : fake symbol
+        name(ie) = 'wanmod'
+        number(ie) = 0
+        no(ie) = 9
+        q(ie)   = 1.0_rp
+        q_s(ie) = 1.0_rp
+        q_p(ie) = 0.0_rp
+        q_d(ie) = 0.0_rp
+        mass(ie)= 0.0_rp
       case default
-      !     first_c=lower(trim(symbol(ie)))
-      !     if(first_c=='j') then
-      ! TB model
-      !     name(ie) = lower(trim(symbol(ie)))
-      !     number(ie) = 0
-      !     no(ie) = 9
-      !     q(ie)   = 1.0_rp
-      !     q_s(ie) = 1.0_rp
-      !     q_p(ie) = 0.0_rp
-      !     q_d(ie) = 0.0_rp
-      !     mass(ie)= 0.0_rp
-      !   else
-              write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
-              symbol(ie), 'not known'
-              error stop
-      !  endif
+        write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
+        symbol(ie), 'not known'
+        error stop
       end select
     end do
     no_max = maxval(no)

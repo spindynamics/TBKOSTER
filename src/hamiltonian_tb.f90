@@ -307,7 +307,7 @@ contains
     complex(rp),dimension(obj%nh,obj%nh) :: m_k
     ! LOCAL
     integer :: ispin,ia1,ia2,in,ie1,ie2,io1,io2,imat,jmat
-    write(*,*) 'entering build_projection_k'
+    write(*,*) 'DEBUG == Entering build_projection_k'
     m_k = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     select case(obj%a_tb%ns)
