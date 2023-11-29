@@ -496,8 +496,8 @@ contains
     lwork = max(1,2*obj%nh-1)
     allocate(work(lwork),rwork(max(1,3*obj%nh-2)))
 #endif
-    write(*,*) 'DEBUG == Entering build_v_k'
-    write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
+    write(output_unit,*) 'DEBUG == Entering build_v_k'
+    write(output_unit,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
     allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
     allocate(s_k(obj%nh,obj%nh),s_k_work(obj%nh,obj%nh))
     allocate(w_k(obj%nh))
@@ -540,6 +540,9 @@ contains
     deallocate(work,rwork)
 #endif
     deallocate(v_k2,v_k1,w_k,s_k_work,s_k,c_k)
+  
+    write(output_unit,*) 'DEBUG == Leaving build_v_k'
+    call TBKOSTER_flush(output_unit)
 
   end function build_v_k
 
@@ -562,8 +565,8 @@ contains
     lwork = max(1,2*obj%nh-1)
     allocate(work(lwork),rwork(max(1,3*obj%nh-2)))
 #endif
-    write(*,*) 'DEBUG == Entering build_w_k'
-    write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
+    write(output_unit,*) 'DEBUG == Entering build_w_k'
+    write(output_unit,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
     allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
     allocate(h_k(obj%nh,obj%nh),s_k(obj%nh,obj%nh))
     ! Build reciprocal space projections
