@@ -658,9 +658,9 @@ contains
     integer :: iter
     real(rp) :: rms
     ! LOCAL
-    real(rp),dimension(obj%n_hist,obj%n_hist) :: a, b, d
-    real(rp),dimension(obj%n_hist) :: cm
-    integer,dimension(obj%n_hist) :: ipiv
+    real(rp),dimension(:,:), allocatable :: a, b, d
+    real(rp),dimension(:), allocatable :: cm
+    integer,dimension(:), allocatable :: ipiv
     !
     integer :: i,j,k,info
     real(rp) :: fac1,fac2,fnorm,dfnorm,w0,aij,gmi,cmj,wtmp
@@ -668,6 +668,9 @@ contains
     integer :: last_iter,nn
 
     last_iter = iter-1
+    allocate(a(obj%n_hist,obj%n_hist),b(obj%n_hist,obj%n_hist),d(obj%n_hist,obj%n_hist))
+    allocate(cm(obj%n_hist))
+    allocate(ipiv(obj%n_hist))
 
     if(iter<=obj%n_init) then
       !=========================================================================
@@ -839,6 +842,7 @@ contains
       end do
 
     end if
+    deallocate(a,b,d,cm,ipiv)
   end subroutine mix_broyden
 
   !> Read object in text format from file (default: 'in_scf.txt')

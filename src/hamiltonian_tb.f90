@@ -204,10 +204,11 @@ contains
     integer :: ia1,ia2,ie1,ie2,io1,io2,l1,l2,ispin,jspin
     integer :: imat,jmat,imat_ispin,imat_jspin,jmat_ispin,jmat_jspin
     complex(rp),dimension(:,:,:), allocatable :: delta_v_ov
-    complex(rp),dimension(obj%nh,obj%nh) :: delta_h_ov
+    complex(rp),dimension(:,:), allocatable  :: delta_h_ov
 
     if (allocated(delta_v_ov)) deallocate(delta_v_ov)
-    allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns))
+    if (allocated(delta_h_ov)) deallocate(delta_h_ov)
+    allocate(delta_v_ov(obj%a_tb%na,3,obj%a_tb%ns),delta_h_ov(obj%nh,obj%nh))
 
     delta_v_ov = obj%delta_v_lcn + obj%delta_v_pen
     delta_h_ov = cmplx(0.0_rp,0.0_rp,kind=rp)
@@ -262,6 +263,7 @@ contains
 
     h_k = h_k + delta_h_ov
     if (allocated(delta_v_ov)) deallocate(delta_v_ov)
+    if (allocated(delta_h_ov)) deallocate(delta_h_ov)
   end subroutine add_delta_h_ov
 
   subroutine add_delta_h_so(obj,h_k)
@@ -305,7 +307,7 @@ contains
     complex(rp),dimension(obj%nh,obj%nh) :: m_k
     ! LOCAL
     integer :: ispin,ia1,ia2,in,ie1,ie2,io1,io2,imat,jmat
-
+    write(*,*) 'entering build_projection_k'
     m_k = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     select case(obj%a_tb%ns)
@@ -480,26 +482,30 @@ contains
     ! OUTPUT
     complex(rp),dimension(2,obj%nh,obj%nh) :: v_k
     ! LOCAL
-    complex(rp),dimension(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp) :: c_k
-    complex(rp),dimension(obj%nh,obj%nh) :: s_k, s_k_work
-    real(rp),dimension(obj%nh) :: w_k
+    complex(rp),dimension(:,:,:),allocatable :: c_k
+    complex(rp),dimension(:,:), allocatable :: s_k, s_k_work
+    real(rp),dimension(:), allocatable :: w_k
     complex(rp),dimension(:,:), allocatable :: v_k1,v_k2
     real(rp),dimension(3) :: k_point ! a k-point
 
 #if !defined(LAPACK95_FOUND)
-    complex(rp),dimension(max(1,2*obj%nh-1)) :: work
+    complex(rp),dimension(:), allocatable :: work
     integer :: lwork
-    real(rp),dimension(max(1,3*obj%nh-2)) :: rwork
+    real(rp),dimension(:), allocatable :: rwork
     integer :: info
 #endif
-
+     write(*,*) 'entering build_v_k'
+     write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
+    allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
+    allocate(s_k(obj%nh,obj%nh),s_k_work(obj%nh,obj%nh))
+    allocate(w_k(obj%nh))
     allocate(v_k1(obj%nh,obj%nh),v_k2(obj%nh,obj%nh))
-
+    allocate(work(max(1,2*obj%nh-1)),rwork(max(1,3*obj%nh-2)))
     ! Build reciprocal space projections
     k_point(:) = obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)
     v_k1 = obj%build_projection_k(obj%h_r,c_k)
-    s_k = obj%build_projection_k(obj%s_r,c_k)
+    s_k =  obj%build_projection_k(obj%s_r,c_k)
     s_k_work = s_k
 
     !	Add renormalization
@@ -529,7 +535,8 @@ contains
     v_k(1,:,:) = v_k1(:,:)
     v_k(2,:,:) = v_k2(:,:)
   
-    deallocate(v_k2,v_k1)
+    deallocate(v_k2,v_k1,work,rwork)
+    deallocate(c_k,s_k,s_k_work,w_k)
 
   end function build_v_k
 
@@ -540,17 +547,21 @@ contains
     ! OUTPUT
     real(rp),dimension(obj%nh) :: w_k
     ! LOCAL
-    complex(rp),dimension(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp) :: c_k
-    complex(rp),dimension(obj%nh,obj%nh) :: h_k, s_k
+    complex(rp),dimension(:,:,:), allocatable :: c_k
+    complex(rp),dimension(:,:), allocatable :: h_k, s_k
     real(rp), dimension(3) :: k_point ! a k-point
 
 #if !defined(LAPACK95_FOUND)
-    complex(rp),dimension(max(1,2*obj%nh-1)) :: work
+    complex(rp),dimension(:), allocatable:: work
     integer :: lwork
-    real(rp),dimension(max(1,3*obj%nh-2)) :: rwork
+    real(rp),dimension(:), allocatable :: rwork
     integer :: info
 #endif
-
+     write(*,*) 'entering build_w_k'
+    write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
+    allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
+    allocate(h_k(obj%nh,obj%nh),s_k(obj%nh,obj%nh))
+    allocate(work(max(1,2*obj%nh-1)),rwork(max(1,3*obj%nh-2)))
     ! Build reciprocal space projections
     k_point(:)=obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)
@@ -572,6 +583,8 @@ contains
     lwork = max(1,2*obj%nh-1)
     call zhegv(1,'N','U',obj%nh,h_k,obj%nh,s_k,obj%nh,w_k,work,lwork,rwork,info)
 #endif
+  deallocate(c_k,h_k,s_k)
+   deallocate(work,rwork)
   end function build_w_k
 
   subroutine calculate_b_pen(obj)
