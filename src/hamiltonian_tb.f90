@@ -482,7 +482,7 @@ contains
     ! OUTPUT
     complex(rp),dimension(2,obj%nh,obj%nh) :: v_k
     ! LOCAL
-    complex(rp),dimension(:,:,:),allocatable :: c_k
+    complex(rp),dimension(:,:,:), allocatable :: c_k
     complex(rp),dimension(:,:), allocatable :: s_k, s_k_work
     real(rp),dimension(:), allocatable :: w_k
     complex(rp),dimension(:,:), allocatable :: v_k1,v_k2
@@ -490,17 +490,19 @@ contains
 
 #if !defined(LAPACK95_FOUND)
     complex(rp),dimension(:), allocatable :: work
-    integer :: lwork
     real(rp),dimension(:), allocatable :: rwork
     integer :: info
+    integer :: lwork
+    lwork = max(1,2*obj%nh-1)
+    allocate(work(lwork),rwork(max(1,3*obj%nh-2)))
 #endif
-     write(*,*) 'entering build_v_k'
-     write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
+    write(*,*) 'DEBUG == Entering build_v_k'
+    write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
     allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
     allocate(s_k(obj%nh,obj%nh),s_k_work(obj%nh,obj%nh))
     allocate(w_k(obj%nh))
     allocate(v_k1(obj%nh,obj%nh),v_k2(obj%nh,obj%nh))
-    allocate(work(max(1,2*obj%nh-1)),rwork(max(1,3*obj%nh-2)))
+
     ! Build reciprocal space projections
     k_point(:) = obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)
@@ -520,7 +522,6 @@ contains
 #if defined(LAPACK95_FOUND)
     call hegv(v_k1,s_k_work,w_k,1,'V','U')
 #else
-    lwork = max(1,2*obj%nh-1)
     call zhegv(1,'V','U',obj%nh,v_k1,obj%nh,s_k_work,obj%nh,w_k,work, &
      lwork,rwork,info)
 #endif
@@ -535,8 +536,10 @@ contains
     v_k(1,:,:) = v_k1(:,:)
     v_k(2,:,:) = v_k2(:,:)
   
-    deallocate(v_k2,v_k1,work,rwork)
-    deallocate(c_k,s_k,s_k_work,w_k)
+#if defined(LAPACK95_FOUND)
+    deallocate(work,rwork)
+#endif
+    deallocate(v_k2,v_k1,w_k,s_k_work,s_k,c_k)
 
   end function build_v_k
 
@@ -553,15 +556,16 @@ contains
 
 #if !defined(LAPACK95_FOUND)
     complex(rp),dimension(:), allocatable:: work
-    integer :: lwork
     real(rp),dimension(:), allocatable :: rwork
+    integer :: lwork
     integer :: info
+    lwork = max(1,2*obj%nh-1)
+    allocate(work(lwork),rwork(max(1,3*obj%nh-2)))
 #endif
-     write(*,*) 'entering build_w_k'
+    write(*,*) 'DEBUG == Entering build_w_k'
     write(*,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
     allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
     allocate(h_k(obj%nh,obj%nh),s_k(obj%nh,obj%nh))
-    allocate(work(max(1,2*obj%nh-1)),rwork(max(1,3*obj%nh-2)))
     ! Build reciprocal space projections
     k_point(:)=obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)
@@ -580,11 +584,11 @@ contains
 #if defined(LAPACK95_FOUND)
     call hegv(h_k,s_k,w_k,1,'N','U')
 #else
-    lwork = max(1,2*obj%nh-1)
     call zhegv(1,'N','U',obj%nh,h_k,obj%nh,s_k,obj%nh,w_k,work,lwork,rwork,info)
+    deallocate(work,rwork)
 #endif
-  deallocate(c_k,h_k,s_k)
-   deallocate(work,rwork)
+  deallocate(s_k,h_k,c_k)
+  
   end function build_w_k
 
   subroutine calculate_b_pen(obj)
