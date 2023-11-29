@@ -271,7 +271,7 @@ contains
     write(output_unit,*) 'DEBUG == Entering element_tb & read_txt'
     call TBKOSTER_flush(output_unit)
 
-    tb_type='nrl'
+    tb_type='nrl' ! default type is nrl 
     if(present(file)) then
       file_rt = trim(file)
     else
@@ -296,33 +296,26 @@ contains
     allocate(filename(obj%ne))
     read(unit=10,nml=element_tb,iostat=iostatus,iomsg=msg)
     obj%tb_type=tb_type
-
-    if(trim(tb_type)=='nrl') then
-    call move_alloc(filename,obj%filename)
-
     close(unit=10)
-    !deallocate(file_rt)
 
-    call obj%read_file_nrl()
-    call check_nrl_type(obj%nrl_type)
-
-    elseif(lower(trim(obj%tb_type))=='wan') then
-      deallocate(filename)
-      allocate(filename(1))
-      filename='hr.dat'
-      obj%filename=filename
-      call move_alloc(filename,obj%filename)
-      write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
-    elseif(lower(trim(obj%tb_type))=='mod') then
-      deallocate(filename)
-      allocate(filename(1))
-      filename='mod.dat'
-      obj%filename=filename
-      call move_alloc(filename,obj%filename)
-      write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
-    endif
-
-    close(unit=10)
+    select case (lower(trim(tb_type)))
+      case ("nrl")
+        call move_alloc(filename,obj%filename)
+        call obj%read_file_nrl()
+        call check_nrl_type(obj%nrl_type)
+      case ('wan')
+        if (allocated(filename)) deallocate(filename)
+        allocate(filename(1))
+        filename(1)='hr.dat'
+        call move_alloc(filename,obj%filename)
+        write(output_unit,*) 'will read TB parameters from hr.dat file in build_b_r function'
+      case ('mod') 
+        if (allocated(filename)) deallocate(filename)
+        allocate(filename(1))
+        filename(1)='mod.dat'
+        call move_alloc(filename,obj%filename)
+        write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
+    end select
 
     write(output_unit,*) 'DEBUG == Exiting element_tb & read_txt'
     call TBKOSTER_flush(output_unit)

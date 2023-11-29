@@ -842,7 +842,7 @@ contains
       end do
 
     end if
-    deallocate(a,b,d,cm,ipiv)
+    deallocate(ipiv,cm,d,b,a)
   end subroutine mix_broyden
 
   !> Read object in text format from file (default: 'in_scf.txt')
