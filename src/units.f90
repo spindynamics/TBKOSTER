@@ -379,9 +379,10 @@ contains
     character(len=5) :: energy,length,time,mass
     ! Namelist
     namelist /units/ energy,length,time,mass
-
+#if defined(DEBUG)
     write(output_unit,*) "DEBUG == Entering units & read_txt"
     call TBKOSTER_flush(output_unit)
+#endif
     
     if(present(file)) then
       file_rt = trim(file)
@@ -419,8 +420,10 @@ contains
 
     close(unit=10)
     !deallocate(file_rt)
+#if defined(DEBUG)
     write(output_unit,*) "DEBUG == Exiting units & read_txt"
     call TBKOSTER_flush(output_unit)
+#endif
   end subroutine read_txt
 
   !> Write object in text format to unit (default: 10), if it's a file

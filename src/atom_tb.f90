@@ -93,8 +93,6 @@ contains
     integer  :: ia1,ia2,in,ie1,ie2,io1,io2,lbeta,step,i1,i2,i3,dummy1,dummy2,icase,ncase,norb
     real(rp) :: Btemp
     logical :: file_existence, isopen
-    write(output_unit,*) 'DEBUG == Entering atom_tb & build_b_r'
-    call TBKOSTER_flush(output_unit)
 
     if (.not.allocated(B)) allocate(B(obj%na,0:obj%nn_max,obj%e%no_max,obj%e%no_max))
     B = 0.0_rp
@@ -245,9 +243,6 @@ contains
         end do
         close(unit=10)
     end select
-    write(output_unit,*) "DEBUG B(1,1,1,1) = ", B(1,1,1,1)
-    write(output_unit,*) 'DEBUG == Exiting atom_tb & build_b_r'
-    call TBKOSTER_flush(output_unit)
   end function build_b_r
 
   ! Routine to calculate the derivative of the hopping matrix (d_B) 
@@ -697,9 +692,6 @@ contains
     real(rp) :: rho,r,r_0,r_l,f_cut,en_intra_s,en_intra_p,en_intra_d
     integer  :: ia1,ia2,in,ie1,ie2,io
 
-    write(output_unit,*) 'DEBUG == Entering atom_tb & build_en_intra'
-    call TBKOSTER_flush(output_unit)
-
     if (.not.allocated(en_intra)) allocate(en_intra(obj%na,obj%e%no_max))
     en_intra = 0.0_rp
 
@@ -733,9 +725,6 @@ contains
         end if
       end do
     end do
-    write(output_unit,*) 'DEBUG == onsite sum(en_intra(1,:))=',sum(en_intra(1,:))
-    write(output_unit,*) 'DEBUG == Exiting atom_tb & build_en_intra'
-    call TBKOSTER_flush(output_unit)
     
   end function build_en_intra
 

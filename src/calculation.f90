@@ -768,9 +768,6 @@ contains
     character(len=4) :: old_mesh_type
     integer :: unit
 
-    write(output_unit,*) "DEBUG == Entering process_scf"
-    call TBKOSTER_flush(output_unit)
-
     ! Read input
     inquire(file=master_file,exist=file_existence)
     if(file_existence) then
@@ -880,8 +877,6 @@ contains
     ! Write Fermi level en_f and total energy en_out
     call energy_obj%write_txt_formatted(property=[character(len=sl) :: 'en_f','en_out'])
     
-    write(output_unit,*) "DEBUG == Exiting process_scf"
-    call TBKOSTER_flush(output_unit)
   end subroutine process_scf
 
   subroutine process_sd(obj)
