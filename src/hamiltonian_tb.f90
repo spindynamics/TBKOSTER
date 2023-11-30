@@ -303,15 +303,14 @@ contains
   function build_projection_k(obj,m_r,c_k) result(m_k)
     ! INPUT
     class(hamiltonian_tb),intent(in) :: obj
-    real(rp),dimension(obj%a_tb%na,0:obj%a_tb%nn_max,obj%e_tb%no_max, &
-     obj%e_tb%no_max),intent(in) :: m_r
-    complex(rp),dimension(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp), &
-     intent(in) :: c_k
+    real(rp),dimension(obj%a_tb%na,0:obj%a_tb%nn_max,obj%e_tb%no_max,obj%e_tb%no_max), intent(in) :: m_r
+    complex(rp),dimension(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp), intent(in) :: c_k
     ! OUTPUT
     complex(rp),dimension(obj%nh,obj%nh) :: m_k
     ! LOCAL
     integer :: ispin,ia1,ia2,in,ie1,ie2,io1,io2,imat,jmat
-    write(*,*) 'DEBUG == Entering build_projection_k'
+    write(output_unit,*) 'DEBUG == Entering build_projection_k'
+
     m_k = cmplx(0.0_rp,0.0_rp,kind=rp)
 
     select case(obj%a_tb%ns)
@@ -326,8 +325,7 @@ contains
               jmat = obj%iaos2ih(ia2,io2,1)
               do in=1,obj%a_tb%nn(ia1)
                 if(obj%a_tb%ian2ia(ia1,in)==ia2) then
-                  m_k(imat,jmat) = m_k(imat,jmat) &
-                   + m_r(ia1,in,io1,io2)*c_k(ia1,in,1)
+                  m_k(imat,jmat) = m_k(imat,jmat) + m_r(ia1,in,io1,io2)*c_k(ia1,in,1)
                 end if
               end do
             end do
@@ -509,12 +507,18 @@ contains
     if (.not.allocated(v_k1))     allocate(v_k1(obj%nh,obj%nh))
     if (.not.allocated(v_k2))     allocate(v_k2(obj%nh,obj%nh))
 
+    write(output_unit,*) "DEBUG ==> 1"
+    call TBKOSTER_flush(output_unit)
+
     ! Build reciprocal space projections
     k_point(:) = obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)
     v_k1 = obj%build_projection_k(obj%h_r,c_k)
     s_k =  obj%build_projection_k(obj%s_r,c_k)
     s_k_work = s_k
+
+    write(output_unit,*) "DEBUG ==> 2"
+    call TBKOSTER_flush(output_unit)
 
     !	Add renormalization
     call obj%add_delta_h_eei(isl,v_k1)
@@ -526,15 +530,21 @@ contains
 
     !	Build the eigenvectors
 #if defined(LAPACK95_FOUND)
+    write(output_unit,*) "DEBUG == before hegv"
     call hegv(v_k1,s_k_work,w_k,1,'V','U')
+    write(output_unit,*) "DEBUG == after hegv"
 #else
+    write(output_unit,*) "DEBUG == before zhegv"
     call zhegv(1,'V','U',obj%nh,v_k1,obj%nh,s_k_work,obj%nh,w_k,work, &
      lwork,rwork,info)
+    deallocate(rwork,work)
+    write(output_unit,*) "DEBUG == after zhegv"
 #endif
 
     ! Build the eigenvectors tilde
 #if defined(BLAS95_FOUND)
     call hemm(s_k,v_k1,v_k2)
+    write(output_unit,*) "DEBUG == output hemm"
 #else
     call zhemm('L','U',obj%nh,obj%nh,cmplx(1.0_rp,0.0_rp,kind=rp),s_k,obj%nh, &
      v_k1,obj%nh,cmplx(0.0_rp,0.0_rp,kind=rp),v_k2,obj%nh)
@@ -542,9 +552,6 @@ contains
     v_k(1,:,:) = v_k1(:,:)
     v_k(2,:,:) = v_k2(:,:)
   
-#if defined(LAPACK95_FOUND)
-    deallocate(work,rwork)
-#endif
     deallocate(v_k2,v_k1,w_k,s_k_work,s_k,c_k)
   
     write(output_unit,*) 'DEBUG == Leaving build_v_k'
@@ -573,8 +580,9 @@ contains
 #endif
     write(output_unit,*) 'DEBUG == Entering build_w_k'
     write(output_unit,'(I5,1X,F10.7,1X,F10.7,1X,F10.7)') ik,obj%k%x(ik,:)
-    allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
-    allocate(h_k(obj%nh,obj%nh),s_k(obj%nh,obj%nh))
+    if (.not.allocated(c_k)) allocate(c_k(obj%a_tb%na,obj%a_tb%nn_max,obj%a_tb%nsp))
+    if (.not.allocated(h_k)) allocate(h_k(obj%nh,obj%nh))
+    if (.not.allocated(s_k)) allocate(s_k(obj%nh,obj%nh))
     ! Build reciprocal space projections
     k_point(:)=obj%k%x(ik,:)
     c_k = obj%a_tb%build_c_k(k_point)

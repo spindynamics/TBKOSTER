@@ -86,9 +86,12 @@ contains
 
   !> Parse vectors from cartesian to direct coordinates
   function cart2dir(obj,v_car) result(v_dir)
+    ! INPUT
     class(lattice),intent(in) :: obj
     real(rp),dimension(:,:),intent(in) :: v_car
-    real(rp),dimension(size(v_car,1),size(v_car,2)) :: v_dir
+    ! OUTPUT
+    real(rp),dimension(:,:), allocatable :: v_dir
+    allocate(v_dir(size(v_car,1),size(v_car,2)))
 ! #if !defined(BLAS95_FOUND)
 !     integer :: m, n, k
 !     integer :: lda, ldb, ldc
@@ -137,7 +140,8 @@ contains
   function dir2cart(obj,v_dir) result(v_car)
     class(lattice),intent(in) :: obj
     real(rp),dimension(:,:),intent(in) :: v_dir
-    real(rp),dimension(size(v_dir,1),size(v_dir,2)) :: v_car
+    real(rp),dimension(:,:),allocatable :: v_car
+    allocate(v_car(size(v_dir,1),size(v_dir,2)))
     ! #if !defined(BLAS95_FOUND)
     !     integer :: m, n, k
     !     integer :: lda, ldb, ldc
