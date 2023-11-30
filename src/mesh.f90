@@ -116,9 +116,11 @@ contains
 
   function build_monkhorst_pack(gx,dx) result(x)
     integer,dimension(3),intent(in) :: gx,dx
-    real(rp),dimension(product(gx),3) :: x
+    real(rp),dimension(:,:),allocatable :: x
     integer :: ix,igx1,igx2,igx3
     real(rp) :: x1,x2,x3
+
+    allocate(x(product(gx),3))
 
     ix = 1
     do igx1=1,gx(1)
@@ -137,8 +139,10 @@ contains
   function build_path(gxs,xs) result(x)
     integer,intent(in) :: gxs
     real(rp),dimension(:,:),intent(in) :: xs
-    real(rp),dimension((size(xs,1)-1)*gxs+1,3) :: x
+    real(rp),dimension(:,:),allocatable :: x
     integer :: nxs,ix,ixs,igxs
+
+    allocate(x((size(xs,1)-1)*gxs+1,3))
 
     nxs = size(xs,1)
     ix = 1

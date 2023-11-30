@@ -184,9 +184,6 @@ contains
     character(len=7) :: type
     integer :: ie,ip
 
-    write(output_unit,*) 'DEBUG == Entering element_tb & read_file_nrl'
-    call TBKOSTER_flush(output_unit)
-
     if(allocated(obj%nrl_type)) deallocate(obj%nrl_type)
     allocate(obj%nrl_type(obj%ne))
     if(allocated(obj%p)) deallocate(obj%p)
@@ -250,8 +247,6 @@ contains
       obj%p(:,ip:ip+2) = 0.5_rp * obj%p(:,ip:ip+2)
     end do
 
-    write(output_unit,*) 'DEBUG == Exiting element_tb & read_file_nrl'
-    call TBKOSTER_flush(output_unit)
   end subroutine read_file_nrl
 
   !> Read object in text format from file (default: 'in_element_tb.txt')
@@ -267,9 +262,6 @@ contains
     character(len=sl),dimension(:),allocatable :: filename
     ! Namelist
     namelist /element_tb/ tb_type, filename
-
-    write(output_unit,*) 'DEBUG == Entering element_tb & read_txt'
-    call TBKOSTER_flush(output_unit)
 
     tb_type='nrl' ! default type is nrl 
     if(present(file)) then
@@ -317,8 +309,6 @@ contains
         write(output_unit,*) 'will read TB parameters from mod.dat file in build_b_r function'
     end select
 
-    write(output_unit,*) 'DEBUG == Exiting element_tb & read_txt'
-    call TBKOSTER_flush(output_unit)
   end subroutine read_txt
 
   !> Write object in text format to unit (default: 10), if it's a file

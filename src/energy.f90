@@ -1008,7 +1008,7 @@ contains
 
     if (to_print) then
       to_print = .false.
-      do i=0,obj%k%nx*obj%h%nh*obj%a%nsl
+      do i=0,(obj%k%nx)*(obj%h%nh)*(obj%a%nsl)
         write(*,'(a,i3,a,E23.16,a,i3,a,E23.16)') &
         ' en(',i,')=', obj%en_k(i),&
         ' en(',obj%indx(i),')=', obj%en_k(obj%indx(i))
