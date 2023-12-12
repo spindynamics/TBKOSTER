@@ -228,9 +228,7 @@ contains
         t = obj%t_i
 
         ! do a SCF calculation do get the forces for current positions
-        do ia1=1,na
-            obj%f%f_at(ia1,:)=0.0_rp
-        end do
+        obj%f%f_at=0.0_rp
         call obj%f%scf%run(unit)
         call obj%f%calculate_forces()
 
@@ -363,18 +361,6 @@ contains
                                    (b*obj%f%a_tb%p(ia,:)*dt/mass(ia))+&
                                    (b*0.5_rp*old_forces(:)*dt*dt/mass(ia))+&
                                    0.5_rp*b*dt*dt*force_rand(:)/mass(ia)
-                
-                ! do a SCF calculation do get the new forces
-                !do ia1=1,na
-                !    obj%f%f_at(ia1,:)=0.0_rp
-                !end do
-!                call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
-!                call obj%f%scf%q%calculate_charge_in()
-!                call obj%f%scf%h%calculate_h_r()
-!                call obj%f%scf%h%calculate_s_r()
-!                call obj%f%scf%run(unit)
-!                call obj%f%calculate_forces()
-                !print *, "f_new(",ia,")=",obj%f%f_at(ia,:)
 
                 ! update the impulsions
                 obj%f%a_tb%p(ia,:)=obj%f%a_tb%p(ia,:)+&
@@ -383,9 +369,9 @@ contains
                                    force_rand(:)*dt
             end do
             ! do a SCF calculation do get the new forces
-                do ia1=1,na
-                    obj%f%f_at(ia1,:)=0.0_rp
-                end do
+            ! first, set all the forces to zero
+            obj%f%f_at=0.0_rp
+
             ! Update iteration step and time counter
             call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max,obj%f%e_tb%tb_type)
             call obj%f%scf%q%calculate_charge_in()
