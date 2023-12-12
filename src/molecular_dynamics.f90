@@ -219,6 +219,7 @@ contains
         real(rp) :: dt ! time increment
         real(rp), dimension(3) :: old_forces ! forces before update 
 
+        call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_0.txt')
         na = obj%f%a_tb%na
         dt = obj%dt ! already converted in hau unit
 
@@ -250,6 +251,8 @@ contains
                 write(unit,'(a,F15.8)') ' time = ',t * obj%f%u%convert_time('from','hau')
                 call obj%f%scf%a%write_txt_formatted(file='',property= &
                  [character(len=sl) :: 'r','p'],tag=.false.,unit=unit,access='append')
+                 call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_' // int2str(it) &
+                 // '.txt')
             end if
 
             call obj%f%scf%a%write_txt_formatted(file='out_md.txt',property= &
@@ -298,7 +301,7 @@ contains
         ! implementation follows from : 
         ! A simple and effective Verlet-type algorithm for simulating Langevin dynamics 
         ! https://www.tandfonline.com/doi/abs/10.1080/00268976.2012.760055
-
+        call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_0.txt')
         na = obj%f%a_tb%na
         dt = obj%dt ! already converted in hau unit
         gamma = obj%gamma ! already converted in hau unit
@@ -332,6 +335,8 @@ contains
                 write(unit,'(a,F15.8)') ' time = ',t * obj%f%u%convert_time('from','hau')
                 call obj%f%scf%a%write_txt_formatted(file='',property= &
                  [character(len=sl) :: 'r','p'],tag=.false.,unit=unit,access='append')
+                 call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_' // int2str(it) &
+                 // '.txt')
             end if
 
             call obj%f%scf%a%write_txt_formatted(file='out_md.txt',property= &
@@ -360,9 +365,9 @@ contains
                                    0.5_rp*b*dt*dt*force_rand(:)/mass(ia)
                 
                 ! do a SCF calculation do get the new forces
-                do ia1=1,na
-                    obj%f%f_at(ia1,:)=0.0_rp
-                end do
+                !do ia1=1,na
+                !    obj%f%f_at(ia1,:)=0.0_rp
+                !end do
 !                call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
 !                call obj%f%scf%q%calculate_charge_in()
 !                call obj%f%scf%h%calculate_h_r()
@@ -377,7 +382,10 @@ contains
                                    gamma*(obj%f%a_tb%r(ia,:)-old_positions(:))+&
                                    force_rand(:)*dt
             end do
-
+            ! do a SCF calculation do get the new forces
+                do ia1=1,na
+                    obj%f%f_at(ia1,:)=0.0_rp
+                end do
             ! Update iteration step and time counter
             call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max,obj%f%e_tb%tb_type)
             call obj%f%scf%q%calculate_charge_in()

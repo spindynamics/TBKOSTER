@@ -175,12 +175,14 @@ SUBROUTINE build_pdos(en_f,nen,na_dos,ns,nsl,ia,en_min,en_max,dos_tot,dos_s,dos_
   IF(na_dos>0) THEN
      IF(ns==1.OR.ns==2) THEN
         DO ia_dos=1,na_dos
-           WRITE(unit_pdos_s,*) '@#dos of site',ia(ia_dos),'s(up) s(dn)'
-           WRITE(unit_pdos_p,*) '@#dos of site',ia(ia_dos),'p(up) p(dn) px(up) px(dn) py(up) py(dn) pz(up) pz(dn)'
-           WRITE(unit_pdos_d,*) '@#dos of site',ia(ia_dos),'d(up) d(dn) dxy(up) dxy(dn) dyz(up) dyz(dn) dxz(up) &
-                dxz(dn) dy2y2(up) dx2y2(dn) dz2(up) dz2(dn)  '
-           WRITE(unit_pdos_spd,*) '@#dos of site',ia(ia_dos),'s(up) s(dn) p(up) p(dn) d(up) d(dn)'
-
+           WRITE(unit_pdos_s,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_s,"(A)", advance="no") '@# s(up) s(dn)'
+           WRITE(unit_pdos_p,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_p,"(A)", advance="no") '@# p(up) p(dn) px(up) px(dn) py(up) py(dn) pz(up) pz(dn)'
+           WRITE(unit_pdos_d,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_d,"(A)", advance="no") '@# d(up) d(dn) dxy(up) dxy(dn) dyz(up) dyz(dn) dxz(up) dxz(dn) dy2y2(up) dx2y2(dn) dz2(up) dz2(dn)  '
+           WRITE(unit_pdos_spd,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_spd,"(A)", advance="no") '@# s(up) s(dn) p(up) p(dn) d(up) d(dn)'
            DO ien=1,nen
               en=en_min+(ien-1)*den
               WRITE(unit_pdos_s,'(3(a,1X))') real2str(en),real2str(REAL(dos_s(ia_dos,ien,ispin_up)/g_s)),&
@@ -216,13 +218,14 @@ SUBROUTINE build_pdos(en_f,nen,na_dos,ns,nsl,ia,en_min,en_max,dos_tot,dos_s,dos_
         END DO
      ELSEIF(ns==4) THEN
         DO ia_dos=1,na_dos
-           WRITE(unit_pdos_s,*) '@#dos of site',ia(ia_dos),'s(n) s(x) s(y) s(z)'
-           WRITE(unit_pdos_p,*) '@#dos of site',ia(ia_dos),'p(n) p(x) p(y) p(z) px(n) &
-                px(x) px(y) px(z) py(n) py(x) py(y) py(z) pz(n) pz(x) pz(y) pz(z)'
-           WRITE(unit_pdos_d,*) '@#dos of site',ia(ia_dos),'d(n) d(x) d(y) d(z) dxy(n) dxy(x) &
-                dxy(y) dxy(z) dyz(n) dyz(x) dyz(y) dyz(z) dxz(n) dxz(x) dxz(y) &
-                dxz(z)  dx2y2(n) dx2y2(x) dx2y2(y) dx2y2(z) dz2(n) dz2(x) dz2(y) dz2(z)'
-           WRITE(unit_pdos_spd,*) '@#dos of site',ia(ia_dos),'s(n) s(x) s(y) s(z) p(n) p(x) p(y) p(z) d(n) d(x) d(y) d(z)'
+           WRITE(unit_pdos_s,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_s,"(A)", advance="no") '@# s(n) s(x) s(y) s(z)'
+           WRITE(unit_pdos_p,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_p,"(A)", advance="no") '@# p(n) p(x) p(y) p(z) px(n) px(x) px(y) px(z) py(n) py(x) py(y) py(z) pz(n) pz(x) pz(y) pz(z)'     
+           WRITE(unit_pdos_d,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_d,"(A)", advance="no") '@# d(n) d(x) d(y) d(z) dxy(n) dxy(x) dxy(y) dxy(z) dyz(n) dyz(x) dyz(y) dyz(z) dxz(n) dxz(x) dxz(y) dxz(z) dx2y2(n) dx2y2(x) dx2y2(y) dx2y2(z) dz2(n) dz2(x) dz2(y) dz2(z)'     
+           WRITE(unit_pdos_spd,*) '@#dos of site',ia(ia_dos)
+           WRITE(unit_pdos_spd,"(A)", advance="no") '@# s(n) s(x) s(y) s(z) p(n) p(x) p(y) p(z) d(n) d(x) d(y) d(z)'
 
            DO ien=1,nen
               en=en_min+(ien-1)*den

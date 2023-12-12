@@ -193,7 +193,15 @@ SUBROUTINE build_band_path_weight(x, en_k,w_en_band_local,iband2io,na_band,no_ma
 
     DO isl = 1, nsl
         WRITE (unit_band, *) '@# k   band (eV)'
+          if(isl>1) then
+            WRITE (unit_band, *) 
+            WRITE (unit_band, *) 
+        endif   
         DO ia_band=1,na_band
+            if(ia_band>1) then
+                WRITE (unit_band, *) 
+                WRITE (unit_band, *) 
+            endif
         WRITE (unit_band, *) '@# atom no', ia_band,'number of orbitals', iband2io(ia_band)
         sk = 0.0_rp
            FMT = TRIM('('//int2str(3+ iband2io(ia_band))//'F12.7'//')')         	
