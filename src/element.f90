@@ -629,7 +629,7 @@ contains
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
-      case('j')
+      case('j','j1','j2')
         ! TB Model, fake element for Wannier and Model
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
@@ -1322,7 +1322,7 @@ contains
         q_p(ie) = 6.0_rp
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
-      case('j')
+      case('j','j1','j2')
       ! TB models : Wannier and model : fake symbol
         name(ie) = 'wanmod'
         number(ie) = 0
