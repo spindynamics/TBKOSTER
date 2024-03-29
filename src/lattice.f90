@@ -55,12 +55,14 @@ module lattice_mod
   type,public :: lattice
     !> Units
     class(units),pointer :: u
-
+    !> mulitplicative factor.
+    real(rp) :: v_factor
     !> Vectors
     real(rp),dimension(3,3) :: v
     !> Vectors inverse
     real(rp),dimension(3,3) :: vi
-
+    !> reciprocal vectors
+    real(rp),dimension(3,3) :: vrec
   contains
     ! Procedures
     procedure :: construct_reciprocal
@@ -86,9 +88,12 @@ contains
 
   !> Parse vectors from cartesian to direct coordinates
   function cart2dir(obj,v_car) result(v_dir)
+    ! INPUT
     class(lattice),intent(in) :: obj
     real(rp),dimension(:,:),intent(in) :: v_car
-    real(rp),dimension(size(v_car,1),size(v_car,2)) :: v_dir
+    ! OUTPUT
+    real(rp),dimension(:,:), allocatable :: v_dir
+    allocate(v_dir(size(v_car,1),size(v_car,2)))
 ! #if !defined(BLAS95_FOUND)
 !     integer :: m, n, k
 !     integer :: lda, ldb, ldc
@@ -137,7 +142,8 @@ contains
   function dir2cart(obj,v_dir) result(v_car)
     class(lattice),intent(in) :: obj
     real(rp),dimension(:,:),intent(in) :: v_dir
-    real(rp),dimension(size(v_dir,1),size(v_dir,2)) :: v_car
+    real(rp),dimension(:,:),allocatable :: v_car
+    allocate(v_car(size(v_dir,1),size(v_dir,2)))
     ! #if !defined(BLAS95_FOUND)
     !     integer :: m, n, k
     !     integer :: lda, ldb, ldc
@@ -167,7 +173,8 @@ contains
     logical :: isopen
     ! Namelist variables
     real(rp) :: v_factor
-    real(rp),dimension(3,3) :: v
+    real(rp),dimension(3,3) :: v,vrec,vunit
+    real(rp), dimension(3) :: v1,v2,v3
     ! Namelist
     namelist /lattice/ v_factor, v
 
@@ -191,11 +198,20 @@ contains
 
     v_factor = 1.0_rp
     read(10,nml=lattice)
+    obj%v_factor=v_factor
     v = v_factor*v
 
     obj%v = v * obj%u%convert_length('to','hau')
     obj%vi = inverse_3x3(obj%v)
-
+    
+    vunit=v/v_factor
+    v1=vunit(1,:)
+    v2=vunit(2,:)
+    v3=vunit(3,:)
+    v(1,:) = cross_product(v2,v3)
+    v(2,:) = cross_product(v3,v1)
+    v(3,:) = cross_product(v1,v2)
+    obj%vrec = v/abs(determinant(vunit))
     close(unit=10)
     !deallocate(file_rt)
   end subroutine read_txt
@@ -289,6 +305,7 @@ contains
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
       case('v')
+        write(unit_rt,'(a)') ' v_factor = '// real2str(obj%v_factor) 
         v = obj%v * obj%u%convert_length('from','hau')
         do iv=1,3
           write(unit_rt,'(a)') ' v(' // int2str(iv) // ',:) = ' &
@@ -296,6 +313,13 @@ contains
            // real2str(v(iv,2)) // ', ' &
            // real2str(v(iv,3))
         end do
+        do iv=1,3
+          write(unit_rt,'(a)') ' vrec(' // int2str(iv) // ',:) = ' &
+           // real2str(obj%vrec(iv,1)) // ', ' &
+           // real2str(obj%vrec(iv,2)) // ', ' &
+           // real2str(obj%vrec(iv,3))
+        end do
+
       case('vi')
         vi = obj%vi / obj%u%convert_length('from','hau')
         do iv=1,3

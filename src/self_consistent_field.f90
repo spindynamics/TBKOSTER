@@ -408,15 +408,24 @@ contains
 !$OMP CRITICAL
 #endif
         ! entering here when post-proc band and/or dos is activated
-        if(present(post_processing))  then
-             select case(post_processing)
-               case('dos') 
-                 call obj%dos%add_dos_k(ik, isl)
-                 call obj%dos%add_dos_local_k(ik, isl, v_k)
-               case('band') 
-                 call obj%band%save_weight_band_local(ik, isl, v_k)
-              end select
-        endif
+        if(present(post_processing)) then
+          select case(post_processing)
+            case('dos') 
+              call obj%dos%add_dos_k(ik, isl)
+              call obj%dos%add_dos_local_k(ik, isl, v_k)
+            case('band') 
+              if(TRIM(obj%band%proj)=='site') then
+                call obj%band%save_proj_band_site(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='spin') then
+                call obj%band%save_proj_band_spin(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='orbit') then
+                call obj%band%save_proj_band_orbit(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='spin,orbit') then
+                call obj%band%save_proj_band_spin(ik, isl, v_k)
+                call obj%band%save_proj_band_orbit(ik, isl, v_k) 
+              endif
+          end select
+        end if
           
 #if defined(OpenMP_Fortran_FOUND)
 !$OMP END CRITICAL
@@ -427,7 +436,7 @@ contains
 #if defined(OpenMP_Fortran_FOUND)
 !$OMP END PARALLEL DO
 #endif
-    deallocate(v_k)
+    if (allocated(v_k)) deallocate(v_k)
     call system_clock(icount1,icount_rate,icount_max)
     time = real((icount1-icount0))/real(icount_rate)
     icount0 = icount1
@@ -515,7 +524,7 @@ contains
   !> Write object in text format to unit (default: 10), if it's a file
   !> its name is set to file (default: 'out_scf.txt')
   subroutine write_txt(obj,file,unit)
-    class(self_consistent_field) :: obj
+    class(self_consistent_field),intent(in) :: obj
     character(len=*),intent(in),optional :: file
     character(len=:),allocatable         :: file_rt
     integer,intent(in),optional :: unit
@@ -562,7 +571,7 @@ contains
   !> 'out_scf.txt'), if tag (default: .true.) the namelist opening and closing
   !> tags are written
   subroutine write_txt_formatted(obj,file,property,tag,unit)
-    class(self_consistent_field) :: obj
+    class(self_consistent_field),intent(in) :: obj
     character(len=*),intent(in),optional :: file
     character(len=:),allocatable         :: file_rt
     character(len=*),dimension(:),intent(in),optional :: property
@@ -633,6 +642,7 @@ contains
 subroutine update_m(obj)
   use math_mod, only:  cart2sph
   class(self_consistent_field),intent(inout) :: obj
+  ! LOCAL
   integer :: ia
   real(rp) :: m_s, m_p, m_d, m
   real(rp),dimension(3) :: m_sph, m_cart
