@@ -180,7 +180,7 @@ contains
         read(10,*) ncase
         allocate(weight(ncase))
         read(10,*) (weight(icase),icase=1,ncase)
-
+        write(*,*) 'start reading hr.dat'
         do icase=1,ncase
           do ia2=1,obj%na 
             ie2 = obj%ia2ie(ia2)
@@ -197,7 +197,7 @@ contains
             end do 
           end do  
         end do  
-
+        write(*,*) 'end reading hr.dat'
         deallocate(weight)
         close(unit=10)
 

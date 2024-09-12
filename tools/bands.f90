@@ -320,8 +320,9 @@ subroutine build_band_path_spinorb(close_file,x, en_k,w_band,na_band, nh, nx)
     implicit none
     integer, intent(in) :: na_band,nh, nx
     real(rp), intent(in) :: x(nx, 3), en_k(nh, nx, 1)
-    real(rp), intent(in) :: w_band(nh,nx,0:na_band,4)   
-    integer :: ih, ix, ii,ia_band,isopen
+    real(rp), intent(in) :: w_band(nh,nx,0:na_band,4)  
+    logical :: isopen 
+    integer :: ih, ix, ii,ia_band
     logical :: close_file
     integer, parameter :: unit_band = 10
     real(rp) :: sk
@@ -370,7 +371,8 @@ subroutine build_vector_field(close_file,x, en_k,Eref,w_band,na_band, nh, nx)
     real(rp), intent(in) :: x(nx, 3), en_k(nh, nx, 1)
     real(rp), intent(in) :: w_band(nh,nx,0:na_band,4)  
     real(rp), intent(in) :: Eref
-    integer :: ih, ix, ii,ia_band,isopen
+    logical :: isopen
+    integer :: ih, ix, ii,ia_band
     logical :: close_file
     integer, parameter :: unit_vf = 10 ,unit_fermi=11
     real(rp) :: average0,average(4)

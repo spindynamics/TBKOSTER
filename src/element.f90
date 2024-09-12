@@ -1420,7 +1420,7 @@ contains
       write(error_unit,*) 'element%read_txt(): file ', file_rt, ' not found'
       error stop
     end if
-
+    if (allocated(symbol)) deallocate(symbol)
     allocate(symbol(0))
     read(10,nml=element,iostat=iostatus)
     deallocate(symbol)
@@ -1458,7 +1458,6 @@ contains
           read(10,nml=element,iostat=iostatus)
          no_max = maxval(no)
       endif
-   
     ! Charge initialization recipe
     do ie=1,ne
       os(ie) = parse_orbital_to_string(o(ie,:))
@@ -1528,7 +1527,6 @@ contains
 
     call obj%calculate_v_osc()
     call obj%calculate_l_dot_s()
-
     close(unit=10)
     !deallocate(file_rt)
   end subroutine read_txt
