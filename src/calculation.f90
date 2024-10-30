@@ -39,7 +39,7 @@ module calculation_mod
   use atom_tb_mod
   use charge_mod
   use density_of_states_mod
-  use magnetic_anisotropy_mod
+  use force_theorem_mod
   use band_structure_mod
   use element_tb_mod
   use energy_mod
@@ -91,7 +91,7 @@ module calculation_mod
     !>  'band': calculate the band structure
     !>  'dos' : calculate the density of states
     !>  'forces' : calculate the forces on atoms
-    !>  'mae' : calculate the magnetic anisotropy energy
+    !>  'mft' : calculate the nscf band energy using magnetic force theorem
     !>  'txt2xyz': convert an "atom.txt" file into an "atom.xyz" file
     character(len=7)  :: post_processing
     !> Post-processing directory
@@ -103,7 +103,7 @@ module calculation_mod
     ! Procedures
     procedure :: post_process_band
     procedure :: post_process_dos
-    procedure :: post_process_mae
+    procedure :: post_process_mft
     procedure :: post_process_forces
     procedure :: post_process_txt2xyz
     procedure :: pre_process_txt2xyz
@@ -144,11 +144,11 @@ contains
      .and. post_processing /= 'band' &
      .and. post_processing /= 'dos' &
      .and. post_processing /= 'forces' &
-     .and. post_processing /= 'mae' &
+     .and. post_processing /= 'mft' &
      .and. post_processing /= 'txt2xyz') then
       write(error_unit,*) 'calculation%check_post_processing(): &
        &calculation%post_processing must be one of: ''none'', ''band'', &
-       &''dos'', ''mae'',''forces'', ''txt2xyz'''
+       &''dos'', ''mft'',''forces'', ''txt2xyz'''
       error stop
     end if
 
@@ -431,11 +431,11 @@ contains
     call execute_command_line(trim(obj%TBKOSTER_dir) // '/pdos.x ')
   end subroutine post_process_dos
 
-  subroutine post_process_mae(obj)
+  subroutine post_process_mft(obj)
     class(calculation),intent(in) :: obj
     type(atom_tb),target :: atom_tb_obj
     type(charge),target :: charge_obj
-    type(magnetic_anisotropy),target :: mae_obj
+    type(force_theorem),target :: mft_obj
     type(element_tb),target :: element_tb_obj
     type(energy),target :: energy_obj
     type(hamiltonian_tb),target :: hamiltonian_tb_obj
@@ -446,9 +446,10 @@ contains
     character(len=:),allocatable :: dir
     character(len=*),parameter :: master_file = 'in_master.txt'
     logical :: file_existence
-    integer :: unit, iangle
+    integer :: unit, iangle, iconfig
     integer :: ia, l
-    real(rp),dimension(2) :: angle
+    real(rp),dimension(:,:), allocatable:: mconfig
+
 
     dir = trim(obj%post_processing_dir)
 
@@ -481,6 +482,7 @@ contains
     call mesh_k%read_txt(file=dir // '/in_mesh.txt')
     charge_obj = charge(atom_tb_obj)
     charge_obj%a%ns=4
+     allocate(mconfig(charge_obj%a%na,2))
     call atom_tb_obj%calculate_spin()
     call charge_obj%initialize()
   !  call charge_obj%read_charge_col_to_ncol()
@@ -489,19 +491,21 @@ contains
       call hamiltonian_tb_obj%read_txt(file=master_file)
       energy_obj = energy(hamiltonian_tb_obj)
       call energy_obj%read_txt(file=dir // '/in_energy.txt')
-      mae_obj = magnetic_anisotropy(energy_obj)
-      call mae_obj%read_txt(file=dir // '/in_mae.txt')
+      mft_obj = force_theorem(energy_obj)
+      call mft_obj%read_txt(file=dir // '/in_mft.txt')
     else
       hamiltonian_tb_obj = hamiltonian_tb(atom_tb_obj,charge_obj,mesh_k)
       call hamiltonian_tb_obj%read_txt()
       energy_obj = energy(hamiltonian_tb_obj)
       call energy_obj%read_txt()
-      mae_obj = magnetic_anisotropy(energy_obj)
-      call mae_obj%read_txt()
+      mft_obj = force_theorem(energy_obj)
+      call mft_obj%read_txt()
     end if
-    scf_obj = self_consistent_field(mae=mae_obj)
+    scf_obj = self_consistent_field(mft=mft_obj)
     call scf_obj%initialize('nscf')
-    do iangle=1,mae_obj%nangle
+
+    !$OMP PARALLEL DO
+    do iconfig=1,mft_obj%nconfig
     !unit = output_unit
     ! Open log
     unit = 11
@@ -515,17 +519,16 @@ contains
     call mesh_k%write_txt_formatted(unit=unit)
     call hamiltonian_tb_obj%write_txt_formatted(unit=unit)
     call energy_obj%write_txt_formatted(unit=unit)
-    call mae_obj%write_txt_formatted(unit=unit)
+    call mft_obj%write_txt_formatted(unit=unit)
     ! Write out_hamiltonian_tb.txt
     call hamiltonian_tb_obj%write_txt_formatted(file=dir // '/out_hamiltonian_tb.txt',&
      property= [character(len=sl) :: 'nh','ns'])
     ! Run
-    !do iangle=1,mae_obj%nangle
-    angle(:)=mae_obj%angle1(:)+(iangle-1)*(mae_obj%angle2(:)-mae_obj%angle1(:))/(mae_obj%nangle-1)
-    call charge_obj%set_angle_charge_ncol(angle)
-    call mae_obj%initialize()
+    mconfig=mft_obj%mconfig(:,iconfig,:)
+    call charge_obj%set_angle_charge_ncol(mconfig)
+    call mft_obj%initialize()
     write(unit,'(a)') ''
-    write(unit,'(a)') 'calculation%run(): Post-processing mae'//int2str(iangle)
+    write(unit,'(a)') 'calculation%run(): Post-processing mft'//int2str(iconfig)
     call TBKOSTER_flush(unit)
     call hamiltonian_tb_obj%calculate_h_r()
     call hamiltonian_tb_obj%calculate_s_r()
@@ -535,13 +538,13 @@ contains
 
     ! Write magnetic anisotropy
   
-      call mae_obj%write_txt_formatted(file=dir // '/out_mae_'//int2str(iangle)//'.txt', &
-       property=[character(len=sl) :: 'mae'])
+      call mft_obj%write_txt_formatted(file=dir // '/out_mft_'//int2str(iconfig)//'.txt',&
+       property= [character(len=sl) :: 'mconfig','mft'],config=iconfig)
     end do
     close(unit)
-
-    call execute_command_line(trim(obj%TBKOSTER_dir) // '/mae.x ')
-  end subroutine post_process_mae
+    !$OMP END PARALLEL DO
+    call execute_command_line(trim(obj%TBKOSTER_dir) // '/mft.x ')
+  end subroutine post_process_mft
 
   subroutine post_process_forces(obj)
     class(calculation),intent(in) :: obj
@@ -765,8 +768,8 @@ contains
       call obj%post_process_band()
     case('dos')
       call obj%post_process_dos()
-    case('mae')
-      call obj%post_process_mae()
+    case('mft')
+      call obj%post_process_mft()
     case('forces')
       call obj%post_process_forces()
     case('txt2xyz')

@@ -22,8 +22,8 @@ add_executable(
 
 # Add mae executable
 add_executable(
-  mae.x
-  mae.f90
+  mft.x
+  mft.f90
 )
 
 # Add Fermi surface executable
@@ -46,7 +46,7 @@ add_executable(
 
 target_link_libraries(bands.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
 target_link_libraries(pdos.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
-target_link_libraries(mae.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
+target_link_libraries(mft.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
 target_link_libraries(fermisurface.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
 target_link_libraries(build_kpoints.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})
 target_link_libraries(dat2gnu.x ${PROJECT_NAME} ${CMAKE_DL_LIBS})

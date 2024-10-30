@@ -499,10 +499,10 @@ contains
       end select
    end subroutine calculate_net_charge_out
 
-   subroutine set_angle_charge_ncol(obj,angle)
+   subroutine set_angle_charge_ncol(obj,mconfig)
   ! INPUT
    class(charge), intent(inout) :: obj
-   real(rp), dimension(2), intent(in) :: angle
+   real(rp), dimension(obj%a%na,2), intent(in) :: mconfig
    !Local variable
       integer :: ia,io1,io2,is,l
       real(rp) :: mz,n
@@ -513,7 +513,6 @@ contains
       !obj%q_mul_in=0.0_rp
       !obj%rho_net_in=0.0
       call obj%read_charge_col_to_ncol() 
-     ! write(*,*) angle(1),angle(2)
       q_mul=obj%q_mul_in 
       rho_net=obj%rho_net_in 
 
@@ -524,10 +523,10 @@ contains
                      obj%q_mul_in(ia,l,0)=q_mul(ia,l,0)
                      if(q_mul(ia,l,3)>0) then
                      mz=q_mul(ia,l,3)
-                     m_sph(1:3)=(/mz,angle(1),angle(2)/)
+                     m_sph(1:3)=(/mz,mconfig(ia,1),mconfig(ia,2)/)
                      else
                      mz=-q_mul(ia,l,3)
-                     m_sph(1:3)=(/mz,angle(1)+pi,angle(2)+pi/)
+                     m_sph(1:3)=(/mz,mconfig(ia,1)+pi,mconfig(ia,2)+pi/)
                      endif
                      
                      m_cart=sph2cart(m_sph)
@@ -553,7 +552,7 @@ contains
                 !       endif
                 !      m_cart=sph2cart(m_sph)
                 !      call nm2rho(n,m_cart,rho)
-                      call rotate_rho(rho,angle)
+                      call rotate_rho(rho,mconfig(ia,:))
                       obj%rho_net_in(ia, io1, io2, 1) = rho(1, 1)
                       obj%rho_net_in(ia ,io1, io2, 2) = rho(2, 2)
                       obj%rho_net_in(ia, io1, io2, 3) = rho(1, 2)

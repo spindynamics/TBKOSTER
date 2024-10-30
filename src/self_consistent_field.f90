@@ -39,7 +39,7 @@ module self_consistent_field_mod
   use atom_mod
   use charge_mod
   use density_of_states_mod
-  use magnetic_anisotropy_mod
+  use force_theorem_mod
   use band_structure_mod
   use energy_mod
   use hamiltonian_tb_mod
@@ -82,7 +82,7 @@ module self_consistent_field_mod
     !> Density of states
     class(density_of_states),pointer :: dos
     !> magnetic anisotropy
-    class(magnetic_anisotropy),pointer :: mae
+    class(force_theorem),pointer :: mft
     !> Band structure
     class(band_structure),pointer :: band   
     !> Logical forces (default: .false.)
@@ -130,11 +130,11 @@ module self_consistent_field_mod
   end interface self_consistent_field
 
 contains
-  function constructor(en,mx,dos,mae,band) result(obj)
+  function constructor(en,mx,dos,mft,band) result(obj)
     class(energy),target,intent(in),optional :: en
     class(mixing),target,intent(in),optional :: mx
     class(density_of_states),target,intent(in),optional :: dos
-    class(magnetic_anisotropy),target,intent(in),optional :: mae
+    class(force_theorem),target,intent(in),optional :: mft
     class(band_structure),target,intent(in),optional :: band
     type(self_consistent_field) :: obj
 
@@ -153,14 +153,14 @@ contains
       obj%h => dos%h
       obj%en => dos%en
       obj%dos => dos
-    elseif(present(mae)) then
-      obj%u => mae%u
-      obj%a => mae%a
-      obj%q => mae%en%q
-      obj%k => mae%k
-      obj%h => mae%h
-      obj%en => mae%en
-      obj%mae => mae
+    elseif(present(mft)) then
+      obj%u => mft%u
+      obj%a => mft%a
+      obj%q => mft%en%q
+      obj%k => mft%k
+      obj%h => mft%h
+      obj%en => mft%en
+      obj%mft => mft
     elseif(present(band)) then
       obj%u => band%u
       obj%a => band%a
@@ -425,9 +425,9 @@ contains
             case('dos') 
               call obj%dos%add_dos_k(ik, isl)
               call obj%dos%add_dos_local_k(ik, isl, v_k)
-             case('mae') 
-              call obj%mae%add_mae_k(ik, isl,obj%mae%Eref)
-              call obj%mae%add_mae_local_k(ik, isl, v_k,obj%mae%Eref)  
+             case('mft') 
+              call obj%mft%add_mft_k(ik, isl,obj%mft%Eref)
+              call obj%mft%add_mft_local_k(ik, isl, v_k,obj%mft%Eref)  
             case('band') 
               if(TRIM(obj%band%proj)=='site') then
                 call obj%band%save_proj_band_site(ik, isl, v_k)
