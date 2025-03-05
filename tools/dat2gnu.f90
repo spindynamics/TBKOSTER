@@ -1,5 +1,5 @@
  !  TBKOSTER
-    PROGRAM BUILD_KPOINTS
+    PROGRAM DAT2GNU
     implicit none
     real(8),dimension(3) :: k
     real(8),dimension(0:3) :: w

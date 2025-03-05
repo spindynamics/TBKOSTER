@@ -970,7 +970,6 @@ contains
       real(rp), dimension(3) :: om_tot, v_sph
       real(rp) :: om_r_tot
 
-      !write(output_unit,*) "====> Entering write_mulliken_charge_analysis"
 
       if (present(unit)) then
          unit_rt = unit

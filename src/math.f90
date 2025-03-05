@@ -98,6 +98,8 @@ module math_mod
   !> Pauli matrix \f$ \sigma_z \f$
   complex(rp), dimension(2,2), parameter :: sigma_z &
     = reshape((/1.0_rp,0.0_rp,0.0_rp,-1.0_rp/), (/2,2/))
+  !> Definition of the orbital moment matrices in the real orbitals 
+  !> s, px, py, pz, dxy, dyz, dxz, dx2-y2, dz2: (9x9) matrix
   complex(rp), dimension(9,9), parameter :: L_x &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -108,7 +110,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,sqrt_three,0.0_rp,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
   complex(rp), dimension(9,9), parameter :: L_y &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -119,7 +121,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,sqrt_three, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-sqrt_three,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
   complex(rp), dimension(9,9), parameter :: L_z &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -130,7 +132,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,-2.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, 0.0_rp,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
 
 contains
   !> Create vector of all zeros

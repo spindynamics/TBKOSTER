@@ -31,7 +31,7 @@
 ! The fact that you are presently reading this means that you have had
 ! knowledge of the CeciLL license and that you accept its terms.
 !
-!  bands.f90
+!  pdos.f90
 !  TBKOSTER
 PROGRAM pdos
   USE, INTRINSIC :: iso_fortran_env, ONLY: output_unit

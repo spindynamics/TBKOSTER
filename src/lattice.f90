@@ -309,9 +309,9 @@ contains
         v = obj%v * obj%u%convert_length('from','hau')
         do iv=1,3
           write(unit_rt,'(a)') ' v(' // int2str(iv) // ',:) = ' &
-           // real2str(v(iv,1)) // ', ' &
-           // real2str(v(iv,2)) // ', ' &
-           // real2str(v(iv,3))
+           // real2str(v(iv,1)/obj%v_factor) // ', ' &
+           // real2str(v(iv,2)/obj%v_factor) // ', ' &
+           // real2str(v(iv,3)/obj%v_factor)
         end do
         do iv=1,3
           write(unit_rt,'(a)') ' vrec(' // int2str(iv) // ',:) = ' &

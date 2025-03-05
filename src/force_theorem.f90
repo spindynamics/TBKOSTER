@@ -362,12 +362,15 @@ contains
     integer,intent(in) :: nxa
     real(rp),dimension(nxa**2,2) :: x
     real(rp) :: theta,phi
+    real(rp) :: theta_max,phi_max
     integer :: ix,ixa,jxa
+    theta_max=180_rp
+    phi_max=360_rp
       ix=1
       do ixa=0,nxa-1
       do jxa=0,nxa-1
-        theta= ixa*180_rp/nxa
-        phi= jxa*360_rp/nxa
+        theta= ixa*theta_max/(nxa-1)
+        phi= jxa*phi_max/(nxa-1)
         x(ix,:) = (/theta,phi/)
         ix = ix+1
       end do
