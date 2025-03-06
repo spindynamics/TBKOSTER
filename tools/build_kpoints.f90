@@ -3,7 +3,7 @@
 ! Cyrille Barreteau <mailto:cyrille.barreteau@cea.fr>,
 ! Pascal Thibaudeau <mailto:pascal.thibaudeau@cea.fr>.
 !
-! This software is a computer program whose purpose is DyNaMol.
+! This software is a computer program whose purpose is TBKOSTER.
 !
 ! This software is governed by the CeCILL license under French law and
 ! abiding by the rules of distribution of free software. You can use,
@@ -33,103 +33,98 @@
 !
 !  build_kpoints.f90
 !  TBKOSTER
-    PROGRAM BUILD_KPOINTS
-    use precision_mod, only: rp
-    implicit none
-	integer,dimension(3) :: gx
-    real(rp), dimension(:,:) , allocatable :: x
-	real(rp), dimension(:)   , allocatable :: w
-    real(rp):: w_cumul,v_factor,size
-    integer :: ix,nx
-          
-	 write(*,*) 'enter nkx, nky, nkz :'
-	 read(*,*) gx(1),gx(2),gx(3)
-	 
-	 write(*,*) 'enter v_factor (celldm) :'
-	 read(*,*) v_factor	 
+program build_kpoints
+   use precision_mod, only: rp
+   implicit none
+   integer, dimension(3) :: gx
+   real(rp), dimension(:, :), allocatable :: x
+   real(rp), dimension(:), allocatable :: w
+   real(rp) :: w_cumul, v_factor, size
+   integer :: ix, nx
 
-	 write(*,*) 'enter the size of the kmesh:'
-	 read(*,*) size 	 
-	 
-	 nx=gx(1)*gx(2)*gx(3)
-	 write(*,*)
-	 write(*,*) 'number of kpoints : ', nx
-	 
-	 
-	 allocate(w(nx))
-	 w(:)=1.0_rp/nx
-	  
-    x=build_kmesh(gx) 
-	do ix=1,nx
-	 x(ix,:)=size*x(ix,:)/v_factor
-	end do
+   write (*, *) 'enter nkx, nky, nkz :'
+   read (*, *) gx(1), gx(2), gx(3)
 
-	call write_kmesh(x,w,nx)
-	
-  contains
-  
-  function build_kmesh(gx) result(x)
-    use precision_mod
-    integer,dimension(3),intent(in) :: gx
-    real(rp),dimension(:,:), allocatable :: x
-    integer :: ix,igx1,igx2,igx3
-    real(rp) :: x1,x2,x3
+   write (*, *) 'enter v_factor (celldm) :'
+   read (*, *) v_factor
 
-   ! if (size(x,1)/=product(gx)) then
-    !    write(*,*) 'size of x incompatible'
-    !    stop
-    !endif
-    allocate(x(product(gx),3))
+   write (*, *) 'enter the size of the kmesh:'
+   read (*, *) size
 
-    ix = 1
-    do igx1=1,gx(1)
-      x1 = (2*igx1-gx(1)-1.0_rp)/(2.0_rp*gx(1))
-      do igx2=1,gx(2)
-        x2 = (2*igx2-gx(2)-1.0_rp)/(2.0_rp*gx(2))
-        do igx3=1,gx(3)
-		  x3 = (2*igx3-gx(3)-1.0_rp)/(2.0_rp*gx(3))
-          x(ix,:) = (/x1,x2,x3/)
-          ix = ix+1
-        end do
+   nx = gx(1)*gx(2)*gx(3)
+   write (*, *)
+   write (*, *) 'number of kpoints : ', nx
+
+   allocate (w(nx))
+   w(:) = 1.0_rp/nx
+
+   x = build_kmesh(gx)
+   do ix = 1, nx
+      x(ix, :) = size*x(ix, :)/v_factor
+   end do
+
+   call write_kmesh(x, w, nx)
+
+contains
+
+   function build_kmesh(gx) result(x)
+      use precision_mod
+      integer, dimension(3), intent(in) :: gx
+      real(rp), dimension(:, :), allocatable :: x
+      integer :: ix, igx1, igx2, igx3
+      real(rp) :: x1, x2, x3
+
+      ! if (size(x,1)/=product(gx)) then
+      !    write(*,*) 'size of x incompatible'
+      !    stop
+      !endif
+      allocate (x(product(gx), 3))
+
+      ix = 1
+      do igx1 = 1, gx(1)
+         x1 = (2*igx1 - gx(1) - 1.0_rp)/(2.0_rp*gx(1))
+         do igx2 = 1, gx(2)
+            x2 = (2*igx2 - gx(2) - 1.0_rp)/(2.0_rp*gx(2))
+            do igx3 = 1, gx(3)
+               x3 = (2*igx3 - gx(3) - 1.0_rp)/(2.0_rp*gx(3))
+               x(ix, :) = (/x1, x2, x3/)
+               ix = ix + 1
+            end do
+         end do
       end do
-    end do
-  end function build_kmesh
+   end function build_kmesh
 
    !> Write property (default: see source code) in text format to unit
-  !> (default: 10), if it's a file its name is set to file (default:
-  !> 'out_mesh.txt'), if tag (default: .true.) the namelist opening and closing
-  !> tags are written
-  subroutine write_kmesh(x,w,nx)
-	use string_mod, only:  int2str, real2str
-	integer, intent(in):: nx
-	real(rp),intent(in) :: x(nx,3), w(nx)
-    ! Local variables
-	integer, parameter:: unit_mesh=10
-    integer :: ip, ix, ixs 
-    character(len=*), parameter :: file_kmesh = 'in_mesh.txt'
-	character(len=9), parameter:: x_coord='cartesian'
+   !> (default: 10), if it's a file its name is set to file (default:
+   !> 'out_mesh.txt'), if tag (default: .true.) the namelist opening and closing
+   !> tags are written
+   subroutine write_kmesh(x, w, nx)
+      use string_mod, only: int2str, real2str
+      integer, intent(in):: nx
+      real(rp), intent(in) :: x(nx, 3), w(nx)
+      ! Local variables
+      integer, parameter :: unit_mesh = 10
+      integer :: ip, ix, ixs
+      character(len=*), parameter :: file_kmesh = 'in_mesh.txt'
+      character(len=9), parameter :: x_coord = 'cartesian'
 
-      open(unit=unit_mesh,file=file_kmesh,action='write')
-      write(unit_mesh,'(a)') '&mesh'
-      write(unit_mesh,'(a)') ' type = ''list'''
-      write(unit_mesh,'(a)') ' nx = ' // int2str(nx)
-      write(unit_mesh,'(a)') ' x_coord = ''' // trim(x_coord) // ''''
-        do ix=1,nx
-          write(unit_mesh,'(a)') ' x(' // int2str(ix) // ',:) = ' &
-           // real2str(x(ix,1)) // ', ' &
-           // real2str(x(ix,2)) // ', ' &
-           // real2str(x(ix,3))
-        end do
-        do ix=1,nx
-          write(unit_mesh,'(a)') ' w(' // int2str(ix) // ') = ' // real2str(w(ix))
-        end do
-        write(unit_mesh,'(a)') '/'
-      close(unit_mesh)
-    !deallocate(file_rt,property_rt)
-  end subroutine write_kmesh
+      open (unit=unit_mesh, file=file_kmesh, action='write')
+      write (unit_mesh, '(a)') '&mesh'
+      write (unit_mesh, '(a)') ' type = ''list'''
+      write (unit_mesh, '(a)') ' nx = '//int2str(nx)
+      write (unit_mesh, '(a)') ' x_coord = '''//trim(x_coord)//''''
+      do ix = 1, nx
+         write (unit_mesh, '(a)') ' x('//int2str(ix)//',:) = ' &
+            //real2str(x(ix, 1))//', ' &
+            //real2str(x(ix, 2))//', ' &
+            //real2str(x(ix, 3))
+      end do
+      do ix = 1, nx
+         write (unit_mesh, '(a)') ' w('//int2str(ix)//') = '//real2str(w(ix))
+      end do
+      write (unit_mesh, '(a)') '/'
+      close (unit_mesh)
+   end subroutine write_kmesh
 
 end program build_kpoints
 
-
-           
-	 

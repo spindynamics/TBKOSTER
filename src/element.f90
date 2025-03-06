@@ -463,12 +463,13 @@ contains
 
   ! Initialize orbitals
   subroutine initialize_o(ne, symbol, no_max, o, os)
+    ! input/output variables
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
-    character(len=1) :: first_c
     integer,intent(in) :: no_max
     integer,dimension(:,:),allocatable,intent(out) :: o
     character(len=3),dimension(:),allocatable,intent(out) :: os
+    ! local variables
     integer :: ie
 
     allocate(o(ne,no_max))
@@ -627,33 +628,31 @@ contains
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case('rn')
         o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
+      case('j','j1','j2')
+        ! TB Model, fake element for Wannier and Model
+        o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
       case default
-  !      first_c=lower(trim(symbol(ie)))
-   !     if(first_c=='j') then
-       ! TB model
-    !      o(ie,1:9) = (/1,2,3,4,5,6,7,8,9/)
-    !    else
-        write(error_unit,*) 'element%parse_symbol(): element symbol ', &
+        write(error_unit,*) 'element%initialize_o parse_symbol(): element symbol ', &
          symbol(ie), ' not known'
         error stop
-    !    endif
       end select
       os(ie) = parse_orbital_to_string(o(ie,:))
     end do
   end subroutine initialize_o
 
   ! Initialize charge-related variables
-  subroutine initialize_q(ne, symbol, name, number, no, no_max, q, q_s, q_p, &
-   q_d, mass)
+  subroutine initialize_q(ne, symbol, name, number, no, no_max, q, q_s, q_p, q_d, mass)
+    ! Input/output variables
     integer,intent(in) :: ne
     character(len=*),dimension(:),intent(in) :: symbol
-    character(len=1) :: first_c
     character(len=sl),dimension(:),allocatable,intent(out) :: name
     integer,dimension(:),allocatable,intent(out) :: number
     integer,dimension(:),allocatable,intent(out) :: no
     integer,intent(out) :: no_max
     real(rp),dimension(:),allocatable,intent(out) :: q, q_s, q_p, q_d
     real(rp),dimension(:),allocatable,intent(out) :: mass
+    ! Local variables
+    character(len=1) :: first_c
     integer :: ie
 
     allocate(name(ne))
@@ -1322,23 +1321,20 @@ contains
         q_p(ie) = 6.0_rp
         q_d(ie) = 10.0_rp
         mass(ie)= 222_rp
+      case('j','j1','j2')
+      ! TB models : Wannier and model : fake symbol
+        name(ie) = 'wanmod'
+        number(ie) = 0
+        no(ie) = 9
+        q(ie)   = 1.0_rp
+        q_s(ie) = 1.0_rp
+        q_p(ie) = 0.0_rp
+        q_d(ie) = 0.0_rp
+        mass(ie)= 0.0_rp
       case default
-  !      first_c=lower(trim(symbol(ie)))
-  !     if(first_c=='j') then
-     ! TB model
-   !     name(ie) = lower(trim(symbol(ie)))
-   !     number(ie) = 0
-   !     no(ie) = 9
-   !     q(ie)   = 1.0_rp
-   !     q_s(ie) = 1.0_rp
-   !     q_p(ie) = 0.0_rp
-   !     q_d(ie) = 0.0_rp
-   !     mass(ie)= 0.0_rp
-   !   else
-        write(error_unit,*) 'element%parse_symbol(): element symbol ', &
-         symbol(ie), 'not known'
-         error stop
-    !  endif
+        write(error_unit,*) 'element%initialize_q parse_symbol(): element symbol ', &
+        symbol(ie), 'not known'
+        error stop
       end select
     end do
     no_max = maxval(no)
@@ -1381,6 +1377,7 @@ contains
     character(len=:),allocatable :: file_rt
     integer :: iostatus
     logical :: isopen
+    character(len=512) :: msg
     ! Namelist variables
     integer :: ne
     character(len=2),dimension(:),allocatable :: symbol
@@ -1422,47 +1419,45 @@ contains
     end if
     if (allocated(symbol)) deallocate(symbol)
     allocate(symbol(0))
-    read(10,nml=element,iostat=iostatus)
+    read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
     deallocate(symbol)
     allocate(symbol(ne))
     rewind(10)
     read(10,nml=element,iostat=iostatus)
     first_c=lower(trim(symbol(1)))
-        if(first_c=='j') then
-          allocate(no(ne),o(ne,0))
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          no_max=maxval(no)
-          deallocate(o)
-          allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
-          allocate(name(ne),number(ne),mass(ne))
-          name(:)='model'
-          number(:)=0
-          mass(:)=0
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          call initialize_lcn(ne,u_lcn,u_lcn_d)
-          call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-          call initialize_so(ne,xi_so_p,xi_so_d)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-        else
-          call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
-          call initialize_o(ne,symbol,no_max,o,os)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-          call initialize_lcn(ne,u_lcn,u_lcn_d)
-          call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-          call initialize_so(ne,xi_so_p,xi_so_d)
-          rewind(10)
-          read(10,nml=element,iostat=iostatus)
-         no_max = maxval(no)
-      endif
+    if(first_c=='j') then
+      allocate(no(ne),o(ne,0))
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max=maxval(no)
+      deallocate(o)
+      allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
+      allocate(name(ne),number(ne),mass(ne))
+      name(:)='model'
+      number(:)=0
+      mass(:)=0
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+    else
+      call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
+      call initialize_o(ne,symbol,no_max,o,os)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max = maxval(no)
+  endif
     ! Charge initialization recipe
     do ie=1,ne
       os(ie) = parse_orbital_to_string(o(ie,:))
-    end do
-    do ie=1,ne
       select case(os(ie))
       case('spd')
         q_d(ie) = q_d(ie)
@@ -1497,6 +1492,7 @@ contains
 
     obj%ne = ne
     call move_alloc(symbol,obj%symbol)
+    !obj%symbol = symbol 
     call move_alloc(name,obj%name)
     call move_alloc(number,obj%number)
     call move_alloc(mass,obj%mass)

@@ -206,7 +206,7 @@ module energy_mod
     procedure :: calculate_delta_en
     procedure :: calculate_en
     procedure :: calculate_en_band
-    procedure :: calculate_en_band_local_k
+    !procedure :: calculate_en_band_local_k
     procedure :: calculate_en_dc_eei
     procedure :: calculate_en_dc_lcn
     procedure :: calculate_en_dc_pen
@@ -309,75 +309,76 @@ contains
     end if
   end subroutine calculate_en_band
 
-  subroutine calculate_en_band_local_k(obj,ik,isl,v_k)
-    ! INPUT
-    class(energy),intent(inout) :: obj
-    integer :: ik,isl
-    complex(rp),intent(in),dimension(2,obj%h%nh,obj%h%nh) :: v_k
-    ! LOCAL
-    integer :: ia,ie,io,l,ispin,jspin,imat_ispin,imat_jspin,imat,jmat,jmat2,nn,q
-    real(rp) :: ffe
+  
+  ! subroutine calculate_en_band_local_k(obj,ik,isl,v_k)
+  !   ! INPUT
+  !   class(energy),intent(inout) :: obj
+  !   integer,intent(in) :: ik,isl
+  !   complex(rp),intent(in),dimension(2,obj%h%nh,obj%h%nh) :: v_k
+  !   ! LOCAL
+  !   integer :: ia,ie,io,l,ispin,jspin,imat_ispin,imat_jspin,imat,jmat,jmat2,nn,q
+  !   real(rp) :: ffe
 
 
-    select case(obj%a%ns)
-    case(1,2)
-      do ia=1,obj%a%na
-        ie = obj%a%ia2ie(ia)
-        do io=1,obj%e%no(ie)
-          imat = obj%h%iaos2ih(ia,io,1)
-          do jmat=1,obj%h%nh
-            jmat2 = isl+(jmat-1)*obj%a%ns
-            nn = ik+(jmat2-1)*obj%k%nx
-            ffe = obj%f_k(nn)*obj%en_k(nn)
-            obj%en_band_local(ia,io,isl) = obj%en_band_local(ia,io,isl) &
-             + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
-             *conjg(v_k(2,imat,jmat)))
-            ffe = ffe - obj%en_f*obj%f_k(nn)
-            obj%en_band_local_f(ia,io,isl) = obj%en_band_local_f(ia,io,isl) &
-             + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
-             *conjg(v_k(2,imat,jmat)))
-          end do
-        end do
-      end do
+  !   select case(obj%a%ns)
+  !   case(1,2)
+  !     do ia=1,obj%a%na
+  !       ie = obj%a%ia2ie(ia)
+  !       do io=1,obj%e%no(ie)
+  !         imat = obj%h%iaos2ih(ia,io,1)
+  !         do jmat=1,obj%h%nh
+  !           jmat2 = isl+(jmat-1)*obj%a%ns
+  !           nn = ik+(jmat2-1)*obj%k%nx
+  !           ffe = obj%f_k(nn)*obj%en_k(nn)
+  !           obj%en_band_local(ia,io,isl) = obj%en_band_local(ia,io,isl) &
+  !            + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
+  !            *conjg(v_k(2,imat,jmat)))
+  !           ffe = ffe - obj%en_f*obj%f_k(nn)
+  !           obj%en_band_local_f(ia,io,isl) = obj%en_band_local_f(ia,io,isl) &
+  !            + ffe*obj%k%w(ik)*obj%a%g_s*real(v_k(1,imat,jmat) &
+  !            *conjg(v_k(2,imat,jmat)))
+  !         end do
+  !       end do
+  !     end do
 
-    case(4)
-      do ia=1,obj%a%na
-        ie = obj%a%ia2ie(ia)
-        do io=1,obj%e%no(ie)
-          do ispin=1,2
+  !   case(4)
+  !     do ia=1,obj%a%na
+  !       ie = obj%a%ia2ie(ia)
+  !       do io=1,obj%e%no(ie)
+  !         do ispin=1,2
 
-            imat_ispin = obj%h%iaos2ih(ia,io,ispin)
+  !           imat_ispin = obj%h%iaos2ih(ia,io,ispin)
             
-            do jspin=1,2
+  !           do jspin=1,2
 
-              imat_jspin = obj%h%iaos2ih(ia,io,jspin)
+  !             imat_jspin = obj%h%iaos2ih(ia,io,jspin)
 
-              q = obj%a%iss2is(ispin,jspin)
+  !             q = obj%a%iss2is(ispin,jspin)
 
-              do jmat=1,obj%h%nh
-                nn = ik+(jmat-1)*obj%k%nx
+  !             do jmat=1,obj%h%nh
+  !               nn = ik+(jmat-1)*obj%k%nx
 
-                ffe = obj%f_k(nn)*obj%en_k(nn)
+  !               ffe = obj%f_k(nn)*obj%en_k(nn)
 
-                obj%en_band_local(ia,io,q) = obj%en_band_local(ia,io,q) &
-                 + ffe*obj%k%w(ik) &
-                 *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat) &
-                 + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
+  !               obj%en_band_local(ia,io,q) = obj%en_band_local(ia,io,q) &
+  !                + ffe*obj%k%w(ik) &
+  !                *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat) &
+  !                + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
 
-                ffe = ffe-obj%f_k(nn)*obj%en_f
+  !               ffe = ffe-obj%f_k(nn)*obj%en_f
 
-                obj%en_band_local_f(ia,io,q) = obj%en_band_local_f(ia,io,q) &
-                 + ffe*obj%k%w(ik) &
-                 *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat)&
-                 + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
-              end do
+  !               obj%en_band_local_f(ia,io,q) = obj%en_band_local_f(ia,io,q) &
+  !                + ffe*obj%k%w(ik) &
+  !                *real(conjg(v_k(1,imat_jspin,jmat))*v_k(2,imat_ispin,jmat)&
+  !                + v_k(1,imat_ispin,jmat)*conjg(v_k(2,imat_jspin,jmat)))/2
+  !             end do
 
-            end do
-          end do
-        end do
-      end do
-    end select
-  end subroutine calculate_en_band_local_k
+  !           end do
+  !         end do
+  !       end do
+  !     end do
+  !   end select
+  ! end subroutine calculate_en_band_local_k
 
   subroutine calculate_en_dc_eei(obj)
     ! INPUT
@@ -1007,8 +1008,8 @@ contains
 
     if (to_print) then
       to_print = .false.
-      do i=0,obj%k%nx*obj%h%nh*obj%a%nsl
-        write(*,'(a,i3,a,E22.16,a,i3,a,E22.16)') &
+      do i=0,(obj%k%nx)*(obj%h%nh)*(obj%a%nsl)
+        write(*,'(a,i3,a,E23.16,a,i3,a,E23.16)') &
         ' en(',i,')=', obj%en_k(i),&
         ' en(',obj%indx(i),')=', obj%en_k(obj%indx(i))
       end do

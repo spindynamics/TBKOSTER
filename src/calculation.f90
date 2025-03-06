@@ -995,6 +995,7 @@ contains
 
     ! Write Fermi level en_f and total energy en_out
     call energy_obj%write_txt_formatted(property=[character(len=sl) :: 'en_f','en_out'])
+    
   end subroutine process_scf
 
   subroutine process_sd(obj)

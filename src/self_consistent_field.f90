@@ -452,6 +452,7 @@ contains
 !$OMP END PARALLEL DO
 #endif
     if (allocated(v_k)) deallocate(v_k)
+    if (allocated(v_k)) deallocate(v_k)
     call system_clock(icount1,icount_rate,icount_max)
     time = real((icount1-icount0))/real(icount_rate)
     icount0 = icount1
@@ -657,6 +658,7 @@ contains
 subroutine update_m(obj)
   use math_mod, only:  cart2sph
   class(self_consistent_field),intent(inout) :: obj
+  ! LOCAL
   ! LOCAL
   integer :: ia
   real(rp) :: m_s, m_p, m_d, m

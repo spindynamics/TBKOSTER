@@ -219,6 +219,7 @@ contains
         real(rp) :: dt ! time increment
         real(rp), dimension(3) :: old_forces ! forces before update 
 
+        call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_0.txt')
         na = obj%f%a_tb%na
         dt = obj%dt ! already converted in hau unit
 
@@ -227,9 +228,7 @@ contains
         t = obj%t_i
 
         ! do a SCF calculation do get the forces for current positions
-        do ia1=1,na
-            obj%f%f_at(ia1,:)=0.0_rp
-        end do
+        obj%f%f_at=0.0_rp
         call obj%f%scf%run(unit)
         call obj%f%calculate_forces()
 
@@ -250,6 +249,8 @@ contains
                 write(unit,'(a,F15.8)') ' time = ',t * obj%f%u%convert_time('from','hau')
                 call obj%f%scf%a%write_txt_formatted(file='',property= &
                  [character(len=sl) :: 'r','p'],tag=.false.,unit=unit,access='append')
+                 call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_' // int2str(it) &
+                 // '.txt')
             end if
 
             call obj%f%scf%a%write_txt_formatted(file='out_md.txt',property= &
@@ -335,6 +336,8 @@ contains
                 write(unit,'(a,F15.8)') ' time = ',t * obj%f%u%convert_time('from','hau')
                 call obj%f%scf%a%write_txt_formatted(file='',property= &
                  [character(len=sl) :: 'r','p'],tag=.false.,unit=unit,access='append')
+                 call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_' // int2str(it) &
+                 // '.txt')
             end if
 
             call obj%f%scf%a%write_txt_formatted(file='out_md.txt',property= &
