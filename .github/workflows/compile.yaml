@@ -22,6 +22,6 @@ jobs:
         with:
           name: Binary for ubuntu
           path: |
-            build/build/bin/*.x
+            build/bin/*.x
           retention-days: 5
       - run: echo "🍏 This job's status is ${{ job.status }}."
