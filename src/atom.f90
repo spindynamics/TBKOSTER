@@ -422,6 +422,7 @@ contains
       end do
     end do
 
+
     call move_alloc(nn,obj%nn)
     call move_alloc(ian2ia,obj%ian2ia)
     call move_alloc(iapbc2in,obj%iapbc2in)

@@ -299,7 +299,9 @@ contains
         ! implementation follows from : 
         ! A simple and effective Verlet-type algorithm for simulating Langevin dynamics 
         ! https://www.tandfonline.com/doi/abs/10.1080/00268976.2012.760055
-        call obj%f%scf%a%write_txt_formatted(file='md/out_atom_tb_0.txt')
+ ! Write the initial magnetizations of the atoms
+        call obj%f%a_tb%write_txt_formatted(file='md/out_atom_tb_0.txt')
+
         na = obj%f%a_tb%na
         dt = obj%dt ! already converted in hau unit
         gamma = obj%gamma ! already converted in hau unit
@@ -313,6 +315,7 @@ contains
         t = obj%t_i
 
         ! do a SCF calculation do get the forces for current positions
+        if(it==1) call obj%f%scf%q%calculate_charge_in()
         call obj%f%scf%run(unit)
         call obj%f%calculate_forces()
 
@@ -355,30 +358,45 @@ contains
                 force_rand(1) = D*(-1.0_rp+2.0_rp*rand())
                 force_rand(2) = D*(-1.0_rp+2.0_rp*rand())
                 force_rand(3) = D*(-1.0_rp+2.0_rp*rand())
-
+        
                 ! update the positions
                 obj%f%a_tb%r(ia,:)=old_positions(:)+&
                                    (b*obj%f%a_tb%p(ia,:)*dt/mass(ia))+&
                                    (b*0.5_rp*old_forces(:)*dt*dt/mass(ia))+&
                                    0.5_rp*b*dt*dt*force_rand(:)/mass(ia)
+                
+                ! do a SCF calculation do get the new forces
+                !do ia1=1,na
+                !    obj%f%f_at(ia1,:)=0.0_rp
+                !end do
+!                call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max)
+!                call obj%f%scf%q%calculate_charge_in()
+!                call obj%f%scf%h%calculate_h_r()
+!                call obj%f%scf%h%calculate_s_r()
+!                call obj%f%scf%run(unit)
+!                call obj%f%calculate_forces()
+                !print *, "f_new(",ia,")=",obj%f%f_at(ia,:)
 
                 ! update the impulsions
                 obj%f%a_tb%p(ia,:)=obj%f%a_tb%p(ia,:)+&
                                    0.5_rp*(obj%f%f_at(ia,:)+old_forces(:))*dt-&
                                    gamma*(obj%f%a_tb%r(ia,:)-old_positions(:))+&
                                    force_rand(:)*dt
+                
             end do
-            ! do a SCF calculation do get the new forces
-            ! first, set all the forces to zero
-            obj%f%f_at=0.0_rp
-
+                do ia1=1,na
+                    obj%f%f_at(ia1,:)=0.0_rp
+                end do
             ! Update iteration step and time counter
             call obj%f%a_tb%calculate_neighbours(obj%f%e_tb%r_c_max,obj%f%e_tb%tb_type)
-            call obj%f%scf%q%calculate_charge_in()
             call obj%f%scf%h%calculate_h_r()
             call obj%f%scf%h%calculate_s_r()
             call obj%f%scf%run(unit)
             call obj%f%calculate_forces()    
+! Write the instantaneous positions of the atoms
+            call obj%f%scf%update_m()  
+            call obj%f%a_tb%write_txt_formatted(file='md/out_atom_tb_' // int2str(it) &
+       // '.txt')
             it = it + 1
             t = t + obj%dt
             !print *,"====="
