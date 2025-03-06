@@ -437,7 +437,7 @@ contains
     do ia=1,obj%na
       ie = obj%ia2ie(ia)
       obj%nel = obj%nel + obj%e%q(ie)
-    enddo
+    end do
   end subroutine calculate_nel
 
   ! subroutine calculate_ns(obj)
@@ -480,7 +480,7 @@ contains
       write(error_unit,*) 'atom%check_listing(): listing must be one of: &
        &''by_atom'', ''by_tag'''
       error stop
-    endif
+    end if
   end subroutine check_listing
 
   !> Check the validity of the number of tags
@@ -491,7 +491,7 @@ contains
       write(error_unit,*) 'atom%check_ntag(): ntag must verify &
        &1 <= atom%ntag <= atom%na'
       error stop
-    endif
+    end if
   end subroutine check_ntag
 
   !> Check the validity of the position coordinates
@@ -502,7 +502,7 @@ contains
       write(error_unit,*) 'atom%check_r_coord(): r_coord must be one of: &
        &''cartesian'', ''direct'''
       error stop
-    endif
+    end if
   end subroutine check_r_coord
 
   subroutine check_direction(direction)
@@ -513,7 +513,7 @@ contains
       write(error_unit,*) 'units%check_direction(): direction must be one of: &
        &''from'', ''to'''
       error stop
-    endif
+    end if
   end subroutine check_direction
 
   !> Check the validity of the magnetization coordinates
@@ -524,7 +524,7 @@ contains
       write(error_unit,*) 'atom%check_m_coord(): m_coord must be one of: &
        &''cartesian'', ''spherical'''
       error stop
-    endif
+    end if
   end subroutine check_m_coord
 
   !> Check the validity of the spin polarization
@@ -538,7 +538,7 @@ contains
   !      &spin_polarization must be one of: ''unpolarized'', ''collinear'', &
   !      &''noncollinear'''
   !     error stop
-  !   endif
+  !   end if
   ! end subroutine check_spin_polarization
 
   !> Check the validity of the strides between tags
@@ -550,7 +550,7 @@ contains
       write(error_unit,*) 'atom%check_stag(): stag must verify &
        &sum(atom%stag) == atom%na'
       error stop
-    endif
+    end if
   end subroutine check_stag
 
   subroutine convert_coordinates(obj,direction,m_coord)
@@ -649,7 +649,7 @@ contains
       ia2 = ia1+stag(itag)-1
       ia2ie(ia1:ia2) = spread(itag2ie(itag),1,stag(itag))
       ia1 = ia2+1
-    enddo
+    end do
   end subroutine initialize_ia2ie
 
   subroutine initialize_pbc(pbc,k_spiral)
@@ -687,7 +687,7 @@ contains
       stag = na
     elseif(ntag == na) then
       stag = 1
-    endif
+    end if
   end subroutine initialize_tag
 
   !> Read object in text format from file (default: 'in_atom.txt')
@@ -723,7 +723,7 @@ contains
       file_rt = trim(file)
     else
       file_rt = 'in_atom.txt'
-    endif
+    end if
 
     inquire(unit=10,opened=isopen)
     if (isopen) then
@@ -731,11 +731,11 @@ contains
       error stop
     else
       open(unit=10,file=file_rt,action='read',iostat=iostatus,status='old')
-    endif
+    end if
     if(iostatus /= 0) then
       write(error_unit,*) 'atom%read_txt(): file ', file_rt, ' not found'
       error stop
-    endif
+    end if
 
     call initialize_pbc(pbc,k_spiral)
     r_coord = 'direct'
@@ -764,7 +764,7 @@ contains
     else !if(trim(r_coord) == 'direct') then
       r_coord = 'cartesian'
       r = obj%l_r%dir2cart(r)
-    endif
+    end if
     m_coord = trim(lower(m_coord))
     call check_m_coord(m_coord)
     m_listing = trim(lower(m_listing))
@@ -775,8 +775,8 @@ contains
         ia1 = ia2-stag(itag)+1
         m(ia1:ia2,:) = spread(m(itag,:),1,stag(itag))
         ia2 = ia1-1
-      enddo
-    endif
+      end do
+    end if
     lambda_pen_listing = trim(lower(lambda_pen_listing))
     call check_listing(lambda_pen_listing)
     if(lambda_pen_listing == 'by_tag') then
@@ -785,8 +785,8 @@ contains
         ia1 = ia2-stag(itag)+1
         lambda_pen(ia1:ia2) = spread(lambda_pen(itag),1,stag(itag))
         ia2 = ia1-1
-      enddo
-    endif
+      end do
+    end if
 
     obj%ns = ns
     obj%na = na
@@ -804,12 +804,12 @@ contains
     call move_alloc(m_pen,obj%m_pen)
     if ((ns == 4).and.(m_coord == 'spherical')) then
       obj%m(:,2:3) = obj%m(:,2:3) * deg2rad
-    endif
+    end if
 
     obj%m_coord = 'spherical' ! internal representation is spherical
     if ((ns == 4).and.(m_coord == 'cartesian')) then
       call convert_coordinates(obj,'from','cartesian')
-    endif
+    end if
     obj%m_pen=obj%m
     lambda_pen = lambda_pen * obj%u%convert_energy('to','hau')
     call move_alloc(lambda_pen,obj%lambda_pen)
@@ -843,16 +843,16 @@ contains
       file_rt = file
     else
       file_rt = 'out_lammps.lammpstrj'
-    endif
+    end if
     if(present(unit)) then
       unit_rt = unit
     else
       unit_rt = 10
-    endif
+    end if
 
     if(.not. present(unit)) then
       open(unit=unit_rt,file=file_rt,action='write',position='append')
-    endif
+    end if
 
     write(unit_rt,'(a)') 'ITEM: TIMESTEP'
     write(unit_rt,'(a)') real2str(t*obj%u%convert_time('from','hau'))
@@ -907,7 +907,7 @@ contains
     call TBKOSTER_flush(unit_rt)
     if(.not. present(unit)) then
       close(unit_rt)
-    endif
+    end if
   end subroutine write_lammps
 
   !> Write object in text format to unit (default: 10), if it's a file
@@ -937,16 +937,16 @@ contains
       file_rt = file
     else
       file_rt = 'out_atom.txt'
-    endif
+    end if
     if(present(unit)) then
       unit_rt = unit
     else
       unit_rt = 10
-    endif
+    end if
 
     if(.not. present(unit)) then
       open(unit=unit_rt,file=file_rt,action='write')
-    endif
+    end if
 
     ns = obj%ns
     na = obj%na
@@ -960,13 +960,13 @@ contains
       r = obj%r * obj%u%convert_length('from','hau')
     else
       r = obj%r
-    endif
+    end if
     p = obj%p
     m_coord = obj%m_coord
     m = obj%m
     if((obj%ns == 4).and.(obj%m_coord == 'spherical')) then
       m(:,2:3) = m(:,2:3) * rad2deg
-    endif
+    end if
 
     lambda_pen = obj%lambda_pen * obj%u%convert_energy('from','hau')
 
@@ -1007,33 +1007,33 @@ contains
       file_rt = file
     else
       file_rt = 'out_atom.txt'
-    endif
+    end if
     if(present(property)) then
       property_rt = property
     else
       property_rt = property_list
-    endif
+    end if
     if(present(tag)) then
       tag_rt = tag
     else
       tag_rt = .true.
-    endif
+    end if
     if(present(unit)) then
       unit_rt = unit
     else
       unit_rt = 10
-    endif
+    end if
 
     if(.not. present(unit)) then
       if (present(access)) then
         open(unit=unit_rt,file=file_rt,action='write',access=access)
       else
         open(unit=unit_rt,file=file_rt,action='write')
-      endif
-    endif
+      end if
+    end if
     if(tag_rt) then
       write(unit_rt,'(a)') '&atom'
-    endif
+    end if
 
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
@@ -1047,17 +1047,17 @@ contains
         do itag=1,obj%ntag
           write(unit_rt,'(a)') ' stag(' // int2str(itag) // ') = ' &
            // int2str(obj%stag(itag))
-        enddo
+        end do
       case('tag')
         do itag=1,obj%ntag
           write(unit_rt,'(a)') ' tag(' // int2str(itag) // ') = ''' &
            // trim(obj%tag(itag)) // ''''
-        enddo
+        end do
       case('ia2ie')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' ia2ie(' // int2str(ia) // ') = ' &
            // int2str(obj%ia2ie(ia))
-        enddo
+        end do
       case('nel')
         write(unit_rt,'(a)') ' nel = ' // real2str(obj%nel)
       case('pbc')
@@ -1080,31 +1080,31 @@ contains
             r = obj%r * obj%u%convert_length('from','hau')
           else
             r = obj%r
-          endif
+          end if
           write(unit_rt,'(a)') ' r(' // int2str(ia) // ',:) = ' &
            // fixedreal2str(r(ia,1)) // ', ' &
            // fixedreal2str(r(ia,2)) // ', ' &
            // fixedreal2str(r(ia,3))
-        enddo
+        end do
       case('p')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' p(' // int2str(ia) // ',:) = ' &
            // real2str(obj%p(ia,1)) // ', ' &
            // real2str(obj%p(ia,2)) // ', ' &
            // real2str(obj%p(ia,3))
-        enddo
+        end do
       case('m')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' m(' // int2str(ia) // ',:) = ' &
             // real2str(obj%m(ia,1)) // ', ' &
             // real2str(obj%m(ia,2) * rad2deg) // ', ' &
             // real2str(obj%m(ia,3) * rad2deg)
-        enddo
+        end do
       case('nn')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' nn(' // int2str(ia) // ') = ' &
            // int2str(obj%nn(ia))
-        enddo
+        end do
       case('nn_max')
         write(unit_rt,'(a)') ' nn_max = ' // int2str(obj%nn_max)
       case('ian2ia')
@@ -1112,8 +1112,8 @@ contains
           do in=1,obj%nn(ia)
             write(unit_rt,'(a)') ' ian2ia(' // int2str(ia) // ',' &
              // int2str(in) // ') = ' // int2str(obj%ian2ia(ia,in))
-          enddo
-        enddo
+          end do
+        end do
       case('rn')
         rn = obj%rn * obj%u%convert_length('from','hau')
         do ia=1,obj%na
@@ -1123,27 +1123,27 @@ contains
              // real2str(rn(ia,in,1)) // ', ' &
              // real2str(rn(ia,in,2)) // ', ' &
              // real2str(rn(ia,in,3))
-          enddo
-        enddo
+          end do
+        end do
       case('lambda_pen')
         lambda_pen = obj%lambda_pen * obj%u%convert_energy('from','hau')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' lambda_pen(' // int2str(ia) // ') = ' &
            // real2str(lambda_pen(ia))
-        enddo
+        end do
       case('b_pen')
         do ia=1,obj%na
           write(unit_rt,'(a)') ' b_pen(' // int2str(ia) // ',:) = ' &
            // real2str(obj%b_pen(ia,1)) // ', ' &
            // real2str(obj%b_pen(ia,2)) // ', ' &
            // real2str(obj%b_pen(ia,3))
-        enddo
+        end do
       end select
-    enddo
+    end do
 
     if(tag_rt) then
       write(unit_rt,'(a)') ' /'
-    endif
+    end if
     if(.not. present(unit)) then
       call TBKOSTER_flush(unit_rt)
       close(unit_rt)
@@ -1162,22 +1162,22 @@ contains
     integer,intent(in),optional :: unit
     integer                     :: unit_rt
     integer :: ia
-    real(rp),dimension(3) :: m_cart
+    real(rp),dimension(3) :: m_cart,local_m
 
     if(present(file)) then
       file_rt = file
     else
       file_rt = 'out_atom.xyz'
-    endif
+    end if
     if(present(unit)) then
       unit_rt = unit
     else
       unit_rt = 10
-    endif
+    end if
 
     if(.not. present(unit)) then
       open(unit=unit_rt,file=file_rt,action='write')
-    endif
+    end if
 
     ! Number of atoms
     write(unit_rt,'(a)') int2str(obj%na)
@@ -1195,7 +1195,9 @@ contains
      // 'Properties=species:S:1:pos:R:3:dipoles:R:3'
     ! Atoms
     do ia=1,obj%na
-      m_cart = sph2cart(obj%m(ia,:))
+      ! temporary array to avoid a compiler warning "An array temporary was created"
+      local_m = obj%m(ia,:)
+      m_cart = sph2cart(local_m)
       write(unit_rt,'(a)') obj%e%symbol(obj%ia2ie(ia)) // ' ' &
        // real2str(obj%r(ia,1)* obj%u%convert_length('from','hau')) // ' ' &
        // real2str(obj%r(ia,2)* obj%u%convert_length('from','hau')) // ' ' &
@@ -1203,7 +1205,7 @@ contains
        // real2str(m_cart(1)) // ' ' &
        // real2str(m_cart(2)) // ' ' &
        // real2str(m_cart(3))
-    enddo
+    end do
 
     if(.not. present(unit)) then
       call TBKOSTER_flush(unit_rt)
