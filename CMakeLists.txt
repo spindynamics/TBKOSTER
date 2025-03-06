@@ -45,7 +45,6 @@ opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
 
-
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
 foreach(infileName ${inFiles})
