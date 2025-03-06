@@ -470,7 +470,6 @@ contains
     integer,dimension(:,:),allocatable,intent(out) :: o
     character(len=3),dimension(:),allocatable,intent(out) :: os
     ! local variables
-    character(len=1) :: first_c
     integer :: ie
 
     allocate(o(ne,no_max))
@@ -1398,7 +1397,7 @@ contains
      i_stoner_d, b, j_dd, u_dd, xi_so_p, xi_so_d, mass
     ! Local variables
     integer :: ie
-    !character(len=1) :: first_c
+    character(len=1) :: first_c
 
     if(present(file)) then
       file_rt = trim(file)
@@ -1412,77 +1411,50 @@ contains
       error stop
     else
       open(unit=10,file=file_rt,action='read',iostat=iostatus,status='old')
-      if(iostatus /= 0) then
-        write(error_unit,*) 'element%read_txt(): file ', file_rt, ' not found'
-        error stop
-      end if
     end if
 
+    if(iostatus /= 0) then
+      write(error_unit,*) 'element%read_txt(): file ', file_rt, ' not found'
+      error stop
+    end if
+    if (allocated(symbol)) deallocate(symbol)
     allocate(symbol(0))
     read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
     deallocate(symbol)
     allocate(symbol(ne))
-    allocate(no(0))
-    rewind(unit=10)
-    read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
-    deallocate(no)
-    call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
-    call initialize_o(ne,symbol,no_max,o,os)
-    call initialize_lcn(ne,u_lcn,u_lcn_d)
-    call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-    call initialize_so(ne,xi_so_p,xi_so_d)
-    rewind(unit=10)
-    read(10,nml=element,iostat=iostatus,iomsg=msg)
-    no_max = maxval(no)
-
-    ! allocate(symbol(1))
-    ! allocate(u_lcn(1))
-
-    ! read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
-    ! write(*,*) "ne=",ne
-    ! if(iostatus /= 0) then
-    !   write(error_unit,*) 'element%read_txt(): Error in namelist. ',trim(msg)
-    !   error stop
-    ! end if
-    ! if (allocated(symbol)) deallocate(symbol)
-    ! allocate(symbol(ne))
-    ! if (allocated(u_lcn)) deallocate(u_lcn)
-    ! allocate(u_lcn(ne))
-
-    ! rewind(unit=10)
-    ! read(10,nml=element,iostat=iostatus,iomsg=msg)
-    ! first_c=lower(trim(symbol(1)))
-    ! if(first_c=='j') then
-    !   allocate(no(ne),o(ne,0))
-    !   rewind(10)
-    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
-    !   no_max=maxval(no)
-    !   deallocate(o)
-    !   allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
-    !   allocate(name(ne),number(ne),mass(ne))
-    !   name(:)='model'
-    !   number(:)=0
-    !   mass(:)=0
-    !   rewind(10)
-    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
-    !   call initialize_lcn(ne,u_lcn,u_lcn_d)
-    !   call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-    !   call initialize_so(ne,xi_so_p,xi_so_d)
-    !   rewind(10)
-    !   read(10,nml=element,iostat=iostatus,iomsg=msg)
-    ! else
-    !   call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
-    !   call initialize_o(ne,symbol,no_max,o,os)
-    !   rewind(unit=10)
-    !   read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
-    !   call initialize_lcn(ne,u_lcn,u_lcn_d)
-    !   call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
-    !   call initialize_so(ne,xi_so_p,xi_so_d)
-    !   rewind(unit=10)
-    !   read(unit=10,nml=element,iostat=iostatus,iomsg=msg)
-    !   no_max = maxval(no)
-    ! end if
-   
+    rewind(10)
+    read(10,nml=element,iostat=iostatus)
+    first_c=lower(trim(symbol(1)))
+    if(first_c=='j') then
+      allocate(no(ne),o(ne,0))
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max=maxval(no)
+      deallocate(o)
+      allocate(o(ne,no_max),os(ne),q(ne),q_s(ne),q_p(ne),q_d(ne))
+      allocate(name(ne),number(ne),mass(ne))
+      name(:)='model'
+      number(:)=0
+      mass(:)=0
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+    else
+      call initialize_q(ne,symbol,name,number,no,no_max,q,q_s,q_p,q_d,mass)
+      call initialize_o(ne,symbol,no_max,o,os)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      call initialize_lcn(ne,u_lcn,u_lcn_d)
+      call initialize_eei(ne,i_stoner_d,b,j_dd,u_dd)
+      call initialize_so(ne,xi_so_p,xi_so_d)
+      rewind(10)
+      read(10,nml=element,iostat=iostatus)
+      no_max = maxval(no)
+  endif
     ! Charge initialization recipe
     do ie=1,ne
       os(ie) = parse_orbital_to_string(o(ie,:))
@@ -1551,7 +1523,6 @@ contains
 
     call obj%calculate_v_osc()
     call obj%calculate_l_dot_s()
-
     close(unit=10)
     !deallocate(file_rt)
   end subroutine read_txt
@@ -1717,7 +1688,7 @@ contains
         do ie=1,obj%ne
           write(unit_rt,'(' // int2str(1+obj%no(ie)) // 'a)') ' o(' // int2str(ie) &
            // ',1:' // int2str(obj%no(ie)) // ') = ' // int2str(obj%o(ie,1)), &
-           (', ' // int2str(obj%o(ie,io)), io=1, obj%no(ie))
+          (', ' // int2str(obj%o(ie,io)), io=2, obj%no(ie))
         end do
       case('q')
         do ie=1,obj%ne
