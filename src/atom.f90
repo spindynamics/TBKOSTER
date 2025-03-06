@@ -36,7 +36,6 @@
 !  TBKOSTER
 module atom_mod
   use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
-!  use element_mod
   use element_mod
   use lattice_mod
   use math_mod, only: deg2rad, epsilon, i_unit, pi, rad2deg, sph2cart

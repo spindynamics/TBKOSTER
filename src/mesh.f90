@@ -115,12 +115,15 @@ contains
   end subroutine destructor
 
   function build_monkhorst_pack(gx,dx) result(x)
-    integer,dimension(3),intent(in) :: gx,dx
-    real(rp),dimension(:,:),allocatable :: x
+    ! INPUT
+    integer, dimension(3), intent(in) :: gx,dx
+    ! OUTPUT
+    real(rp), dimension(:,:), allocatable :: x
+    ! LOCAL
     integer :: ix,igx1,igx2,igx3
     real(rp) :: x1,x2,x3
 
-    allocate(x(product(gx),3))
+    if (.not.allocated(x)) allocate(x(product(gx),3))
     
     ix = 1
     do igx1=1,gx(1)
@@ -169,9 +172,12 @@ contains
 !  end function build_monkhorst_pack
 
   function build_path(gxs,xs) result(x)
-    integer,intent(in) :: gxs
-    real(rp),dimension(:,:),intent(in) :: xs
-    real(rp),dimension(:,:),allocatable :: x
+    ! INPUT
+    integer, intent(in) :: gxs
+    real(rp), dimension(:,:), intent(in) :: xs
+    ! OUTPUT
+    real(rp), dimension(:,:), allocatable :: x
+    ! LOCAL
     integer :: nxs,ix,ixs,igxs
 
     allocate(x((size(xs,1)-1)*gxs+1,3))

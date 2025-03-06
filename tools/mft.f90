@@ -156,10 +156,11 @@ contains
 
   subroutine build_mft(calc, type, na, ne, ia2ie, Symbol, v, r, na_mft, ia, nconfig, mconfig_i, &
                       mft_tot_i, mft_sum_i, mft_s_i, mft_p_i, mft_d_i, &
-                      mft_px_i, mft_py_i, mft_pz_i, mft_dxy_i, mft_dyz_i, mft_dzx_i, mft_dx2y2_i, mft_dz2r2_i)
+                      mft_px_i, mft_py_i, mft_pz_i, &
+                      mft_dxy_i, mft_dyz_i, mft_dzx_i, mft_dx2y2_i, mft_dz2r2_i)
     use precision_mod
     use string_mod
-    use math_mod, ONLY: i_unit
+    use math_mod, only: i_unit
     implicit none
     integer :: na, ne, nconfig, na_mft
     integer :: ia_mft, iconfig, iatom, imin
@@ -177,9 +178,9 @@ contains
     real(rp) :: angle, mae, theta, phi, emin
     real(rp) :: mft_tot_i(nconfig), mft_sum_i(nconfig)
     complex(rp) :: mft_s_i(nconfig, na_mft), mft_p_i(nconfig, na_mft), &
-                    mft_px_i(nconfig, na_mft), mft_py_i(nconfig, na_mft), mft_pz_i(nconfig, na_mft)
+                   mft_px_i(nconfig, na_mft), mft_py_i(nconfig, na_mft), mft_pz_i(nconfig, na_mft)
     complex(rp) :: mft_d_i(nconfig, na_mft), mft_dxy_i(nconfig, na_mft), mft_dyz_i(nconfig, na_mft), &
-                    mft_dzx_i(nconfig, na_mft), mft_dx2y2_i(nconfig, na_mft), mft_dz2r2_i(nconfig, na_mft)
+                   mft_dzx_i(nconfig, na_mft), mft_dx2y2_i(nconfig, na_mft), mft_dz2r2_i(nconfig, na_mft)
     character(len=*), parameter :: dir = 'mft/'
     character(len=*), parameter :: file_mae_theta = 'mae_angle.dat'
     character(len=*), parameter :: file_mae_xyz = 'mae.xyz'
