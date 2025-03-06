@@ -12,13 +12,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gettext doxygen texlive tex4ht texlive-latex-extra biber ghostscript poppler-utils
       - run: mkdir build
       - name: Prepare environment
-        run: cmake -B build .
+        run: cmake -DCMAKE_BUILD_TYPE=Release -B build .
       - name: Make binaries
         run: |
          cd build
          make
       - name: 'Generate artifacts'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Binary for ubuntu
           path: |
