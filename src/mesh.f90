@@ -120,6 +120,8 @@ contains
     integer :: ix,igx1,igx2,igx3
     real(rp) :: x1,x2,x3
 
+    allocate(x(product(gx),3))
+    
     ix = 1
     do igx1=1,gx(1)
       x1 = (2*igx1-gx(1)-1.0_rp+dx(1))/(2*gx(1))
