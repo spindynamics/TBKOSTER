@@ -74,3 +74,5 @@ examples/**/*.dat
 examples/**/*.orig
 examples/**/*.gnuplot
 examples/**/*.png
+fpretty/lib64
+fpretty/pyvenv.cfg
