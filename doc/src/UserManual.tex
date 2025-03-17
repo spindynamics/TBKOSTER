@@ -42,9 +42,9 @@
 }
 \makeatother
 
-\title{{\textbf{\huge\textcolor{nicered}{TBKOSTER}}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
+\title{{\textbf{\huge\textcolor{nicered}{TBKOSTER}}} \\ \textsc{\small Tight-Binding Kernel of Objets for SpinTronics Enhanced Research}}
 \author{C. Barreteau, P. Thibaudeau\thanks{Supported by CEA}}
-\date{Release 0.0.3\\ \today}
+\date{Release 0.0.4\\ \today}
 
 \begin{document}
 \frontmatter
@@ -64,12 +64,12 @@ $ locate git
 \end{lstlisting}
 Then, clone the distant repository to your local one~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
-$ git clone https://github.com/araven/TBKOSTER.git
+$ git clone --recurse-submodules https://github.com/spindynamics/TBKOSTER.git
 \end{lstlisting}
 In order to build this documentation, a LaTeX distribution is mandatory, including some external packages such as pdflatex, bibtex and htlatex.
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{Linux}
-Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
+Preferred method : on Ubuntu 22.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ sudo apt install cmake gfortran clang doxygen graphviz \
 libblas-dev liblapack-dev libomp-dev texlive-latex-base \
@@ -78,10 +78,8 @@ texlive-latex-extra tex4ht
 Be sure to update to cmake release 3.9 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ if ! test -d linux; then mkdir linux; fi
-$ cd linux
-$ cmake ..
-$ make
+$ cmake -B build
+$ cd build && make
 \end{lstlisting}
 To get access to the OpenMP implementation, then update your packages with openmp support.
 
@@ -93,12 +91,12 @@ Be sure that the variable MKLROOT is set accordingly.
 
 In order to get good numerical performance, you have to produce a Release version as :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release
 \end{lstlisting}
 You can combine all these options.
 If you prefer to prepare an installation with a given installed Lapack library and gfortran try :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ BLA_VENDOR=OpenBLAS FC=gfortran cmake ..
+$ BLA_VENDOR=OpenBLAS FC=gfortran cmake -B build
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
@@ -109,14 +107,13 @@ llvm-3.9 llvm_select lapack libomp
 \end{lstlisting}
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ if ! test -d macos; then mkdir macos; fi
-$ cd macos
-$ cmake ..
-$ make
+$ cmake -B build
+$ cd build && make
 \end{lstlisting}
 For both Linux and MacOS platform, you can invoke cmake with Release or Debug option in order to deploy these releases. Simply try
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ cmake -DCMAKE_BUILD_TYPE=Release/Debug ..; make
+$ cmake -B build -DCMAKE_BUILD_TYPE=Release/Debug
+$ cd build && make
 \end{lstlisting}
 To get access to the OpenMP implementation, then update your ports with openmp package. You can easily change your settings with
 \begin{lstlisting}[language=sh,basicstyle=\small]
@@ -127,7 +124,7 @@ $ port select --set gcc mp-gcc6
 In order to get good numerical performance, you may use the OpenBLAS library and produce a Release version as :
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ port install openblas
-$ BLA_VENDOR=OpenBLAS cmake -DCMAKE_BUILD_TYPE=Release ..
+$ BLA_VENDOR=OpenBLAS cmake -DCMAKE_BUILD_TYPE=Release -B build
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%
 \section{MS Windows}

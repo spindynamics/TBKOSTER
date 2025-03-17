@@ -76,3 +76,4 @@ examples/**/*.gnuplot
 examples/**/*.png
 fpretty/lib64
 fpretty/pyvenv.cfg
+stdlib/fypp

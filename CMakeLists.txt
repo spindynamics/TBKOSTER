@@ -17,7 +17,7 @@ if(UNIX)
 endif()
 
 set(PROJECT_NAME TBKOSTER)
-project(${PROJECT_NAME} VERSION 1.9.4.0)
+project(${PROJECT_NAME} VERSION 1.9.4.0 DESCRIPTION "Tight-Binding Kernel of Objets for SpinTronics Enhanced Research")
 message(STATUS "Preparing ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK} ...")
 message(STATUS "Running on ${CMAKE_SYSTEM_NAME} version ${CMAKE_SYSTEM_VERSION}")
 
@@ -44,6 +44,7 @@ opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
+opt(STDLIB "Enable fortran-lang stdlib" ON)
 
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
@@ -124,7 +125,24 @@ if(ENABLE_DOXYGEN)
   else()
     message("Doxygen needs to be installed to generate the Doxygen documentation")
   endif()
-endif(ENABLE_DOXYGEN) 
+endif(ENABLE_DOXYGEN)
+
+if(ENABLE_STDLIB)
+  # fortran-lang stdlib https://github.com/fortran-lang/stdlib
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt)
+    add_subdirectory("stdlib")
+  else()
+    set("stdlib-url" "https://github.com/fortran-lang/stdlib")
+    message(STATUS "Retrieving stdlib from ${stdlib-url}")
+    include(FetchContent)
+    FetchContent_Declare(
+      "stdlib"
+      GIT_REPOSITORY "${stdlib-url}"
+      GIT_TAG "HEAD"
+    )
+    FetchContent_MakeAvailable("stdlib")
+  endif()
+endif(ENABLE_STDLIB)
 
 list(LENGTH CONFIG_OPTIONS SIZE)
 if(SIZE GREATER 0)
