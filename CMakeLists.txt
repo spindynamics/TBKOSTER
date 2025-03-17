@@ -44,7 +44,7 @@ opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
-opt(STDLIB "Enable fortran-lang stdlib" ON)
+opt(FORTRAN_STDLIB "Enable fortran-lang stdlib" ON)
 
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
@@ -127,22 +127,13 @@ if(ENABLE_DOXYGEN)
   endif()
 endif(ENABLE_DOXYGEN)
 
-if(ENABLE_STDLIB)
+if(ENABLE_FORTRAN_STDLIB)
   # fortran-lang stdlib https://github.com/fortran-lang/stdlib
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/stdlib/CMakeLists.txt)
-    add_subdirectory("stdlib")
-  else()
-    set("stdlib-url" "https://github.com/fortran-lang/stdlib")
-    message(STATUS "Retrieving stdlib from ${stdlib-url}")
-    include(FetchContent)
-    FetchContent_Declare(
-      "stdlib"
-      GIT_REPOSITORY "${stdlib-url}"
-      GIT_TAG "HEAD"
-    )
-    FetchContent_MakeAvailable("stdlib")
-  endif()
-endif(ENABLE_STDLIB)
+  find_package("fortran_stdlib" REQUIRED)
+  message(STATUS "FORTRAN_STDLIB_FOUND=${FORTRAN_STDLIB_FOUND}")
+  message(STATUS "FORTRAN_STDLIB_SOURCE_DIR=${FORTRAN_STDLIB_SOURCE_DIR}")
+  message(STATUS "FORTRAN_STDLIB_BINARY_DIR=${FORTRAN_STDLIB_BINARY_DIR}")
+endif(ENABLE_FORTRAN_STDLIB)
 
 list(LENGTH CONFIG_OPTIONS SIZE)
 if(SIZE GREATER 0)

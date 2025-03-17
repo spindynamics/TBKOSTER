@@ -98,6 +98,8 @@ If you prefer to prepare an installation with a given installed Lapack library a
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ BLA_VENDOR=OpenBLAS FC=gfortran cmake -B build
 \end{lstlisting}
+You can also use an optional Fortran-lang stdlib package.
+Set the option ON in the CMakeLists.txt file at the root directory to enable it. 
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
 Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfortran with llvm support, with the ports subsystem (http://www.macports.org)
