@@ -1,3 +1,6 @@
 [submodule "TBKExamples"]
 	path = TBKExamples
 	url = https://github.com/spindynamics/TBKExamples.git
+[submodule "stdlib"]
+	path = stdlib
+	url = https://github.com/fortran-lang/stdlib
