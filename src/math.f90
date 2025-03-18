@@ -38,7 +38,7 @@ module math_mod
 #if defined(LAPACK95_FOUND)
   use lapack95, only: getrf, getri
 #endif
-  use precision_mod, only: ip, rp
+  use precision_mod, only: rp
   implicit none
 
   !> type for sorting routine
@@ -517,8 +517,8 @@ contains
     integer :: i,indxt,ir,itemp,j,jstack,k,l
     real(rp) :: a
     if(.not. allocated(istack)) allocate(istack(nstack))
-    indx = (/(j, j=0,n)/)
-    !forall(j=0:n) indx(j)=j
+    !indx = (/(j, j=0,n)/)
+    forall(j=0:n) indx(j)=j
     jstack=0
     l=1
     ir=n

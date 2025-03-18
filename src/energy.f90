@@ -1118,29 +1118,29 @@ contains
     class(energy),intent(inout) :: obj
     integer :: is
 
-    type(group), dimension(:), allocatable :: temp
-    integer :: i
-    allocate(temp(obj%nen_k))
+    !type(group), dimension(:), allocatable :: temp
+    !integer :: i
+    !allocate(temp(obj%nen_k))
 
     if(obj%fixed_spin_moment) then
       do is=1,2
-        do i=1,obj%nen_k
-          temp(i)%value=obj%en_k_fsm(i,is)
-          temp(i)%order=i
-        end do
+        !do i=1,obj%nen_k
+        !  temp(i)%value=obj%en_k_fsm(i,is)
+        !  temp(i)%order=i
+        !end do
         !call QSort(obj%nen_k,temp,obj%indx_fsm(:,is))
         call indexx(obj%nen_k,obj%en_k_fsm(:,is),obj%indx_fsm(:,is))
       end do
     else
-      do i=1,obj%nen_k
-        temp(i)%value=obj%en_k(i)
-        temp(i)%order=i
-      end do
+      !do i=1,obj%nen_k
+      !  temp(i)%value=obj%en_k(i)
+      !  temp(i)%order=i
+      !end do
       !call QSort(obj%nen_k,temp,obj%indx)
       call indexx(obj%nen_k,obj%en_k,obj%indx)
       call obj%print_indx()
     endif
-    deallocate(temp)
+    !if allocated(temp) deallocate(temp)
   end subroutine sort_en_k
 
   !> Write object in text format to unit (default: 10), if it's a file
