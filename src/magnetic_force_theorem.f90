@@ -32,9 +32,9 @@
 ! The fact that you are presently reading this means that you have had
 ! knowledge of the CeCILL license and that you accept its terms.
 !
-!  force_theorem.f90
+!  magnetic_force_theorem.f90
 !  TBKOSTER
-module force_theorem_mod
+module magnetic_force_theorem_mod
    use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
    use atom_mod
    use element_mod
@@ -60,7 +60,7 @@ module force_theorem_mod
                                                   'mconfig' &
                                                   ]
 
-   type, public :: force_theorem
+   type, public :: magnetic_force_theorem
       ! Units
       class(units), pointer :: u
       ! Elements
@@ -103,17 +103,17 @@ module force_theorem_mod
       procedure :: read_txt
       procedure :: write_txt
       procedure :: write_txt_formatted
-   end type force_theorem
+   end type magnetic_force_theorem
 
    ! Constructor
-   interface force_theorem
+   interface magnetic_force_theorem
       procedure :: constructor
-   end interface force_theorem
+   end interface magnetic_force_theorem
 
 contains
    function constructor(en) result(obj)
       class(energy), target, intent(in) :: en
-      type(force_theorem) :: obj
+      type(magnetic_force_theorem) :: obj
 
       obj%u => en%u
       obj%e => en%e
@@ -124,7 +124,7 @@ contains
    end function constructor
 
    subroutine destructor(obj)
-      type(force_theorem) :: obj
+      type(magnetic_force_theorem) :: obj
 
       if (allocated(obj%ia)) deallocate (obj%ia)
       if (allocated(obj%mft_s)) deallocate (obj%mft_s)
@@ -144,7 +144,7 @@ contains
       use, intrinsic :: iso_fortran_env, only: output_unit
       implicit none
       ! INPUT
-      class(force_theorem), intent(inout) :: obj
+      class(magnetic_force_theorem), intent(inout) :: obj
       integer, intent(in) :: ik, isl
       real(rp), intent(in) :: Eref
       ! LOCAL
@@ -167,7 +167,7 @@ contains
 
    subroutine add_mft_local_k(obj, ik, isl, v_k, Eref)
       ! INPUT
-      class(force_theorem), intent(inout) :: obj
+      class(magnetic_force_theorem), intent(inout) :: obj
       integer, intent(in) :: ik, isl
       real(rp), intent(in) :: Eref
       complex(rp), dimension(2, obj%h%nh, obj%h%nh), intent(in) :: v_k
@@ -276,7 +276,7 @@ contains
    end subroutine add_mft_local_k
 
    subroutine initialize(obj)
-      class(force_theorem), intent(inout) :: obj
+      class(magnetic_force_theorem), intent(inout) :: obj
 
       obj%mft_tot = 0.0_rp
       ! Local mft
@@ -379,7 +379,7 @@ contains
 
    !> Read object in text format from file (default: 'in_dos.txt')
    subroutine read_txt(obj, file)
-      class(force_theorem), intent(inout) :: obj
+      class(magnetic_force_theorem), intent(inout) :: obj
       character(len=*), intent(in), optional :: file
       character(len=:), allocatable :: file_rt
       integer :: iostatus
@@ -529,7 +529,7 @@ contains
    !> Write object in text format to unit (default: 10), if it's a file
    !> its name is set to file (default: 'out_dos.txt')
    subroutine write_txt(obj, file, unit)
-      class(force_theorem), intent(in) :: obj
+      class(magnetic_force_theorem), intent(in) :: obj
       character(len=*), intent(in), optional :: file
       character(len=:), allocatable         :: file_rt
       integer, intent(in), optional :: unit
@@ -580,7 +580,7 @@ contains
    !> 'out_dos.txt'), if tag (default: .true.) the namelist opening and closing
    !> tags are written
    subroutine write_txt_formatted(obj, file, property, tag, config, unit)
-      class(force_theorem), intent(in) :: obj
+      class(magnetic_force_theorem), intent(in) :: obj
       character(len=*), intent(in), optional :: file
       character(len=:), allocatable         :: file_rt
       character(len=*), dimension(:), intent(in), optional :: property
@@ -705,4 +705,4 @@ contains
       end if
       !deallocate(file_rt,property_rt)
    end subroutine write_txt_formatted
-end module force_theorem_mod
+end module magnetic_force_theorem_mod

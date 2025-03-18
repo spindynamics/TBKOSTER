@@ -1,3 +1,5 @@
+message(STATUS "Checking tools...")
+
 if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -fcheck=all -fbacktrace -DDEBUG")
   set(CMAKE_Fortran_FLAGS_RELEASE "-DNDEBUG -Ofast")
@@ -45,7 +47,7 @@ add_executable(
   pdos.f90
 )
 
-# Add mae executable
+# Add Magnetic Force Theorem executable
 add_executable(
   mft.x
   mft.f90
@@ -63,13 +65,13 @@ add_executable(
   build_kpoints.f90
 )
 
-# Add build kmesh executable
+# Add dat2gnu executable
 add_executable(
   dat2gnu.x
   dat2gnu.f90
 )
 
-# Add build kmesh executable
+# Add Collinear to non-collinear executable
 add_executable(
   col2nc.x
   col2nc.f90

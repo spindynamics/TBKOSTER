@@ -308,7 +308,7 @@ contains
     m2(3,2) = -(m1(1,1) * m1(3,2) - m1(1,2) * m1(3,1)) / det;
     m2(3,3) =  (m1(1,1) * m1(2,2) - m1(1,2) * m1(2,1)) / det;
     else
-      write(*,*) 'math%inverse_3x3(): Warning - determinant is nearely zero'
+      write(*,*) 'math%inverse_3x3(): Warning - determinant is nearly zero'
       stop
     end if
      
@@ -449,7 +449,7 @@ contains
   subroutine rotate_rho(rho,angle)
     complex(rp),dimension(2,2),intent(inout) :: rho
     real(rp),dimension(2), intent(in) :: angle
-  ! local variable
+    ! local variable
     real(rp) :: theta, phi
     complex(rp),dimension(2,2) :: U,mat
     integer :: ispin,jspin
@@ -518,6 +518,7 @@ contains
     real(rp) :: a
     if(.not. allocated(istack)) allocate(istack(nstack))
     indx = (/(j, j=0,n)/)
+    !forall(j=0:n) indx(j)=j
     jstack=0
     l=1
     ir=n
@@ -606,8 +607,8 @@ contains
     integer :: left, right
     real(rp) :: random
     real(rp) :: pivot
-    type (group) :: temp
-    type (group), dimension(nA) :: B
+    type(group) :: temp
+    type(group), dimension(nA) :: B
     integer :: i,marker
 
     forall(i=1:nA) B(i)=A(i)

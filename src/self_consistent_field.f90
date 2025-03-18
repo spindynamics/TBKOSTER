@@ -39,7 +39,7 @@ module self_consistent_field_mod
   use atom_mod
   use charge_mod
   use density_of_states_mod
-  use force_theorem_mod
+  use magnetic_force_theorem_mod
   use band_structure_mod
   use energy_mod
   use hamiltonian_tb_mod
@@ -81,8 +81,8 @@ module self_consistent_field_mod
     class(mixing),pointer :: mx
     !> Density of states
     class(density_of_states),pointer :: dos
-    !> magnetic anisotropy
-    class(force_theorem),pointer :: mft
+    !> magnetic force theorem for magnetic anisotropy
+    class(magnetic_force_theorem),pointer :: mft
     !> Band structure
     class(band_structure),pointer :: band   
     !> Logical forces (default: .false.)
@@ -134,7 +134,7 @@ contains
     class(energy),target,intent(in),optional :: en
     class(mixing),target,intent(in),optional :: mx
     class(density_of_states),target,intent(in),optional :: dos
-    class(force_theorem),target,intent(in),optional :: mft
+    class(magnetic_force_theorem),target,intent(in),optional :: mft
     class(band_structure),target,intent(in),optional :: band
     type(self_consistent_field) :: obj
 

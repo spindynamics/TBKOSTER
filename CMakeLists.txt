@@ -77,6 +77,12 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -cpp")
 #set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")  
 set(CMAKE_VERBOSE_MAKEFILE off)
 
+if(ENABLE_FORTRAN_STDLIB)
+  # fortran-lang stdlib https://github.com/fortran-lang/stdlib
+  find_package("fortran_stdlib" REQUIRED)
+  list(APPEND CONFIG_OPTIONS "FORTRAN_STDLIB")
+endif(ENABLE_FORTRAN_STDLIB)
+
 # add the directory of the sources
 add_subdirectory(src)
 
@@ -127,19 +133,6 @@ if(ENABLE_DOXYGEN)
   endif()
   list(APPEND CONFIG_OPTIONS "DOXYGEN")
 endif(ENABLE_DOXYGEN)
-
-if(ENABLE_FORTRAN_STDLIB)
-  # fortran-lang stdlib https://github.com/fortran-lang/stdlib
-  #list(APPEND FORTRAN_STDLIB_DIR "/cea/O/home/thibaudeaup/.local/lib64/cmake/fortran_stdlib")
-  #list(APPEND CMAKE_MODULE_PATH "/cea/O/home/thibaudeaup/.local/lib64/cmake")
-  #set(FORTRAN_STDLIB_FIND_METHOD "cmake")
-  #message("${CMAKE_PREFIX_PATH}")
-  find_package("fortran_stdlib" REQUIRED)
-  #message(STATUS "fortran_stdlib_FOUND=${fortran_stdlib_FOUND}")
-  #message(STATUS "FORTRAN_STDLIB_SOURCE_DIR=${FORTRAN_STDLIB_SOURCE_DIR}")
-  #message(STATUS "FORTRAN_STDLIB_BINARY_DIR=${FORTRAN_STDLIB_BINARY_DIR}")
-  list(APPEND CONFIG_OPTIONS "FORTRAN_STDLIB")
-endif(ENABLE_FORTRAN_STDLIB)
 
 list(LENGTH CONFIG_OPTIONS SIZE)
 if(SIZE GREATER 0)

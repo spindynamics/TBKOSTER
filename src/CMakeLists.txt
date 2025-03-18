@@ -1,3 +1,4 @@
+message(STATUS "Checking src...")
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
@@ -17,9 +18,9 @@ add_library(
   element.f90
   energy.f90
   forces.f90
-  force_theorem.f90
   hamiltonian_tb.f90
   lattice.f90
+  magnetic_force_theorem.f90
   math.f90
   mesh.f90
   mixing.f90
@@ -56,10 +57,9 @@ if (ENABLE_OPENMP)
   find_package(OpenMP)
   message(STATUS "OpenMP libraries: ${OpenMP_Fortran_LIBRARIES}")
   if (OpenMP_Fortran_FOUND)
-#    set_config_option(HAVE_OPENMP "OpenMP")
     set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_Fortran_FLAGS}")
     set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -DOpenMP_Fortran_FOUND")
-  endif()
+  endif(OpenMP_Fortran_FOUND)
 endif(ENABLE_OPENMP)
 
 set(BLA_F95 OFF) #put on if Intel LAPACK 95 interface is needed
@@ -142,5 +142,5 @@ endif(ENABLE_FORTRAN_STDLIB)
 if(ENABLE_OPENMP)
   target_link_libraries(${PROJECT_NAME}.x ${PROJECT_NAME} ${BLAS95_LIBRARIES} ${LAPACK_LIBRARIES} ${LAPACK95_LIBRARIES} ${fortran_stdlib_LIBRARIES} OpenMP::OpenMP_Fortran Threads::Threads ${CMAKE_DL_LIBS})
 else(ENABLE_OPENMP)
-  target_link_libraries(${PROJECT_NAME}.x ${PROJECT_NAME} ${BLAS95_LIBRARIES} ${LAPACK_LIBRARIES} ${LAPACK95_LIBRARIES} Threads::Threads ${CMAKE_DL_LIBS})
+  target_link_libraries(${PROJECT_NAME}.x ${PROJECT_NAME} ${BLAS95_LIBRARIES} ${LAPACK_LIBRARIES} ${LAPACK95_LIBRARIES} ${fortran_stdlib_LIBRARIES} Threads::Threads ${CMAKE_DL_LIBS})
 endif(ENABLE_OPENMP)

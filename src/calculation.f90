@@ -39,7 +39,7 @@ module calculation_mod
   use atom_tb_mod
   use charge_mod
   use density_of_states_mod
-  use force_theorem_mod
+  use magnetic_force_theorem_mod
   use band_structure_mod
   use element_tb_mod
   use energy_mod
@@ -435,7 +435,7 @@ contains
     class(calculation),intent(in) :: obj
     type(atom_tb),target :: atom_tb_obj
     type(charge),target :: charge_obj
-    type(force_theorem),target :: mft_obj
+    type(magnetic_force_theorem),target :: mft_obj
     type(element_tb),target :: element_tb_obj
     type(energy),target :: energy_obj
     type(hamiltonian_tb),target :: hamiltonian_tb_obj
@@ -448,8 +448,7 @@ contains
     logical :: file_existence
     integer :: unit, iangle, iconfig
     integer :: ia, l
-    real(rp),dimension(:,:), allocatable:: mconfig
-
+    real(rp),dimension(:,:), allocatable :: mconfig
 
     dir = trim(obj%post_processing_dir)
 
@@ -481,8 +480,8 @@ contains
     mesh_k = mesh(lattice_k)
     call mesh_k%read_txt(file=dir // '/in_mesh.txt')
     charge_obj = charge(atom_tb_obj)
-    charge_obj%a%ns=4
-     allocate(mconfig(charge_obj%a%na,2))
+    charge_obj%a%ns = 4
+    allocate(mconfig(charge_obj%a%na,2))
     call atom_tb_obj%calculate_spin()
     call charge_obj%initialize()
   !  call charge_obj%read_charge_col_to_ncol()
@@ -491,14 +490,14 @@ contains
       call hamiltonian_tb_obj%read_txt(file=master_file)
       energy_obj = energy(hamiltonian_tb_obj)
       call energy_obj%read_txt(file=dir // '/in_energy.txt')
-      mft_obj = force_theorem(energy_obj)
+      mft_obj = magnetic_force_theorem(energy_obj)
       call mft_obj%read_txt(file=dir // '/in_mft.txt')
     else
       hamiltonian_tb_obj = hamiltonian_tb(atom_tb_obj,charge_obj,mesh_k)
       call hamiltonian_tb_obj%read_txt()
       energy_obj = energy(hamiltonian_tb_obj)
       call energy_obj%read_txt()
-      mft_obj = force_theorem(energy_obj)
+      mft_obj = magnetic_force_theorem(energy_obj)
       call mft_obj%read_txt()
     end if
     scf_obj = self_consistent_field(mft=mft_obj)
