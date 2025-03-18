@@ -13,13 +13,13 @@ set(BLA_F95 OFF) #put on if Intel LAPACK 95 interface is needed
 find_package(BLAS REQUIRED)
 if(BLAS_FOUND)
   message(STATUS "BLAS libraries: ${BLAS_LIBRARIES}")
-  set_config_option(HAVE_BLAS "BLAS")
+  #set_config_option(HAVE_BLAS "BLAS")
 endif()
 
 find_package(LAPACK REQUIRED)
 if(LAPACK_FOUND)
   message(STATUS "LAPACK libraries: ${LAPACK_LIBRARIES}")
-  set_config_option(HAVE_LAPACK "LAPACK")
+  #set_config_option(HAVE_LAPACK "LAPACK")
 endif()
 
 if(BLAS95_FOUND)

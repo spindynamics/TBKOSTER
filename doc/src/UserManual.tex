@@ -64,7 +64,7 @@ $ locate git
 \end{lstlisting}
 Then, clone the distant repository to your local one~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
-$ git clone --recurse-submodules https://github.com/spindynamics/TBKOSTER.git
+$ git clone https://github.com/spindynamics/TBKOSTER.git
 \end{lstlisting}
 In order to build this documentation, a LaTeX distribution is mandatory, including some external packages such as pdflatex, bibtex and htlatex.
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -79,13 +79,13 @@ Be sure to update to cmake release 3.9 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ cmake -B build
-$ cd build && make
+$ cmake --build build
 \end{lstlisting}
 To get access to the OpenMP implementation, then update your packages with openmp support.
 
 If you want to use Intel compiler, MKL and Intel Lapack libraries, you have to tell this to cmake as, in sequential :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ BLA_VENDOR=Intel10_64lp_seq FC=ifort cmake ..
+$ BLA_VENDOR=Intel10_64lp_seq FC=ifort cmake -B build
 \end{lstlisting}
 Be sure that the variable MKLROOT is set accordingly.
 
@@ -99,7 +99,16 @@ If you prefer to prepare an installation with a given installed Lapack library a
 $ BLA_VENDOR=OpenBLAS FC=gfortran cmake -B build
 \end{lstlisting}
 You can also use an optional Fortran-lang stdlib package.
-Set the option ON in the CMakeLists.txt file at the root directory to enable it. 
+Set the option ON in the CMakeLists.txt file at the top of the root directory to enable it. Then type
+\begin{lstlisting}[language=sh,basicstyle=\small]
+  $ git clone https://github.com/fortran-lang/stdlib
+  $ cd stdlib
+  $ cmake -B build -DCMAKE_MAXIMUM_RANK=4 \
+    -DCMAKE_INSTALL_PREFIX=$HOME/.local
+  $ cmake --build build
+  $ cmake --install build
+\end{lstlisting}
+
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
 Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfortran with llvm support, with the ports subsystem (http://www.macports.org)
@@ -110,12 +119,12 @@ llvm-3.9 llvm_select lapack libomp
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ cmake -B build
-$ cd build && make
+$ cmake --build build
 \end{lstlisting}
 For both Linux and MacOS platform, you can invoke cmake with Release or Debug option in order to deploy these releases. Simply try
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ cmake -B build -DCMAKE_BUILD_TYPE=Release/Debug
-$ cd build && make
+$ cmake --build build
 \end{lstlisting}
 To get access to the OpenMP implementation, then update your ports with openmp package. You can easily change your settings with
 \begin{lstlisting}[language=sh,basicstyle=\small]
