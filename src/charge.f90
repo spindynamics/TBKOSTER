@@ -38,7 +38,8 @@ module charge_mod
    use, intrinsic :: iso_fortran_env, only: error_unit, output_unit
    use atom_mod
    use element_mod
-   use math_mod, only: i_unit, rad2deg, sqrt_three, cart2sph, sph2cart, nm2rho, rho2nm
+   use math_mod, only: i_unit, rad2deg, deg2rad,pi, sqrt_three, &
+                      cart2sph, sph2cart, nm2rho, rho2nm, rotate_rho
    use precision_mod, only: rp
    use string_mod, only: sl, cmplx2str, TBKOSTER_flush, int2str, log2str, lower, real2str
    implicit none
@@ -89,6 +90,8 @@ module charge_mod
       procedure :: nullify_charge_out
       procedure :: nullify_orbital_moment
       procedure :: read_txt
+      procedure :: read_charge_col_to_ncol
+      procedure :: set_angle_charge_ncol
       procedure :: set_q_in_to_q_out
       procedure :: write_mulliken_charge_analysis
       procedure :: write_orbital_moment_analysis
@@ -496,6 +499,70 @@ contains
       end select
    end subroutine calculate_net_charge_out
 
+   subroutine set_angle_charge_ncol(obj,mconfig)
+  ! INPUT
+   class(charge), intent(inout) :: obj
+   real(rp), dimension(obj%a%na,2), intent(in) :: mconfig
+   !Local variable
+      integer :: ia,io1,io2,is,l
+      real(rp) :: mz,n
+      real(rp), dimension(3) :: m_sph,m_cart
+      complex(rp),dimension(2,2) ::rho
+      real(rp), dimension(obj%a%na, 3, 0:3) :: q_mul
+      complex(rp), dimension(obj%a%na, obj%e%no_max, obj%e%no_max, 4):: rho_net
+      !obj%q_mul_in=0.0_rp
+      !obj%rho_net_in=0.0
+      call obj%read_charge_col_to_ncol() 
+      q_mul=obj%q_mul_in 
+      rho_net=obj%rho_net_in 
+
+           do ia = 1, obj%a%na
+               do l = 1, 3
+                  n=0.0_rp
+                  mz=0.0_rp
+                     obj%q_mul_in(ia,l,0)=q_mul(ia,l,0)
+                     if(q_mul(ia,l,3)>0) then
+                     mz=q_mul(ia,l,3)
+                     m_sph(1:3)=(/mz,mconfig(ia,1),mconfig(ia,2)/)
+                     else
+                     mz=-q_mul(ia,l,3)
+                     m_sph(1:3)=(/mz,mconfig(ia,1)+pi,mconfig(ia,2)+pi/)
+                     endif
+                     
+                     m_cart=sph2cart(m_sph)
+                     obj%q_mul_in(ia,l,1:3)=m_cart
+               end do
+            end do
+
+           do ia = 1, obj%a%na
+               do io1 = 1, obj%e%no_max
+                  do io2 = 1, obj%e%no_max
+                      rho(1, 1) = rho_net(ia, io1, io2, 1)
+                      rho(2, 2) = rho_net(ia, io1, io2, 2)
+                      rho(1, 2) = cmplx(0.0_rp, 0.0_rp, kind=rp)
+                      rho(2, 1) = cmplx(0.0_rp, 0.0_rp, kind=rp)
+                !      call rho2nm(rho, n, m_cart)
+                !      m_sph=cart2sph(m_cart)
+                !      if(real(rho(1, 1)-rho(2, 2))>0) then
+                !          m_sph(2)=angle(1)
+                !          m_sph(3)=angle(2)
+                !       else
+                !          m_sph(2)=angle(1)+pi
+                !          m_sph(3)=angle(2)+pi
+                !       endif
+                !      m_cart=sph2cart(m_sph)
+                !      call nm2rho(n,m_cart,rho)
+                      call rotate_rho(rho,mconfig(ia,:))
+                      obj%rho_net_in(ia, io1, io2, 1) = rho(1, 1)
+                      obj%rho_net_in(ia ,io1, io2, 2) = rho(2, 2)
+                      obj%rho_net_in(ia, io1, io2, 3) = rho(1, 2)
+                      obj%rho_net_in(ia, io1, io2, 4) = rho(2, 1)
+                  end do
+               end do
+            end do
+
+   end subroutine set_angle_charge_ncol
+
    subroutine initialize(obj)
       class(charge), intent(inout) :: obj
 
@@ -583,6 +650,66 @@ contains
       close (unit=10)
       !deallocate(file_rt)
    end subroutine read_txt
+
+  !> Read collinear charge and transform into non-collinear in text format from file (default: 'in_charge.txt')
+   subroutine read_charge_col_to_ncol(obj)
+      class(charge), intent(inout) :: obj
+      character(len=:), allocatable :: file_rt
+      integer :: iostatus
+      logical :: isopen
+      integer :: ia,io1,io2,is,l
+      real(rp) :: n, mz
+      ! Namelist variables
+      real(rp), dimension(obj%a%na, 3, 0:1) :: q_mul
+      complex(rp), dimension(obj%a%na, obj%e%no_max, obj%e%no_max, 2):: rho_net
+      ! Namelist
+      namelist /charge/ q_mul, rho_net
+
+
+      file_rt = 'out_charge.txt'
+
+      inquire (unit=10, opened=isopen)
+      if (isopen) then
+         write (error_unit, '(a)') 'charge%read_txt() : Unit 10 is already open'
+         error stop
+      else
+         open (unit=10, file=file_rt, action='read', iostat=iostatus, status='old')
+      end if
+      if (iostatus /= 0) then
+         write (error_unit, *) 'charge%read_txt(): file ', file_rt, ' not found'
+         error stop
+      end if
+
+      read (10, nml=charge)
+
+      obj%q_mul_in = 0.0_rp
+      obj%rho_net_in = cmplx(0.0_rp,0.0_rp,kind=rp)
+
+           do ia = 1, obj%a%na
+               do l = 1, 3
+                  n=0.0_rp
+                  mz=0.0_rp
+                  do is = 0, 1
+                     n=n+q_mul(ia,l,is)
+                     mz=mz+(1-2*is)*q_mul(ia,l,is)
+                  end do
+                  obj%q_mul_in(ia, l, 0)=n
+                  obj%q_mul_in(ia, l, 3)=mz  ! mx and my are zero.
+               end do
+            end do
+
+           do ia = 1, obj%a%na
+               do io1 = 1, obj%e%no_max
+                  do io2 = 1, obj%e%no_max
+                     do is = 1, 2 ! is=3 and 4 are zero for collinear spin. 
+                      obj%rho_net_in(ia, io1, io2, is)=rho_net(ia, io1, io2, is)
+                     end do
+                  end do
+               end do
+            end do
+      
+      close (unit=10)
+   end subroutine read_charge_col_to_ncol
 
    subroutine set_q_in_to_q_out(obj)
       class(charge), intent(inout) :: obj
@@ -843,7 +970,6 @@ contains
       real(rp), dimension(3) :: om_tot, v_sph
       real(rp) :: om_r_tot
 
-      !write(output_unit,*) "====> Entering write_mulliken_charge_analysis"
 
       if (present(unit)) then
          unit_rt = unit

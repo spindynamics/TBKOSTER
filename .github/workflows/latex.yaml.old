@@ -2,14 +2,14 @@ name: TBKOSTER standard compilation
 on: [push]
 jobs:
   Compilation-Actions:
-    runs-on: ubuntu-latest
+    runs-on: texlive/texlive:latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "The workflow is now ready to test your code on the runner."
       - name: Upgrade packages
-        run: sudo apt update && sudo apt install -y libopenblas-dev gettext
+        run: sudo apt update && sudo apt install -y libopenblas-dev gettext doxygen ghostscript poppler-utils
       - run: mkdir build
       - name: Prepare environment
         run: cmake -DCMAKE_BUILD_TYPE=Release -B build .
@@ -22,6 +22,6 @@ jobs:
         with:
           name: Binary for ubuntu
           path: |
-            build/bin/*.x
+            build/build/bin/*.x
           retention-days: 5
       - run: echo "🍏 This job's status is ${{ job.status }}."

@@ -39,6 +39,7 @@ module self_consistent_field_mod
   use atom_mod
   use charge_mod
   use density_of_states_mod
+  use magnetic_force_theorem_mod
   use band_structure_mod
   use energy_mod
   use hamiltonian_tb_mod
@@ -80,6 +81,8 @@ module self_consistent_field_mod
     class(mixing),pointer :: mx
     !> Density of states
     class(density_of_states),pointer :: dos
+    !> magnetic force theorem for magnetic anisotropy
+    class(magnetic_force_theorem),pointer :: mft
     !> Band structure
     class(band_structure),pointer :: band   
     !> Logical forces (default: .false.)
@@ -127,10 +130,11 @@ module self_consistent_field_mod
   end interface self_consistent_field
 
 contains
-  function constructor(en,mx,dos,band) result(obj)
+  function constructor(en,mx,dos,mft,band) result(obj)
     class(energy),target,intent(in),optional :: en
     class(mixing),target,intent(in),optional :: mx
     class(density_of_states),target,intent(in),optional :: dos
+    class(magnetic_force_theorem),target,intent(in),optional :: mft
     class(band_structure),target,intent(in),optional :: band
     type(self_consistent_field) :: obj
 
@@ -149,6 +153,14 @@ contains
       obj%h => dos%h
       obj%en => dos%en
       obj%dos => dos
+    elseif(present(mft)) then
+      obj%u => mft%u
+      obj%a => mft%a
+      obj%q => mft%en%q
+      obj%k => mft%k
+      obj%h => mft%h
+      obj%en => mft%en
+      obj%mft => mft
     elseif(present(band)) then
       obj%u => band%u
       obj%a => band%a
@@ -413,8 +425,20 @@ contains
             case('dos') 
               call obj%dos%add_dos_k(ik, isl)
               call obj%dos%add_dos_local_k(ik, isl, v_k)
+             case('mft') 
+              call obj%mft%add_mft_k(ik, isl,obj%mft%Eref)
+              call obj%mft%add_mft_local_k(ik, isl, v_k,obj%mft%Eref)  
             case('band') 
-              call obj%band%save_weight_band_local(ik, isl, v_k)
+              if(TRIM(obj%band%proj)=='site') then
+                call obj%band%save_proj_band_site(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='spin') then
+                call obj%band%save_proj_band_spin(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='orbit') then
+                call obj%band%save_proj_band_orbit(ik, isl, v_k)
+              elseif(TRIM(obj%band%proj)=='spin,orbit') then
+                call obj%band%save_proj_band_spin(ik, isl, v_k)
+                call obj%band%save_proj_band_orbit(ik, isl, v_k) 
+              endif
           end select
         end if
           
@@ -427,6 +451,7 @@ contains
 #if defined(OpenMP_Fortran_FOUND)
 !$OMP END PARALLEL DO
 #endif
+    if (allocated(v_k)) deallocate(v_k)
     if (allocated(v_k)) deallocate(v_k)
     call system_clock(icount1,icount_rate,icount_max)
     time = real((icount1-icount0))/real(icount_rate)
@@ -633,6 +658,7 @@ contains
 subroutine update_m(obj)
   use math_mod, only:  cart2sph
   class(self_consistent_field),intent(inout) :: obj
+  ! LOCAL
   ! LOCAL
   integer :: ia
   real(rp) :: m_s, m_p, m_d, m

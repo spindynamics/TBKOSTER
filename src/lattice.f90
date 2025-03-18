@@ -55,12 +55,14 @@ module lattice_mod
   type,public :: lattice
     !> Units
     class(units),pointer :: u
-
+    !> mulitplicative factor.
+    real(rp) :: v_factor
     !> Vectors
     real(rp),dimension(3,3) :: v
     !> Vectors inverse
     real(rp),dimension(3,3) :: vi
-
+    !> reciprocal vectors
+    real(rp),dimension(3,3) :: vrec
   contains
     ! Procedures
     procedure :: construct_reciprocal
@@ -171,7 +173,8 @@ contains
     logical :: isopen
     ! Namelist variables
     real(rp) :: v_factor
-    real(rp),dimension(3,3) :: v
+    real(rp),dimension(3,3) :: v,vrec,vunit
+    real(rp), dimension(3) :: v1,v2,v3
     ! Namelist
     namelist /lattice/ v_factor, v
 
@@ -195,11 +198,20 @@ contains
 
     v_factor = 1.0_rp
     read(10,nml=lattice)
+    obj%v_factor=v_factor
     v = v_factor*v
 
     obj%v = v * obj%u%convert_length('to','hau')
     obj%vi = inverse_3x3(obj%v)
-
+    
+    vunit=v/v_factor
+    v1=vunit(1,:)
+    v2=vunit(2,:)
+    v3=vunit(3,:)
+    v(1,:) = cross_product(v2,v3)
+    v(2,:) = cross_product(v3,v1)
+    v(3,:) = cross_product(v1,v2)
+    obj%vrec = v/abs(determinant(vunit))
     close(unit=10)
     !deallocate(file_rt)
   end subroutine read_txt
@@ -293,13 +305,21 @@ contains
     do ip=1,size(property_rt)
       select case(lower(trim(property_rt(ip))))
       case('v')
+        write(unit_rt,'(a)') ' v_factor = '// real2str(obj%v_factor) 
         v = obj%v * obj%u%convert_length('from','hau')
         do iv=1,3
           write(unit_rt,'(a)') ' v(' // int2str(iv) // ',:) = ' &
-           // real2str(v(iv,1)) // ', ' &
-           // real2str(v(iv,2)) // ', ' &
-           // real2str(v(iv,3))
+           // real2str(v(iv,1)/obj%v_factor) // ', ' &
+           // real2str(v(iv,2)/obj%v_factor) // ', ' &
+           // real2str(v(iv,3)/obj%v_factor)
         end do
+        do iv=1,3
+          write(unit_rt,'(a)') ' vrec(' // int2str(iv) // ',:) = ' &
+           // real2str(obj%vrec(iv,1)) // ', ' &
+           // real2str(obj%vrec(iv,2)) // ', ' &
+           // real2str(obj%vrec(iv,3))
+        end do
+
       case('vi')
         vi = obj%vi / obj%u%convert_length('from','hau')
         do iv=1,3

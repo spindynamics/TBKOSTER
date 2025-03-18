@@ -38,7 +38,7 @@ module math_mod
 #if defined(LAPACK95_FOUND)
   use lapack95, only: getrf, getri
 #endif
-  use precision_mod, only: ip, rp
+  use precision_mod, only: rp
   implicit none
 
   !> type for sorting routine
@@ -98,6 +98,8 @@ module math_mod
   !> Pauli matrix \f$ \sigma_z \f$
   complex(rp), dimension(2,2), parameter :: sigma_z &
     = reshape((/1.0_rp,0.0_rp,0.0_rp,-1.0_rp/), (/2,2/))
+  !> Definition of the orbital moment matrices in the real orbitals 
+  !> s, px, py, pz, dxy, dyz, dxz, dx2-y2, dz2: (9x9) matrix
   complex(rp), dimension(9,9), parameter :: L_x &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -108,7 +110,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,sqrt_three,0.0_rp,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
   complex(rp), dimension(9,9), parameter :: L_y &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -119,7 +121,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,sqrt_three, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,1.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-sqrt_three,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
   complex(rp), dimension(9,9), parameter :: L_z &
     = reshape((/0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
@@ -130,7 +132,7 @@ module math_mod
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,-1.0_rp,0.0_rp,0.0_rp,0.0_rp, &    
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,-2.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, &
                 0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp,0.0_rp, 0.0_rp,0.0_rp,0.0_rp/),&                   
-                (/9,9/))*i_unit
+                (/9,9/))*(-i_unit)
 
 contains
   !> Create vector of all zeros
@@ -306,7 +308,7 @@ contains
     m2(3,2) = -(m1(1,1) * m1(3,2) - m1(1,2) * m1(3,1)) / det;
     m2(3,3) =  (m1(1,1) * m1(2,2) - m1(1,2) * m1(2,1)) / det;
     else
-      write(*,*) 'math%inverse_3x3(): Warning - determinant is nearely zero'
+      write(*,*) 'math%inverse_3x3(): Warning - determinant is nearly zero'
       stop
     end if
      
@@ -399,6 +401,19 @@ contains
     v_cart(3)=v_sph(1)*cos(v_sph(2))
   end function sph2cart
 
+  !> Build the spin rotation operator U(theta,phi)
+  function Uspin_rotate(angle) result(U)
+    real(rp),dimension(2),intent(in) :: angle
+    complex(rp),dimension(2,2) :: U
+    real(rp):: theta, phi
+    theta=angle(1)
+    phi=angle(2)
+    U(1,1) = exp(-i_unit*phi/2)*cos(theta/2)
+    U(1,2) = -exp(-i_unit*phi/2)*sin(theta/2)
+    U(2,1) = exp(i_unit*phi/2)*sin(theta/2)
+    U(2,2) = exp(i_unit*phi/2)*cos(theta/2)
+  end function Uspin_rotate
+
   subroutine nm2rho(n,m_cart,rho)
     real(rp),intent(in) :: n
     real(rp),dimension(3),intent(in) :: m_cart
@@ -430,6 +445,28 @@ contains
     m_cart(2) = aimag(rho(2,1)-rho(1,2))
     m_cart(3) = real(rho(1,1)-rho(2,2))
   end subroutine rho2nm
+
+  subroutine rotate_rho(rho,angle)
+    complex(rp),dimension(2,2),intent(inout) :: rho
+    real(rp),dimension(2), intent(in) :: angle
+    ! local variable
+    real(rp) :: theta, phi
+    complex(rp),dimension(2,2) :: U,mat
+    integer :: ispin,jspin
+
+    U=Uspin_rotate(angle)
+
+    do ispin=1,2
+      do jspin=1,2
+        if((abs(rho(ispin,jspin)-conjg(rho(jspin,ispin))))>epsilon) then
+          write(*,*) 'math%rho2nm(): Warning - non Hermitian density'
+        end if
+      end do
+    end do
+
+    mat=matmul(rho,conjg(transpose(U)))
+    rho=matmul(U,mat)
+  end subroutine rotate_rho
 
   !> Compute Fermi(E,beta) occupation function 
   function fermi_function(E,beta) result(f)
@@ -480,7 +517,8 @@ contains
     integer :: i,indxt,ir,itemp,j,jstack,k,l
     real(rp) :: a
     if(.not. allocated(istack)) allocate(istack(nstack))
-    indx = (/(j, j=0,n)/)
+    !indx = (/(j, j=0,n)/)
+    forall(j=0:n) indx(j)=j
     jstack=0
     l=1
     ir=n
@@ -569,8 +607,8 @@ contains
     integer :: left, right
     real(rp) :: random
     real(rp) :: pivot
-    type (group) :: temp
-    type (group), dimension(nA) :: B
+    type(group) :: temp
+    type(group), dimension(nA) :: B
     integer :: i,marker
 
     forall(i=1:nA) B(i)=A(i)

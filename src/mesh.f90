@@ -115,13 +115,16 @@ contains
   end subroutine destructor
 
   function build_monkhorst_pack(gx,dx) result(x)
-    integer,dimension(3),intent(in) :: gx,dx
-    real(rp),dimension(:,:),allocatable :: x
+    ! INPUT
+    integer, dimension(3), intent(in) :: gx,dx
+    ! OUTPUT
+    real(rp), dimension(:,:), allocatable :: x
+    ! LOCAL
     integer :: ix,igx1,igx2,igx3
     real(rp) :: x1,x2,x3
 
-    allocate(x(product(gx),3))
-
+    if (.not.allocated(x)) allocate(x(product(gx),3))
+    
     ix = 1
     do igx1=1,gx(1)
       x1 = (2*igx1-gx(1)-1.0_rp+dx(1))/(2*gx(1))
@@ -136,10 +139,45 @@ contains
     end do
   end function build_monkhorst_pack
 
+!  function build_monkhorst_pack(gx,dx) result(x)
+!    integer,dimension(3),intent(in) :: gx,dx
+!    real(rp),dimension(product(gx),3) :: x
+!    integer :: ix,igx1,igx2,igx3
+!    real(rp) :: x1,x2,x3
+!
+!    ix = 1
+!    do igx1=1,gx(1)
+!      if(gx(1)>1) then
+!          x1 = (igx1-1)/(gx(1)-1.0_rp)+dx(1)/(2*(gx(1)-1.0_rp))
+!      elseif(gx(1)==1) then
+!          x1=0.0_rp
+!      endif
+!      do igx2=1,gx(2)
+!        if(gx(2)>1) then
+!        x2 =(igx2-1)/(gx(2)-1.0_rp)+dx(2)/(2*(gx(2)-1.0_rp))
+!        elseif(gx(2)==1) then
+!          x2=0.0_rp
+!        endif
+!        do igx3=1,gx(3)
+!          if(gx(3)>1) then
+!          x3 = (igx3-1)/(gx(3)-1.0_rp)+dx(3)/(2*(gx(3)-1.0_rp))
+!          elseif(gx(3)==1) then
+!            x3=0.0_rp
+!          endif
+!          x(ix,:) = (/x1,x2,x3/)
+!          ix = ix+1
+!        end do
+!      end do
+!    end do
+!  end function build_monkhorst_pack
+
   function build_path(gxs,xs) result(x)
-    integer,intent(in) :: gxs
-    real(rp),dimension(:,:),intent(in) :: xs
-    real(rp),dimension(:,:),allocatable :: x
+    ! INPUT
+    integer, intent(in) :: gxs
+    real(rp), dimension(:,:), intent(in) :: xs
+    ! OUTPUT
+    real(rp), dimension(:,:), allocatable :: x
+    ! LOCAL
     integer :: nxs,ix,ixs,igxs
 
     allocate(x((size(xs,1)-1)*gxs+1,3))
@@ -455,7 +493,7 @@ contains
       open(unit=unit_rt,file=file_rt,action='write')
     end if
     if(tag_rt) then
-      write(unit_rt,'(a)') '&mesh'
+      write(unit_rt,'(a)') '&mesh_out'
     end if
 
     do ip=1,size(property_rt)

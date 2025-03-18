@@ -17,14 +17,14 @@ if(UNIX)
 endif()
 
 set(PROJECT_NAME TBKOSTER)
-project(${PROJECT_NAME} VERSION 1.9.3.0)
+project(${PROJECT_NAME} VERSION 1.9.4.0 DESCRIPTION "Tight-Binding Kernel of Objets for SpinTronics Enhanced Research")
 message(STATUS "Preparing ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK} ...")
 message(STATUS "Running on ${CMAKE_SYSTEM_NAME} version ${CMAKE_SYSTEM_VERSION}")
 
 set(TBKOSTER_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}")
 
 # this variable controls the default value of the options which are normally set
-# to ON (useful if you want to configure a minimal version of SpinDynamics: e.g. "cmake
+# to ON (useful if you want to configure a minimal version of TBKOSTER: e.g. "cmake
 # -DDEFAULT=0")
 set(DEFAULT ON CACHE INTERNAL "Default value for enabled-by-default options")
 
@@ -33,18 +33,12 @@ macro(opt OPTION HELP VALUE)
   set(OPT_TEXI "${OPT_TEXI}\n@item ENABLE_${OPTION}\n${HELP} (default: ${VALUE})")
 endmacro(opt)
 
-macro(set_config_option VARNAME STRING)
-  set(${VARNAME} TRUE)
-  list(APPEND CONFIG_OPTIONS ${STRING})
-  message(STATUS "Found " ${STRING})
-endmacro(set_config_option)
-
 opt(DOXYGEN "Enable Doxygen engine for source documentation" OFF)
 opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
-
+opt(FORTRAN_STDLIB "Enable fortran-lang stdlib" ON)
 
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
@@ -61,7 +55,7 @@ add_custom_target(
     COMMAND ${CMAKE_COMMAND} -E remove -f "${PROJECT_SOURCE_DIR}/test/*.f90"
 )
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules")
 
 # Enable Fortran language
 enable_language(Fortran)
@@ -72,7 +66,7 @@ message(STATUS "Using Fortran compiler ${CMAKE_Fortran_COMPILER_ID} Fortran ${CM
 # Fortran module and output directories
 set(fortran_module_directory "${CMAKE_BINARY_DIR}/modules" CACHE PATH "directory for fortran module files")
 file(MAKE_DIRECTORY ${fortran_module_directory})
-set(CMAKE_Fortran_MODULE_DIRECTORY ${fortran_module_directory})
+list(APPEND CMAKE_Fortran_MODULE_DIRECTORY ${fortran_module_directory})
 set(fortran_output_directory "${CMAKE_BINARY_DIR}/bin" CACHE PATH "directory for executable file")
 file(MAKE_DIRECTORY ${fortran_output_directory})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${fortran_output_directory})
@@ -83,15 +77,26 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -cpp")
 #set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")  
 set(CMAKE_VERBOSE_MAKEFILE off)
 
+if(ENABLE_FORTRAN_STDLIB)
+  # fortran-lang stdlib https://github.com/fortran-lang/stdlib
+  find_package("fortran_stdlib" REQUIRED)
+  list(APPEND CONFIG_OPTIONS "FORTRAN_STDLIB")
+endif(ENABLE_FORTRAN_STDLIB)
+
 # add the directory of the sources
 add_subdirectory(src)
 
 # add the directory of the tools
 add_subdirectory(tools)
 
+if(ENABLE_FLUSH)
+  list(APPEND CONFIG_OPTIONS "FLUSH")
+endif(ENABLE_FLUSH)
+
 if(ENABLE_TESTS)
   # unitary tests
   add_subdirectory(unit_tests)
+  list(APPEND CONFIG_OPTIONS "TESTS")
 endif(ENABLE_TESTS)
 
 if(ENABLE_LATEX)
@@ -108,6 +113,7 @@ if(ENABLE_LATEX)
   else()
     message("LaTeX needs to be installed to generate the LaTeX documentation")
   endif()
+  list(APPEND CONFIG_OPTIONS "LATEX")
 endif(ENABLE_LATEX)
 
 if(ENABLE_DOXYGEN)
@@ -125,7 +131,8 @@ if(ENABLE_DOXYGEN)
   else()
     message("Doxygen needs to be installed to generate the Doxygen documentation")
   endif()
-endif(ENABLE_DOXYGEN) 
+  list(APPEND CONFIG_OPTIONS "DOXYGEN")
+endif(ENABLE_DOXYGEN)
 
 list(LENGTH CONFIG_OPTIONS SIZE)
 if(SIZE GREATER 0)
