@@ -715,7 +715,7 @@ contains
           m_cart = sum(obj%q%q_mul_in(ia,:,1:3),1)
           m_r = norm2(m_cart)
 
-         if(m_r>epsilon.and.obj%a_tb%lambda_pen(ia)>epsilon) then
+         if(m_r>epsilon.and.obj%a_tb%lambda_pen(ia)>epsilon.and.obj%a_tb%m_pen(ia,1)>epsilon) then
           obj%a_tb%b_pen(ia,:) = -obj%a_tb%lambda_pen(ia) &
            *(m_cart/m_r - sph2cart(obj%a_tb%m_pen(ia,:))/obj%a_tb%m_pen(ia,1))
 	  else
