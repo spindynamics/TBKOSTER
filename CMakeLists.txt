@@ -17,7 +17,7 @@ if(UNIX)
 endif()
 
 set(PROJECT_NAME TBKOSTER)
-project(${PROJECT_NAME} VERSION 1.9.3.0)
+project(${PROJECT_NAME} VERSION 1.9.4.0)
 message(STATUS "Preparing ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK} ...")
 message(STATUS "Running on ${CMAKE_SYSTEM_NAME} version ${CMAKE_SYSTEM_VERSION}")
 
@@ -44,7 +44,6 @@ opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" OFF)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
-
 
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
