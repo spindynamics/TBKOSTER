@@ -111,10 +111,10 @@ Set the option ON in the CMakeLists.txt file at the top of the root directory to
 
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
-Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfortran with llvm support, with the ports subsystem (http://www.macports.org)
+Preferred method : on MacOS 15 and later, install the cmake and gfortran, with the brew subsystem (https://brew.sh)
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ sudo port install cmake gcc6 libgcc6 gcc_select \
-llvm-3.9 llvm_select lapack libomp
+$ brew install cmake gcc libomp \ 
+fortran-stdlib
 \end{lstlisting}
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
@@ -126,17 +126,7 @@ For both Linux and MacOS platform, you can invoke cmake with Release or Debug op
 $ cmake -B build -DCMAKE_BUILD_TYPE=Release/Debug
 $ cmake --build build
 \end{lstlisting}
-To get access to the OpenMP implementation, then update your ports with openmp package. You can easily change your settings with
-\begin{lstlisting}[language=sh,basicstyle=\small]
-$ port select --summary
-$ port select --set llvm mp-llvm-3.9
-$ port select --set gcc mp-gcc6
-\end{lstlisting}
-In order to get good numerical performance, you may use the OpenBLAS library and produce a Release version as :
-\begin{lstlisting}[language=sh,basicstyle=\small]
-$ port install openblas
-$ BLA_VENDOR=OpenBLAS cmake -DCMAKE_BUILD_TYPE=Release -B build
-\end{lstlisting}
+To get access to the OpenMP activate OpenMP ON in the main CMAKELists.txt.
 %%%%%%%%%%%%%%%%%%%%
 \section{MS Windows}
 For Windows earlier than 10 release 1709, you have to consider the following method:

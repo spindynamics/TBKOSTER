@@ -342,8 +342,7 @@ contains
       call system_clock(icount0,icount_rate,icount_max)
       if (.not.allocated(w_k)) allocate(w_k(obj%h%nh))
 #if defined(OpenMP_Fortran_FOUND)
-!$OMP PARALLEL DO &
-!$OMP PRIVATE(ik,isl,w_k)
+!$OMP PARALLEL PRIVATE(ik,isl,w_k)
 #endif
     do ik=1,obj%k%nx
       do isl=1,obj%a%nsl
@@ -352,7 +351,7 @@ contains
       end do ! end of isl
     end do ! end of ik
 #if defined(OpenMP_Fortran_FOUND)
-!$OMP END PARALLEL DO
+!$OMP END PARALLEL
 #endif
     if (allocated(w_k)) deallocate(w_k)
     call system_clock(icount1,icount_rate,icount_max)
@@ -388,8 +387,7 @@ contains
     call system_clock(icount0,icount_rate,icount_max)
     if (.not.allocated(v_k)) allocate(v_k(2,obj%h%nh,obj%h%nh))
 #if defined(OpenMP_Fortran_FOUND)
-!$OMP PARALLEL DO &
-!$OMP PRIVATE(ik,isl,v_k,q_out_k,om_k)
+!$OMP PARALLEL PRIVATE(ik,isl,v_k,q_out_k,om_k)
 #endif
     do ik=1,obj%k%nx
       if(obj%ni_max>1) then
@@ -449,7 +447,7 @@ contains
       end do ! end of isl
     end do ! end of ik
 #if defined(OpenMP_Fortran_FOUND)
-!$OMP END PARALLEL DO
+!$OMP END PARALLEL
 #endif
     if (allocated(v_k)) deallocate(v_k)
     if (allocated(v_k)) deallocate(v_k)

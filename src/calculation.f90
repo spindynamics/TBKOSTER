@@ -55,6 +55,9 @@ module calculation_mod
   use spin_dynamics_mod
   use string_mod, only: TBKOSTER_flush, int2str, lower, sl
   use units_mod
+#if defined(OpenMP_Fortran_FOUND)
+  use omp_lib
+#endif
   implicit none
   private
 
@@ -502,8 +505,9 @@ contains
     end if
     scf_obj = self_consistent_field(mft=mft_obj)
     call scf_obj%initialize('nscf')
-
-    !$OMP PARALLEL DO
+#if defined(OpenMP_Fortran_FOUND)
+!$OMP PARALLEL PRIVATE(iconfig)
+#endif
     do iconfig=1,mft_obj%nconfig
     !unit = output_unit
     ! Open log
@@ -537,11 +541,13 @@ contains
 
     ! Write magnetic anisotropy
   
-      call mft_obj%write_txt_formatted(file=dir // '/out_mft_'//int2str(iconfig)//'.txt',&
-       property= [character(len=sl) :: 'mconfig','mft'],config=iconfig)
+    call mft_obj%write_txt_formatted(file=dir // '/out_mft_'//int2str(iconfig)//'.txt',&
+      property= [character(len=sl) :: 'mconfig','mft'],config=iconfig)
     end do
     close(unit)
-    !$OMP END PARALLEL DO
+#if defined(OpenMP_Fortran_FOUND)
+!$OMP END PARALLEL
+#endif
     call execute_command_line(trim(obj%TBKOSTER_dir) // '/mft.x ')
   end subroutine post_process_mft
 
