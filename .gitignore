@@ -68,11 +68,6 @@ unit_tests/string/CMakeFiles/*
 *.synctex.gz
 *.toc
 
-examples/**/*.txt
-examples/**/*.xyz
-examples/**/*.dat
-examples/**/*.orig
-examples/**/*.gnuplot
-examples/**/*.png
-fpretty/lib64
-fpretty/pyvenv.cfg
+examples/
+fpretty/
+.venv
