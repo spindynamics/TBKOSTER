@@ -82,9 +82,9 @@ module band_structure_mod
     !> 'orbit', 'spin-orbite'
     character(len=11) :: proj
     ! Local band energy atomic site number
-    integer :: na_band
+    integer :: na_band,i_min,i_max
     ! Local band energy atomic site index
-    integer(ip),dimension(:),allocatable ::  ia_band
+    integer(ip),dimension(:),allocatable ::  i_band,ia_band
     ! Lowest and highest band index
     ! integer :: iband_min, iband_max
     ! Site band weight
@@ -192,13 +192,14 @@ contains
     integer :: ik,isl
     complex(rp),intent(in),dimension(2,obj%h%nh,obj%h%nh) :: v_k
     ! LOCAL
-    integer :: ia_band1,ia,ie,io,ispin,jspin,imat,jmat,imat_ispin,imat_jspin
+    integer :: ih,ia_band1,ia,ie,io,ispin,jspin,imat,jmat,imat_ispin,imat_jspin
     complex(rp), dimension(2, 2) :: rho
     real(rp) :: n
     real(rp), dimension(3) :: m_cart
 
 
-    do jmat = 1, obj%h%nh
+    do ih=1,obj%i_max-obj%i_min+1
+      jmat=obj%i_band(ih)
       do ia= 1, obj%a%na
         ie = obj%a%ia2ie(ia)
         rho = cmplx(0.0_rp, 0.0_rp, kind=rp)
@@ -214,13 +215,14 @@ contains
         end do
         end do
         call rho2nm(rho, n, m_cart)
-        obj%w_band_spin(jmat,ik,0,2:4) = obj%w_band_spin(jmat,ik,0,2:4)+m_cart
+        obj%w_band_spin(ih,ik,0,2:4) = obj%w_band_spin(ih,ik,0,2:4)+m_cart
      end do
        m_cart=obj%w_band_spin(jmat,ik,0,2:4)
-       obj%w_band_spin(jmat,ik,0,1) = norm2(m_cart)
+       obj%w_band_spin(ih,ik,0,1) = norm2(m_cart)
    end do
 
-  do jmat = 1, obj%h%nh
+    do ih=1,obj%i_max-obj%i_min+1
+      jmat=obj%i_band(ih)
      do ia_band1 = 1, obj%na_band
        ia = obj%ia_band(ia_band1)
        ie = obj%a%ia2ie(ia)
@@ -237,10 +239,10 @@ contains
        end do
        end do
        call rho2nm(rho, n, m_cart)
-       obj%w_band_spin(jmat,ik,ia_band1,1) = norm2(m_cart)
-       obj%w_band_spin(jmat,ik,ia_band1,2:4) = m_cart
-    end do
-  end do
+       obj%w_band_spin(ih,ik,ia_band1,1) = norm2(m_cart)
+       obj%w_band_spin(ih,ik,ia_band1,2:4) = m_cart
+     end do
+   end do
 
   end subroutine save_proj_band_spin
 
@@ -252,7 +254,7 @@ contains
     integer :: ik,isl
     complex(rp),intent(in),dimension(2,obj%h%nh,obj%h%nh) :: v_k
     ! LOCAL
-    integer :: ia_band1,ia,ie,io1,io2,l,ispin,jspin,imat,jmat,kmat,imat_ispin,imat_jspin,ir
+    integer :: ih,ia_band1,ia,ie,io1,io2,l,ispin,jspin,imat,jmat,kmat,imat_ispin,imat_jspin,ir
     complex(rp), dimension(3, 2, 2) :: rho
     real(rp) :: n
     real(rp), dimension(3) :: m_cart
@@ -269,8 +271,9 @@ contains
       end select  
     end do
 
-    do kmat = 1, obj%h%nh
-      obj%w_band_orb(kmat,ik,0,:)=0.0D0
+    do ih=1,obj%i_max-obj%i_min+1
+      kmat=obj%i_band(ih)
+      obj%w_band_orb(ih,ik,0,:)=0.0D0
       do ia = 1, obj%a%na
           ie = obj%a%ia2ie(ia)
         do ir = 1, 3  ! x: ir=1 , y: i=2, z: ir=3
@@ -280,20 +283,21 @@ contains
                    imat = obj%h%iaos2ih(ia, io1, ispin)
                    do io2 = 1, obj%e%no(ie)
                       jmat = obj%h%iaos2ih(ia, io2, ispin)
-                      obj%w_band_orb(kmat,ik,0,ir+1) = obj%w_band_orb(kmat,ik,0,ir+1) &
+                      obj%w_band_orb(ih,ik,0,ir+1) = obj%w_band_orb(ih,ik,0,ir+1) &
                            +obj%a%g_s*conjg(v_k(1, imat, kmat))*LMAT(ir,io1, io2)*v_k(2, jmat, kmat)
                    end do
                 end do  
           end do  
         end do   
       end do   !fin de la boucle sur ia
-       m_cart=obj%w_band_orb(kmat,ik,0,2:4)
-       obj%w_band_orb(kmat,ik,0,1) = norm2(m_cart)
+       m_cart=obj%w_band_orb(ih,ik,0,2:4)
+       obj%w_band_orb(ih,ik,0,1) = norm2(m_cart)
     end do     ! fin de la boucle sur kmat
 
-   do kmat = 1, obj%h%nh
+    do ih=1,obj%i_max-obj%i_min+1
+      kmat=obj%i_band(ih)
       do ia_band1 = 1, obj%na_band
-        obj%w_band_orb(kmat,ik,ia_band1,:)=0.0D0
+        obj%w_band_orb(ih,ik,ia_band1,:)=0.0D0
           ia = obj%ia_band(ia_band1)
           ie = obj%a%ia2ie(ia)
         do ir = 1, 3  ! x: ir=1 , y: i=2, z: ir=3
@@ -303,14 +307,14 @@ contains
                    imat = obj%h%iaos2ih(ia, io1, ispin)
                    do io2 = 1, obj%e%no(ie)
                       jmat = obj%h%iaos2ih(ia, io2, ispin)
-                      obj%w_band_orb(kmat,ik,ia_band1,ir+1) = obj%w_band_orb(kmat,ik,ia_band1,ir+1) &
+                      obj%w_band_orb(ih,ik,ia_band1,ir+1) = obj%w_band_orb(ih,ik,ia_band1,ir+1) &
                            +obj%a%g_s*conjg(v_k(1, imat, kmat))*LMAT(ir,io1, io2)*v_k(2, jmat, kmat)
                    end do
                 end do  
           end do  
         end do   
-        m_cart=obj%w_band_orb(kmat,ik,ia_band1,2:4)
-       obj%w_band_orb(kmat,ik,ia_band1,1) = norm2(m_cart)
+        m_cart=obj%w_band_orb(ih,ik,ia_band1,2:4)
+       obj%w_band_orb(ih,ik,ia_band1,1) = norm2(m_cart)
       end do   !fin de la boucle sur ia_band
     end do     ! fin de la boucle sur kmat
 
@@ -324,12 +328,12 @@ contains
          allocate(obj%w_band_site(obj%h%nh,obj%k%nx,obj%na_band,obj%e%no_max,obj%a%nsl))
       end if
     elseif(TRIM(obj%proj)=='spin') then
-      allocate(obj%w_band_spin(obj%h%nh,obj%k%nx,0:obj%na_band,4))
+        allocate(obj%w_band_spin(obj%i_max-obj%i_min+1,obj%k%nx,0:obj%na_band,4))
     elseif(TRIM(obj%proj)=='orbit') then
-      allocate(obj%w_band_orb(obj%h%nh,obj%k%nx,0:obj%na_band,4))
+        allocate(obj%w_band_orb(obj%i_max-obj%i_min+1,obj%k%nx,0:obj%na_band,4))
     elseif(TRIM(obj%proj)=='spin,orbit') then
-      allocate(obj%w_band_spin(obj%h%nh,obj%k%nx,0:obj%na_band,4))
-      allocate(obj%w_band_orb(obj%h%nh,obj%k%nx,0:obj%na_band,4))
+        allocate(obj%w_band_spin(obj%i_max-obj%i_min+1,obj%k%nx,0:obj%na_band,4))
+        allocate(obj%w_band_orb(obj%i_max-obj%i_min+1,obj%k%nx,0:obj%na_band,4))
     endif
   end subroutine initialize
 
@@ -343,10 +347,10 @@ contains
     logical :: isopen
     ! Namelist variables
     character(len=11) :: proj
-    integer(ip) :: na_band
-    integer(ip),dimension(:),allocatable :: ia_band
+    integer(ip) :: i_min,i_max,na_band,ih
+    integer(ip),dimension(:),allocatable :: i_band,ia_band
     ! Namelist
-    namelist /band/proj,na_band,ia_band
+    namelist /band/proj,i_min,i_max,na_band,ia_band
     
     call initialize_proj(proj)
     if(present(file)) then
@@ -367,18 +371,27 @@ contains
     end if
 
     na_band=0
+    i_min=1
+    i_max=obj%h%nh
     allocate(ia_band(0))
     read(10,nml=band,iostat=iostatus)
     obj%proj=proj
     call check_proj(proj,obj%a%ns)
+    allocate(i_band(i_max-i_min+1))
+    do ih=1,i_max-i_min+1
+     i_band(ih)=ih+i_min-1
+    end do
     deallocate(ia_band)
     allocate(ia_band(na_band))
     if(na_band > 0) then
       rewind(10)
       read(10,nml=band,iostat=iostatus)
     end if
+    obj%i_min=i_min
+    obj%i_max=i_max
     obj%na_band=na_band
     call move_alloc(ia_band,obj%ia_band)
+    call move_alloc(i_band,obj%i_band)
     call obj%initialize()
     close(unit=10)
     !deallocate(file_rt)
@@ -430,10 +443,10 @@ contains
     integer                     :: unit_rt
     ! Namelist variables
     character(len=11) :: proj
-    integer(ip) :: na_band
+    integer(ip) :: i_min,i_max,na_band
     integer(ip),dimension(:),allocatable :: ia_band
     ! Namelist
-    namelist /band/proj,na_band,ia_band
+    namelist /band/proj,i_min,i_max,na_band,ia_band
 
     if(present(file)) then
       file_rt = file
@@ -449,7 +462,8 @@ contains
     if(.not. present(unit)) then
       open(unit=unit_rt,file=file_rt,action='write')
     end if
-
+    i_min=obj%i_min
+    i_max=obj%i_max
     na_band = obj%na_band
     ia_band = obj%ia_band
 
@@ -549,7 +563,7 @@ contains
          end do
         end do
         elseif(TRIM(obj%proj)=='spin') then    
-           do ih=1,obj%h%nh
+           do ih=1,obj%i_max-obj%i_min+1
              do ik=1,obj%k%nx
               do ia_band1=0,obj%na_band
                do ir=1,4
@@ -560,7 +574,7 @@ contains
              end do
            end do
            elseif(TRIM(obj%proj)=='orbit') then    
-            do ih=1,obj%h%nh
+            do ih=1,obj%i_max-obj%i_min+1
               do ik=1,obj%k%nx
                 do ia_band1=0,obj%na_band
                  do ir=1,4
@@ -571,7 +585,7 @@ contains
               end do
             end do
            elseif(TRIM(obj%proj)=='spin,orbit') then    
-              do ih=1,obj%h%nh
+              do ih=1,obj%i_max-obj%i_min+1
                 do ik=1,obj%k%nx
                  do ia_band1=0,obj%na_band
                    do ir=1,4
@@ -581,7 +595,7 @@ contains
                   end do
                 end do
                end do
-               do ih=1,obj%h%nh
+               do ih=1,obj%i_max-obj%i_min+1
                 do ik=1,obj%k%nx
                  do ia_band1=0,obj%na_band
                    do ir=1,4
