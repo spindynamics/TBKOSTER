@@ -471,6 +471,8 @@ namelist &Variable     &Description \\
  \end{liste} \\
  & \verb+na+  (int) &  Number of atoms in the system. 
  \\
+  & \verb+k_spiral(3)+  (real) &  spiral vector for spin-spiral calculations (defaut k\_spiral=(0,0,0)). 
+ \\
   & \verb+ntag+  (int) &  Number of tags to give names to differents atoms. 
  \\
   & \verb+stag(i)+  (int) &  Number of atoms of tag $i=1,\cdots,ntag$. 
@@ -613,9 +615,266 @@ namelist &Variable     &Description \\
 \hline
 \end{supertabular}
 
-\subsection{band.x}
-The file  \verb+in_master.txt+ is the main input file of \textcolor{nicered}{TBKOSTER}.
+\subsection{post-processing}
 
+\subsubsection{ a) band}
+
+\begin{center}\verb+band/in_band.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\&band &  &   \\
+\hline        
+ & \verb+proj+  (char) &  type of projection
+                        \begin{liste}    
+                                   \item '\textbf{none}'$\ra$ no projection, 
+                                   \item 'site'$\ra$ atomic site projection, 
+                                    \item 'spin'$\ra$ spin projection (only if $ns=4$) to plot  spin-textures. 
+                                     \item 'orbit'$\ra$ orbit projection (only if $ns=4$) to plot  orbit-textures. 
+                                      \item 'spin,orbit'$\ra$ spin and orbit projection (only if $ns=4$) to plot  spin and orbit-textures.
+                           \end{liste} \\
+ & \verb+i_min+  (int) &  lowest band index to include in the calculation (default $i_min=1$) \\
+  & \verb+i_max+  (int) &  largest band index to include in the calculation (default $i_max=nmax$)\\
+ & \verb+na_band+  (int) &  number of atomic sites on which projection should be done (default na\_band=0).
+ \\
+ & \verb+ia_band(1:na_band)+  &  index of the atomic sites.
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+\vspace{1cm}
+\begin{center}\verb+band/in_mesh.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\hline        
+ & \verb+type+  (char) &  type of $k$ mesh
+                        \begin{liste}    
+                                   \item '\textbf{mp}'$\ra$ monkhorst pack mesh, 
+                                   \item 'path'$\ra$ path in k-space, 
+                                    \item 'list'$\ra$ list of $k$-vectors. 
+                           \end{liste} \\
+ & \verb+x_coord+  (char) &  type of $k$ mesh
+                        \begin{liste}    
+                        \item '\textbf{direct}'$\ra$ in fractions of $a$, $b$ and $c$ coordinate, 
+                        \item 'cartesian'$\ra$ $xyz$ coordinates, 
+                           \end{liste} \\
+ & \verb+gx(3)+  (int) &   $gx=(n_a,n_b,n_c)$, $n_i$ integer, when type=mp.
+ \\
+ & \verb+dx(3)+  (int) &   $dx=(d_a,d_b,d_c)$ $d_i=0,1$ shift when type=mp.
+ \\
+  & \verb+nxs+  (int) &   number of symmetry point when type=path.
+ \\
+  & \verb+gxs+  (int) &   number of points between two consecutive symmetry-point when type=path.
+ \\
+ & \verb+xs(1:nxs,3)+  (int) &   coordinate of the symmetry points when type=path
+ \\
+ & \verb+xs_label(1:nxs)+  (int) &   label (G,X,M,K etc..) of the symmetry points when type=path
+ \\
+ & \verb+nx+  (int) &      number of $k$ points when type=list.
+ \\
+  & \verb+x(1:nx,3)+  (int) &   coordinate of the $k$ points when type=list \\
+\hline
+\hline
+\end{supertabular}
+
+\subsubsection{ b) PDOS}
+
+\vspace{0.5cm}
+\begin{center}\verb+dos/in_dos.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\&dos &  &   \\
+\hline        
+& \verb+nen+  (int) &  number of energy points \\
+& \verb+na_dos+  (int) &  number of atomic sites on which the pdos will be projected\\
+& \verb+ia(1:na_dos)+  (int) &  index of the sites.\\
+& \verb+en_min+  (real) &  lower bound of energy window.\\
+& \verb+en_max+  (real) &  upper bound of energy window.\\
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+\vspace{0.5cm}
+\begin{center}\verb+dos/in_energy.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\&energy &  &   \\
+\hline        
+& \verb+smearing+  (char) &  smearing type
+    \begin{liste}    
+                                   \item '\textbf{mp}'$\ra$ Mathfessel Paxton, 
+                                   \item 'mv'$\ra$ Marzari Vanderbilt, 
+                                    \item 'fd'$\ra$ derivative of Fermi-Dirac. 
+                                     \item 'g'$\ra$ Gaussian. 
+\end{liste} \\
+& \verb+degauss+  (real) &   broadening\\
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+\vspace{0.5cm}
+
+\begin{center}\verb+dos/in_mesh.txt +\end{center}
+
+\vspace{-0.5cm}
+
+\noindent
+In \verb+dos/in_mesh.txt + all the options of \verb+&mesh+ are available however for PDOS one usually only use a MP k-point grid. Hence we have only listed below the most common parameters.
+
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\hline        
+ & \verb+type+  (char) &  type of $k$ mesh
+                        \begin{liste}    
+                                   \item '\textbf{mp}'$\ra$ monkhorst pack mesh, 
+                                   \item 'path'$\ra$ path in k-space, 
+                                    \item 'list'$\ra$ list of $k$-vectors. 
+                           \end{liste} \\
+ & \verb+gx(3)+  (int) &   $gx=(n_a,n_b,n_c)$, $n_i$ integer, when type=mp.
+ \\
+ & \verb+dx(3)+  (int) &   $dx=(d_a,d_b,d_c)$ $d_i=0,1$ shift when type=mp.
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+\subsubsection{ c) MFT (magnetic force theorem)}
+
+The magnetic force theorem is used in two contexts: to evaluate the magnetocrystalline anisotropy or to compare the total energy of different magnetic configurations.
+
+\begin{center}\verb+mft/in_mft.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\&mft &  &   \\
+\hline     
+ & \verb+calc+  (char) &  type of calculation
+                        \begin{liste}    
+                                   \item '\textbf{mae}'$\ra$ magnetic anisotropy calculation, 
+                                   \item 'mconfig'$\ra$ calculation of various magnetic non-collinear configurations, 
+                           \end{liste} \\
+ & \verb+type+  (char) &  type of mesh in $(\theta, \phi)$
+                        \begin{liste}    
+                                   \item 'mesh'$\ra$ regular mesh over the full spherical coordinates, 
+                                   \item 'list'$\ra$ list of several $(\theta, \phi)$ angles, 
+                                    \item 'path'$\ra$ path between various $(\theta, \phi)$ angles, 
+                           \end{liste} \\                           
+& \verb+na_mft+  (int) &  number of site on which the energy is projected (default na\_mft=0)\\
+& \verb+ia(1:na_mfr)+  (int) &  index of the sites, if na\_mft=0 no need to specify all the indices.\\
+& \verb+nxa+  (int) &  
+$\bullet$ \textbf{calc=mae\&type=mesh}: (\verb+nxa+,\verb+nxa+) mesh over the spherical coordinates, \newline 
+$\bullet$ \textbf{calc=mae\&type=path}: \verb+nxa+ is the number points between two angles, 
+\newline 
+$\bullet$ \textbf{calc=mae\&ype=list}: \verb+nxa+ is the number of angles in the list, 
+\newline 
+$\bullet$ \textbf{calc=mfonfig}: \verb+nxa+ is the number of magnetic configurations. \\
+& \verb+mconfig(na,nxa,3)+  (real) &  define explicitly the \verb+nxa+ magnetic configurations over the \verb+na+ atoms of system\\
+& \verb+nangle+  (int) &  in case type=path; nangle is the number of angles (\>2) to generate the path.\\
+& \verb+angle_xs(nxa,3)+ (real) &  list of angles in spherical coordinates\\
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+\newpage
+%\vspace{0.5cm}
+\begin{center}\verb+mft/in_energy.txt  +\end{center}
+\vspace{-0.5cm}
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\&energy &  &   \\
+\hline        
+& \verb+smearing+  (char) &  smearing type
+    \begin{liste}    
+                                   \item '\textbf{mp}'$\ra$ Mathfessel Paxton, 
+                                   \item 'mv'$\ra$ Marzari Vanderbilt, 
+                                    \item 'fd'$\ra$ derivative of Fermi-Dirac. 
+                                     \item 'g'$\ra$ Gaussian. 
+\end{liste} \\
+& \verb+degauss+  (real) &   broadening\\
+ \\                   
+\hline
+\hline
+\end{supertabular}
+
+%\vspace{0.5cm}
+
+\begin{center}\verb+mft/in_mesh.txt +\end{center}
+
+\vspace{-0.5cm}
+
+\noindent
+In \verb+mesh/in_mesh.txt + all the options of \verb+&mesh+ are available however for MFT one only use a MP k-point grid. Hence we have only listed below the most common parameters.
+
+\begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
+p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
+& & \\
+\hline
+\hline
+namelist &Variable     &Description \\
+\hline 
+\hline        
+ & \verb+type+  (char) &  type of $k$ mesh
+                        \begin{liste}    
+                                   \item '\textbf{mp}'$\ra$ monkhorst pack mesh, 
+                                   \item 'path'$\ra$ path in k-space, 
+                                    \item 'list'$\ra$ list of $k$-vectors. 
+                           \end{liste} \\
+ & \verb+gx(3)+  (int) &   $gx=(n_a,n_b,n_c)$, $n_i$ integer, when type=mp.
+ \\
+ & \verb+dx(3)+  (int) &   $dx=(d_a,d_b,d_c)$ $d_i=0,1$ shift when type=mp.
+ \\                   
+\hline
+\hline
+\end{supertabular}
 
 \section{output files}
 
