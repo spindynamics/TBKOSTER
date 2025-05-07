@@ -58,9 +58,11 @@ individu/.default={green}}
 
 \renewcommand{\sectionmark}[1]{\markboth{\thesection.\ #1}{}}
 \renewcommand{\subsectionmark}[1]{\markright{\thesubsection\ #1}}
+
+\newcommand{\TBK}{\textcolor{nicered}{TBKOSTER}}
 \makeatother
 
-\title{{\textbf{\huge\textcolor{nicered}{TBKOSTER}}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
+\title{{\textbf{\huge\TBK}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
 \author{C. Barreteau, P. Thibaudeau\thanks{Supported by CEA}}
 \date{Release 0.0.3\\ \today}
 
@@ -73,7 +75,7 @@ individu/.default={green}}
 \chapterstyle{daleif1}
 \tableofcontents*
 \chapter*{Preface}
-In this manual we describe the \textcolor{nicered}{TBKOSTER} code. 
+In this manual we describe the \TBK code. 
 
 
 \begin{center}
@@ -145,7 +147,7 @@ $\bullet$ Installation guide
 $\bullet$ Instructions to run the code
 
 \noindent
-$\bullet$ \textcolor{nicered}{TBKOSTER} process and post-process options.
+$\bullet$ \TBK process and post-process options.
 
 \noindent
 $\bullet$ Description of input and output files.
@@ -311,7 +313,7 @@ The "linux" directory should contain...
 
 \section{running TBKOSTER}
 
-\textcolor{nicered}{TBKOSTER} needs an \verb+in_master.txt+ file to run. 
+\TBK needs an \verb+in_master.txt+ file to run. 
 \verb+in_master.txt+ contains all the parameters of the calculation. This file will be described in details in Input File Command Reference section.
 
 \chapter{Getting Started}
@@ -350,7 +352,7 @@ In each \textcolor{nicered}{sub-directory} one can find a \verb+README.md+ file 
 \section{input files}
 
 \subsection{in\_master.txt}
-The file  \verb+in_master.txt+ is the main input file of \textcolor{nicered}{TBKOSTER}.
+The file  \verb+in_master.txt+ is the main input file of \TBK.
 
 \begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
 p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
@@ -653,6 +655,14 @@ namelist &Variable     &Description \\
 \begin{center}\verb+band/in_mesh.txt  +\end{center}
 \vspace{-0.5cm}
 
+\noindent
+Note that for band-structure calculation, although the type of mesh is by default \verb+type+=\textbf{mp}, band structure should be performed either with verb+type+=\textbf{path} or verb+type+=\textbf{list}. 
+
+
+$\bullet$ \textbf{path} is used for "traditional" band-structure plotting
+
+$\bullet$ \textbf{list} is used for 2D plot of spin, orbit or velocity textures.
+
 \begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
 p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
 & & \\
@@ -664,8 +674,8 @@ namelist &Variable     &Description \\
  & \verb+type+  (char) &  type of $k$ mesh
                         \begin{liste}    
                                    \item '\textbf{mp}'$\ra$ monkhorst pack mesh, 
-                                   \item 'path'$\ra$ path in k-space, 
-                                    \item 'list'$\ra$ list of $k$-vectors. 
+                                    \item 'path'$\ra$ path in k-space, 
+                                    \item 'list'$\ra$ list of $k$-vector,
                            \end{liste} \\
  & \verb+x_coord+  (char) &  type of $k$ mesh
                         \begin{liste}    
@@ -877,6 +887,175 @@ namelist &Variable     &Description \\
 \end{supertabular}
 
 \section{output files}
+
+\noindent
+All the output files ( \verb+out_xxxx.txt+) of \TBK   
+are in namelist format (except \verb+out_log.txt+), hence they can be re-used as input files for further calculations.
+
+
+\subsection{out\_log.txt} 
+
+ \noindent
+\verb+out_log.txt+ is the main output file of \textcolor{nicered}{TBKOSTER}. The first lines of 
+\verb+out_log.txt+ contains a summary of all the parameters (including the defaults) used for the calculation. Then, if \verb+verbosity=.true.+  \TBK print out in \verb+out_log.txt+ the charge and various quantities at each scf iteration. 
+
+\subsection{out\_charge.txt}
+
+ \noindent
+\verb+out_charge.txt+ contains: \\
+
+$\bullet$ the mulliken charge \verb+q_mul(1:na,1:3,0:ns-1)+
+
+$\bullet$ and net charge \verb+rho_net(1:na,1:1:no,1:no,1:ns )+
+
+ \noindent
+ Importantly \verb+out_charge.txt+ can be copied in \verb+in_charge.txt+ whenever one needs a restart, for instance when a calculation is not fully converged.
+ 
+\subsection{post-process output}
+
+\subsubsection{a) txt2xyz}
+
+\noindent
+This option is used when one want to visualize the evolution of the  magnetic configuration during the scf cycle. This is particularly useful in the case of non-collinear magnetism. This option necessitate the setting of \verb+verbose=.true.+ in \verb+&scf+. \verb+out_atom_tb_xx.txt+ files are saved during the scf iterations. The \verb+txt2xyz+ option transforms the \verb+.txt+ file into \verb+.xyz+ that contain position and magnetization of atoms in the unit-cell. These files can be visualized via \verb+avogadro+ software to generate a movie showing the convergence process.
+
+\subsubsection{b) dos}
+
+\noindent
+The main output file is \verb+dos/out_dos.txt+ file. It contains in namelist format:
+
+$\bullet$ \verb+dos_tot(1:nE,1:ns)+: Total density of states
+
+$\bullet$  \verb+dos_'orb'(1:na_dos,1:nE,1:ns)+: Projected density of states on different sites, different orbitals (orb=s,px, py etc..) and different spin index.
+
+\subsubsection{c) band}
+
+\noindent
+The main output file is \verb+band/out_band.txt+ file. It contains in namelist format:
+
+$\bullet$ \verb+en_k(1:nh,1:nk,1:ns)+: Eigenvalues \verb+nh+: size of Hamiltonian, \verb+nk+: number of $k$ points.
+
+\textbf{If proj=site}
+
+$\bullet$  \verb+w_band_site(1:nh,1:nk,1:na_band,1:norb,1:ns)+: weight of wavefunction on different sites, different orbitals and different spin index.
+
+\textbf{If proj=spin}
+
+$\bullet$  \verb+w_band_spin(1:nh,1:nk,0:na_band,1:4)+: average value of the Pauli matrices $\sigma_x, \sigma_y, \sigma_z$ (and its norm) for band index ih, $k$ point ik, site ia\_band.
+
+\textbf{If proj=orbit}
+
+$\bullet$  \verb+w_band_orb(1:nh,1:nk,0:na_band,1:4)+: average value of the orbital matrices $Lx, L_y, L_z$ (and its norm) for band index ih, $k$ point ik, site ia\_band.
+
+\subsubsection{d) mft}
+
+\noindent
+The main output file is \verb+mft/out_mft_xxx.txt+ file. It contains for each magnetic configuration \verb+xxx+ in namelist format:
+
+$\bullet$ \verb+mconfig(1:na,1:2)+: Magnetic configuration $(\theta, \phi)$ for each atom of the unit-cell
+
+$\bullet$  \verb+mft_'orb'(1:na_mft)+: band energy projected on the selected sites for each orbitals (orb=s,px,py etc..).
+
+$\bullet$  \verb+mft_sum+: Sum of the band energies projected on the selected sites of the unit-cell
+
+$\bullet$  \verb+mft_tot+: Total band energy, it should be equal to \verb+mft_sum+ if \verb+nsite=na+
+
+
+\subsection{tools output}
+
+\noindent
+The various tools read the output files of \TBK  in namelist format and reorganize them in a format directly readable by plotting software (\verb+xmgrace+, \verb+gnuplot+ etc..)
+
+\subsubsection{a) pdos.x}
+
+\noindent
+\verb+pdos.x+ generates the following files:
+
+
+$\bullet$ \verb+dos_tot.dat+: Total density of states
+
+$\bullet$
+\verb+pdos-s.dat+,  \verb+pdos-p.dat+, \verb+pdos-d.dat+ and \verb+pdos-spd.dat+: PDOS
+
+\subsubsection{b) bands.x}
+
+\noindent
+\verb+bands.x+ generates different types of files depending on the options for the projection (proj) and for the type of mesh. 
+
+\begin{center}
+{\color{blue}\textbf{mesh=path}  }
+\end{center}
+
+\textbf{If proj=none}
+
+$\bullet$
+\verb+band.dat+: band structure along the $k$ path
+
+\textbf{If proj=site}
+
+$\bullet$
+\verb+band.dat+: band structure along the $k$ path
+
+$\bullet$
+\verb+band_weight_site_orb.dat+: band structure along the $k$ PATH and associated weight on the defined sites.
+
+\textbf{If proj=spin and/or proj=orb}
+
+$\bullet$
+\verb+band_weight_spinorb.dat+: band structure along the $k$ PATH and associated amplitude of the spin and/or orbit.
+
+
+\begin{center}
+{\color{blue}\textbf{mesh=list}  }
+\end{center}
+
+\noindent
+Note that the "list" $k$-points are usually generated in cartesian coordinates via the \verb+build_kpoints.f90+ program. "list" mesh option is used to generate 2D maps
+
+\textbf{If proj=spin and/or proj=orb}
+
+\noindent
+\verb+bands.x+ generates two files:
+
+$\bullet$ \verb+fermi.dat+: 2D maps for Fermi surface
+
+$\bullet$ \verb+fermi.dat+: 2D maps for "spin" or "orbit" vector field.
+
+\subsubsection{c) mft.x}
+
+\noindent
+There are two type of MFT calculations: \verb+calc+= mae or \verb+calc+=mconfig.
+
+\begin{center}
+{\color{blue}\textbf{calc=mae}  }
+\end{center}
+
+\noindent
+\verb+mft.x+ reads the \verb+out_mft_xxx.txt+ files and creates several files:
+
+\textbf{If type=path}
+
+$\bullet$
+\verb+mae_angle.dat+: MAE along the $(\theta, \phi)$ path where the first angle of the path is taken as the reference zero energy.
+
+$\bullet$
+\verb+mae_atom.dat+: MAE energy decomposed on the different sites, and evaluated as the difference between the first and last magnetic orientation. 
+
+$\bullet$
+\verb+mae.xyz+: Same as \verb+mae_atom.dat+ but in $(x,y,z)$ coordinates.
+
+\textbf{If type=mesh}
+
+$\bullet$
+\verb+mae_angle.dat+: MAE along the $(\theta, \phi)$ mesh where the first angle of the path is taken as the reference zero energy.
+
+\begin{center}
+{\color{blue}\textbf{calc=mconfig}  }
+\end{center}
+
+\noindent
+\verb+mft.x+ reads the \verb+out_mft_xxx.txt+ files and creates one summary file:
+
+$\bullet$ \verb+mft_config.dat+ which contains the list of MFT band energies for the various configurations.
 
 %\chapter*{Bibliography}
 
