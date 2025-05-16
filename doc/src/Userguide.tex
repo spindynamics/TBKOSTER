@@ -71,102 +71,100 @@ individu/.default={green}}
 \maketitle
 %\begin{abstract}
 %\end{abstract}
+\vfil
 \pagebreak
 \let\clearforchapter\par %Comment this at the end
 \chapterstyle{daleif1}
 
 \tableofcontents*
 
+\vfil
+\pagebreak
+
 \chapter*{Preface}
 This manual describes the {\TBK} computer code. 
 
-
 \begin{center}
-\begin{tikzpicture}
-\draw  (0,0)-- (12,0);
-\draw  (0,0)-- (0,8);
-\draw  (0,8)-- (12,8);
-\draw  (12,0)-- (12,8);
-\draw  (0,4)-- (12,4);
-\draw  (6,0)-- (6,8);
+  \begin{tikzpicture}
+  \draw  (0,0)-- (12,0);
+  \draw  (0,0)-- (0,8);
+  \draw  (0,8)-- (12,8);
+  \draw  (12,0)-- (12,8);
+  \draw  (0,4)-- (12,4);
+  \draw  (6,0)-- (6,8);
 
-\draw[color=blue,fill=blue,opacity=0.4]  (1,3) circle (5pt);
-\draw[color=red,fill=red,opacity=0.4]    (3,1) circle (5pt);
+  \draw[color=blue,fill=blue,opacity=0.4]  (1,3) circle (5pt);
+  \draw[color=red,fill=red,opacity=0.4]    (3,1) circle (5pt);
 
-\draw[color=blue,fill=blue,opacity=0.4]  (7,7) circle (5pt);
-\draw[color=red,fill=red,opacity=0.4]    (9,5) circle (5pt);
+  \draw[color=blue,fill=blue,opacity=0.4]  (7,7) circle (5pt);
+  \draw[color=red,fill=red,opacity=0.4]    (9,5) circle (5pt);
 
-\draw[color=blue,fill=blue,opacity=0.4]  (1,7) circle (5pt);
-\draw[color=red,fill=red,opacity=0.4]    (3,5) circle (5pt);
+  \draw[color=blue,fill=blue,opacity=0.4]  (1,7) circle (5pt);
+  \draw[color=red,fill=red,opacity=0.4]    (3,5) circle (5pt);
 
-\draw[color=blue,fill=blue,opacity=0.4]  (7,3) circle (5pt);
-\draw[color=red,fill=red,opacity=0.4]    (9,1) circle (5pt);
+  \draw[color=blue,fill=blue,opacity=0.4]  (7,3) circle (5pt);
+  \draw[color=red,fill=red,opacity=0.4]    (9,1) circle (5pt);
 
-\draw [->,line width=2pt,color=red] (0,0) -- (6,4);
-\draw [->,line width=2pt,color=blue, dashed] (3,1) -- (7,7);
-\draw [->,line width=1pt] (0,0) -- (1,3);
-\draw [->,line width=1pt] (0,0) -- (3,1);
-\draw [->,line width=1pt] (6,4) -- (7,7);
-\draw [->,line width=1pt] (6,4) -- (9,5);
-\draw [->,line width=1pt] (0,4) -- (1,7);
-\draw [->,line width=1pt] (0,4) -- (3,5);
-\draw [->,line width=1pt] (6,0) -- (7,3);
-\draw [->,line width=1pt] (6,0) -- (9,1);
+  \draw [->,line width=2pt,color=red] (0,0) -- (6,4);
+  \draw [->,line width=2pt,color=blue, dashed] (3,1) -- (7,7);
+  \draw [->,line width=1pt] (0,0) -- (1,3);
+  \draw [->,line width=1pt] (0,0) -- (3,1);
+  \draw [->,line width=1pt] (6,4) -- (7,7);
+  \draw [->,line width=1pt] (6,4) -- (9,5);
+  \draw [->,line width=1pt] (0,4) -- (1,7);
+  \draw [->,line width=1pt] (0,4) -- (3,5);
+  \draw [->,line width=1pt] (6,0) -- (7,3);
+  \draw [->,line width=1pt] (6,0) -- (9,1);
 
-\draw (3,-0.4) node {$\mathbf{a}$};
-\draw (-0.4,2) node {$\mathbf{b}$};
+  \draw (3,-0.4) node {$\mathbf{a}$};
+  \draw (-0.4,2) node {$\mathbf{b}$};
 
-\draw (0.5,3) node {$r_m$};
-\draw (3,0.5) node {$r_n$};
-\draw (6.5,7) node {$r_m$};
-\draw (9,4.5) node {$r_n$};
-\draw (6.5,3) node {$r_m$};
-\draw (9,0.5) node {$r_n$};
-\draw (0.6,7.2) node {$r_m$};
-\draw (3,4.5) node {$r_n$};
+  \draw (0.5,3) node {$r_m$};
+  \draw (3,0.5) node {$r_n$};
+  \draw (6.5,7) node {$r_m$};
+  \draw (9,4.5) node {$r_n$};
+  \draw (6.5,3) node {$r_m$};
+  \draw (9,0.5) node {$r_n$};
+  \draw (0.6,7.2) node {$r_m$};
+  \draw (3,4.5) node {$r_n$};
 
-\draw[color=red] (5,3) node {$\mathbf{R}$};
-\draw[color=blue] (5,5.5) node {$\mathbf{R+r_m-r_n}$};
+  \draw[color=red] (5,3) node {$\mathbf{R}$};
+  \draw[color=blue] (5,5.5) node {$\mathbf{R+r_m-r_n}$};
 
-\orbital[pos = {(3,1)}]{dz2}
-\draw (4,1) node {$\lambda=d_{z^2}$};
+  \orbital[pos = {(3,1)}]{dz2}
+  \draw (4,1) node {$\lambda=d_{z^2}$};
 
-\orbital[pos = {(7,7)}]{pz}
-\draw (7.8,7) node {$\mu=p_z$};
+  \orbital[pos = {(7,7)}]{pz}
+  \draw (7.8,7) node {$\mu=p_z$};
 
-\end{tikzpicture}
+  \end{tikzpicture}
 \end{center}
 
 \mainmatter
+
 \chapter{Background theory}
 
-Background theory for magnetic Tight-Binding with several atoms per unit-cell, periodic boundary conditions and overlaps.
+This section displays the theory for computing the magnetic electronic structure in the tight-binding (TB) approximation, with several atoms per unit-cell, periodic boundary conditions and orbital overlaps.
 
-$\bullet$ \textbf{General TB formalism} with several atoms per unit-cell, non-collinear magnetism, overlap integrals and periodic boundary conditions is described thoroughly in file \href{https://fr.overleaf.com/read/hvmmbjspmtcg#e8c298}{\textcolor{blue}{TB.pdf}}.
-
-\vspace{0.5cm}
-\noindent
-$\bullet$ \textbf{NRL TB} Hamiltonian is described in the review paper:
-\href{http://dx.doi.org/10.1016/j.crhy.2015.12.014}{\textit{An efficient magnetic tight-binding method for transition metals and alloys} C. Barreteau, D. Spanjaard, MC Desjonqueres Comptes Rendus Physique \textbf{17} 406-429 (2016).}
-
-\vspace{0.5cm}
-\noindent
-$\bullet$ \textbf{Magnetic Force Theorem (MFT)} and its application to the calculation of magneto-crystalline anisotropy can be found in:
-\href{http://dx.doi.org/10.1103/PhysRevB.88.214413}{\textit{Magnetocrystalline anisotropy energy of Fe(001) and Fe(110) slabs and nanoclusters: A detailed local analysis within a tight-binding model} D. Li, A. Smogunov, C. Barreteau, F. Ducastelle, and D. Spanjaard Phys. Rev. B \textbf{88} 214413 (2013).}
-
-\vspace{0.5cm}
-\noindent
-$\bullet$ \textbf{TB spin dynamics} is described in
-\href{https://doi.org/10.1103/PhysRevB.103.235436}{\textit{Spin dynamics from a constrained magnetic tight-binding model} Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau, and Chu Chun Fu Phys. Rev. B \textbf{103}, 235436 (2021).}
-
-
+\begin{itemize}
+  \item[$\bullet$]{\textbf{General formalism} with several atoms per unit-cell, non-collinear magnetism, overlap orbital integrals and periodic boundary conditions is described thoroughly in the file \href{https://fr.overleaf.com/read/hvmmbjspmtcg#e8c298}{\textcolor{blue}{Formalism.pdf}}.}
+  \item[$\bullet$]{\textbf{NRL-TB}: The NRL Tight-Binding method provides an efficient method for calculating properties of materials. The advantage of this method over classical interatomic potential simulations is that it explicitly incorporates the real electronic structure and bonding of the material, obtained by an interpolation from a database of first-principles results. The Hamiltonian and formalism is described in the review paper \cite{barreteauEfficientMagneticTightbinding2016}.} 
+  \item[$\bullet$]{\textbf{Magnetic Force Theorem (MFT)} and its application to the calculation of magneto-crystalline anisotropy can be found in reference \cite{liMagnetocrystallineAnisotropyEnergy2013}.
+  }
+  \item[$\bullet$]{\textbf{Spin Dynamics} in the tight-binding formalism is described in reference \cite{cardiasSpinDynamicsConstrained2021}.
+  } 
+\end{itemize}
+\vfil
 
 \chapter{Installation}
+
+\section{Download the code}
+
 The first step is to download the latest release of TBKOSTER from its github repository. To proceed, you have to check that git is installed~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
 $ locate git
 \end{lstlisting}
-Then, clone the distant repository to your local one~:
+Then, clone the distant repository to your local computer~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
 $ git clone https://github.com/spindynamics/TBKOSTER.git
 \end{lstlisting}
@@ -182,47 +180,43 @@ texlive-latex-extra tex4ht
 Be sure to update to cmake release 3.9 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ if ! test -d linux; then mkdir linux; fi
-$ cd linux
-$ cmake ..
-$ make
+$ cmake -B build
+$ cmake -B build --build
 \end{lstlisting}
-To get access to the OpenMP implementation, then update your packages with openmp support.
+To get access to the OpenMP parallel feature of the code, be sure to update your packages with the openmp support.
 
-If you want to use Intel compiler, MKL and Intel Lapack libraries, you have to tell this to cmake as, in sequential :
+If you want to use Intel compiler, MKL and Intel Lapack libraries, you have to swicth this to cmake as, in sequential :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ BLA_VENDOR=Intel10_64lp_seq FC=ifort cmake ..
+$ BLA_VENDOR=Intel10_64lp_seq FC=ifort cmake -B build
 \end{lstlisting}
 Be sure that the variable MKLROOT is set accordingly.
 
 In order to get good numerical performance, you have to produce a Release version as :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ cmake -DCMAKE_BUILD_TYPE=Release ..
+$ cmake -DCMAKE_BUILD_TYPE=Release -B build
 \end{lstlisting}
 You can combine all these options.
 If you prefer to prepare an installation with a given installed Lapack library and gfortran try :
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ BLA_VENDOR=OpenBLAS FC=gfortran cmake ..
+$ BLA_VENDOR=OpenBLAS FC=gfortran cmake -B build
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
 Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfortran with llvm support, with the ports subsystem (http://www.macports.org)
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ sudo port install cmake gcc6 libgcc6 gcc_select \
+$ sudo port install cmake gcc libgcc gcc_select \
 llvm-3.9 llvm_select lapack libomp
 \end{lstlisting}
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ if ! test -d macos; then mkdir macos; fi
-$ cd macos
-$ cmake ..
-$ make
+$ cmake -B build
+$ cmake -B build --build
 \end{lstlisting}
 For both Linux and MacOS platform, you can invoke cmake with Release or Debug option in order to deploy these releases. Simply try
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ cmake -DCMAKE_BUILD_TYPE=Release/Debug ..; make
+$ cmake -DCMAKE_BUILD_TYPE=Release/Debug -B build
 \end{lstlisting}
-To get access to the OpenMP implementation, then update your ports with openmp package. You can easily change your settings with
+To get access to the OpenMP implementation, then update your ports with openmp package. You can easily change your settings with (assuming MacOS port is installed)
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ port select --summary
 $ port select --set llvm mp-llvm-3.9
@@ -231,7 +225,8 @@ $ port select --set gcc mp-gcc6
 In order to get good numerical performance, you may use the OpenBLAS library and produce a Release version as :
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ port install openblas
-$ BLA_VENDOR=OpenBLAS cmake -DCMAKE_BUILD_TYPE=Release ..
+$ BLA_VENDOR=OpenBLAS \
+cmake -DCMAKE_BUILD_TYPE=Release -B build
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%
 \section{MS Windows}
@@ -256,10 +251,9 @@ $ pacman -S cmake
 
 In order to build the code, open a MSYS MINGW 64-bit console. To the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
-$ if ! test -d win; then mkdir win; fi
-$ cd win
-$ cmake -G"MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..
-$ mingw32-make
+$ cmake -G"MinGW Makefiles" \
+-DCMAKE_SH="CMAKE_SH-NOTFOUND" -B build
+$ cd build && mingw32-make
 \end{lstlisting}
 In order to run TBKOSTER.exe, be sure you have the TERM and TERMINFO environment variables up to date into your .bashrc file~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
@@ -269,6 +263,8 @@ $ export TERMINFO=/c/Program Files/msys/mingw64/share/terminfo
 No OpenMP implementation for MS Windows has been tested.
 
 For Windows higher than 10 release 1709, you simply have to activate the optional Windows SubSystem for Linux, download the Ubuntu Package from the Microsoft Marketplace and follow the instructions of the Linux section of this manual.
+\vfil
+\pagebreak
 
 \chapter{Running the code}
 
@@ -294,14 +290,16 @@ child { node [individu=white]{\footnotesize{examples}}}}
 ;
 \end{tikzpicture}
 
-\section{linux directory}
+\section{build directory}
 
-The "linux" directory should contain...
+The "build" directory should contain...
 
 \section{running TBKOSTER}
 
 \TBK needs an \verb+in_master.txt+ file to run. 
 \verb+in_master.txt+ contains all the parameters of the calculation. This file will be described in details in Input File Command Reference section.
+
+\pagebreak
 
 \chapter{Getting Started}
 
@@ -334,9 +332,9 @@ child { node [individu=red]{\footnotesize WAN} }
 \noindent
 In each \textcolor{nicered}{sub-directory} one can find a \verb+README.md+ file and a list of examplesxx directories each containing a \verb+jobs.sh+ file. This \verb+jobs.sh+ can be executed by the command \verb+./jobs.sh+
 
-\chapter{Input File Command Reference}
+\chapter{I/O Command Reference}
 
-\section{input files}
+\section{Input files}
 
 \subsection{in\_master.txt}
 The file  \verb+in_master.txt+ is the main input file of \TBK.
@@ -873,7 +871,7 @@ namelist &Variable     &Description \\
 \hline
 \end{supertabular}
 
-\section{output files}
+\section{Output files}
 
 \noindent
 All the output files ( \verb+out_xxxx.txt+) of \TBK   
@@ -1036,36 +1034,17 @@ $\bullet$
 \verb+mae_angle.dat+: MAE along the $(\theta, \phi)$ mesh where the first angle of the path is taken as the reference zero energy.
 
 \begin{center}
-{\color{blue}\textbf{calc=mconfig}  }
+{\color{blue}\textbf{calc=mconfig}}
 \end{center}
 
 \noindent
 \verb+mft.x+ reads the \verb+out_mft_xxx.txt+ files and creates one summary file:
 
 $\bullet$ \verb+mft_config.dat+ which contains the list of MFT band energies for the various configurations.
-
-%\chapter*{Bibliography}
-
-\begin{thebibliography}{200}
-
-\bibitem{Femag}
-\textit{Magnetism of iron: from the bulk to the monatomic wire} Gabriel Autès, Cyrille Barreteau, Daniel Spanjaard and Marie-Catherine Desjonquères J. Phys.: Condens. Matter \textbf{18} 6785-6813 (2006) .
-
-\bibitem{TBMCA}
-\textit{Magnetocrystalline anisotropy energy of Fe(001) and Fe(110) slabs and nanoclusters: A detailed local analysis within a tight-binding model} D. Li, A. Smogunov, C. Barreteau, F. Ducastelle, and D. Spanjaard Phys. Rev. B \textbf{88} 214413 (2013).
-
-\bibitem{TBmag}
-\textit{An efficient magnetic tight-binding method for transition metals and alloys} C. Barreteau, D. Spanjaard, MC Desjonqueres Comptes Rendus Physique \textbf{17} 406-429 (2016).
-
-\bibitem{TB-DFT-MCA}
-\textit{Magnetocrystalline anisotropy of Fe, Co, and Ni slabs from density functional theory and tight-binding models} Ludovic Le Laurent, Cyrille Barreteau, and Troels Markussen Phys. Rev. B \textbf{100}, 174426 (2019).
-
-\bibitem{TB-spin-dynamics}
-\textit{Spin dynamics from a constrained magnetic tight-binding model} Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau, and Chu Chun Fu Phys. Rev. B \textbf{103}, 235436 (2021).
-
-\end{thebibliography}
-% \bibliographystyle{utphysics}
-% \bibliography{ref}
+\vfil
+\pagebreak
+\bibliographystyle{unsrt}
+\bibliography{TBsd}
 \appendix
 \backmatter
 \end{document}
