@@ -184,13 +184,13 @@ $ sudo apt install cmake gfortran clang doxygen graphviz \
 libblas-dev liblapack-dev libomp-dev texlive-latex-base \ 
 texlive-latex-extra \ 
 texlive-bibtex-extra \ 
-tex4ht
+tex4ht biber
 \end{lstlisting}
 Be sure to update to cmake release 3.9 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ cmake -B build
-$ cmake -B build --build
+$ cmake --build build
 \end{lstlisting}
 To get access to the OpenMP parallel feature of the code, be sure to update your packages with the openmp support.
 
@@ -219,7 +219,7 @@ llvm-3.9 llvm_select lapack libomp
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ cmake -B build
-$ cmake -B build --build
+$ cmake --build build
 \end{lstlisting}
 For both Linux and MacOS platform, you can invoke cmake with Release or Debug option in order to deploy these releases. Simply try
 \begin{lstlisting}[language=sh,basicstyle=\small]

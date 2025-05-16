@@ -24,11 +24,19 @@
 %\usepackage{ae,aecompl,aeguill} %Pour avoir de jolies polices avec pdf.
 \usepackage{pslatex}
 \usepackage{makeidx}
+\usepackage{hyperref}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 \usepackage{tikzorbital}
 \usepackage{tikz-3dplot}
+\usepackage{apacite}
+
+\newcommand*{\doi}{}
+\makeatletter
+\newcommand{\doi@}[1]{\href{https://doi.org/#1}{#1}}
+\DeclareRobustCommand{\doi}{\hyper@normalise\doi@}
+\makeatother
 
 % les formats
 
@@ -58,22 +66,13 @@
 \def\build#1_#2^#3{\mathrel{\mathop{\kern 0pt#1}\limits_{#2}^{#3}}}
 
 
-\title{TB}
+\title{Tight-Binding formalism}
 \author{Cyrille Barreteau }
 \date{April 2025}
 
 \begin{document}
 \vspace{-2cm}
 \maketitle
-%\vspace{-2cm}
-\centerline{\bf \LARGE Tight-Binding formalism}
-
-\bigskip
-\noindent
-%\begin{abstract}
-\noindent
-%TB formalism with several atoms per unit-cell, several orbitals per atoms with overlap and periodic boundary conditions
-%\end{abstract}
 
 
 \begin{figure}[!ht]
@@ -152,7 +151,7 @@
 \end{figure}
 
 \section{notations}
-
+The main reference is \cite{barreteauEfficientMagneticTightbinding2016}.
 
 \subsection{Geometry}
 \noindent
@@ -1394,24 +1393,29 @@ L_z^{(d)}= \hbar \begin{pmatrix}
 \end{pmatrix}
 \end{equation*}
 
-\begin{thebibliography}{200}
+%\begin{thebibliography}{200}
 
-\bibitem{Femag}
-\textit{Magnetism of iron: from the bulk to the monatomic wire} Gabriel Autès, Cyrille Barreteau, Daniel Spanjaard and Marie-Catherine Desjonquères J. Phys.: Condens. Matter \textbf{18} 6785-6813 (2006) .
+%\bibitem{Femag}
+%\textit{Magnetism of iron: from the bulk to the monatomic wire} Gabriel Autès, Cyrille Barreteau, Daniel Spanjaard and Marie-Catherine Desjonquères J. Phys.: Condens. Matter \textbf{18} 6785-6813 (2006) .
 
-\bibitem{TBMCA}
-\textit{Magnetocrystalline anisotropy energy of Fe(001) and Fe(110) slabs and nanoclusters: A detailed local analysis within a tight-binding model} D. Li, A. Smogunov, C. Barreteau, F. Ducastelle, and D. Spanjaard Phys. Rev. B \textbf{88} 214413 (2013).
+%\bibitem{TBMCA}
+%\textit{Magnetocrystalline anisotropy energy of Fe(001) and Fe(110) slabs and nanoclusters: A detailed local analysis within a tight-binding model} D. Li, A. Smogunov, C. Barreteau, F. Ducastelle, and D. Spanjaard Phys. Rev. B \textbf{88} 214413 (2013).
 
-\bibitem{TBmag}
-\textit{An efficient magnetic tight-binding method for transition metals and alloys} C. Barreteau, D. Spanjaard, MC Desjonqueres Comptes Rendus Physique \textbf{17} 406-429 (2016).
+%\bibitem{TBmag}
+%\textit{An efficient magnetic tight-binding method for transition metals and alloys} C. Barreteau, D. Spanjaard, MC Desjonqueres Comptes Rendus Physique \textbf{17} 406-429 (2016).
 
-\bibitem{TB-DFT-MCA}
-\textit{Magnetocrystalline anisotropy of Fe, Co, and Ni slabs from density functional theory and tight-binding models} Ludovic Le Laurent, Cyrille Barreteau, and Troels Markussen Phys. Rev. B \textbf{100}, 174426 (2019).
+%\bibitem{TB-DFT-MCA}
+%\textit{Magnetocrystalline anisotropy of Fe, Co, and Ni slabs from density functional theory and tight-binding models} Ludovic Le Laurent, Cyrille Barreteau, and Troels Markussen Phys. Rev. B \textbf{100}, 174426 (2019).
 
-\bibitem{TB-spin-dynamics}
-\textit{Spin dynamics from a constrained magnetic tight-binding model} Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau, and Chu Chun Fu Phys. Rev. B \textbf{103}, 235436 (2021).
+%\bibitem{TB-spin-dynamics}
+%\textit{Spin dynamics from a constrained magnetic tight-binding model} Ramon Cardias, Cyrille Barreteau, Pascal Thibaudeau, and Chu Chun Fu Phys. Rev. B \textbf{103}, 235436 (2021).
 
-\end{thebibliography}
+%\end{thebibliography}
+
+\vfil
+\pagebreak
+\bibliographystyle{apacite}
+\bibliography{TBsd}
 
 \end{document}
 

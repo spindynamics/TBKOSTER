@@ -41,7 +41,7 @@ endmacro(set_config_option)
 
 opt(DOXYGEN "Enable Doxygen engine for source documentation" OFF)
 opt(FLUSH "Enable manually flush files" ON)
-opt(LATEX "Enable LaTeX engine for documentation" OFF)
+opt(LATEX "Enable LaTeX engine for documentation" ON)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
 
@@ -94,20 +94,7 @@ if(ENABLE_TESTS)
 endif(ENABLE_TESTS)
 
 if(ENABLE_LATEX)
-  # LaTeX documentation
-  find_package(LATEX COMPONENTS PDFLATEX BIBTEX)
-  if(LATEX_FOUND)
-    include(CMakeModules/UseLATEX.cmake)
-    set(LATEX_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/doc)
-    set(MyDocImages doc/images)
-    add_latex_document(
-      doc/src/Userguide.tex
-      doc/src/Formalism.tex  
-      IMAGE_DIRS ${MyDocImages}
-    )
-  else()
-    message("LaTeX needs to be installed to generate the LaTeX documentation")
-  endif()
+  add_subdirectory(doc)
 endif(ENABLE_LATEX)
 
 if(ENABLE_DOXYGEN)
