@@ -13,6 +13,13 @@
 \usepackage{tikzorbital}
 \usepackage{supertabular}
 \usepackage{gensymb}
+\usepackage{apacite}
+
+\newcommand*{\doi}{}
+\makeatletter
+\newcommand{\doi@}[1]{\href{https://doi.org/#1}{#1}}
+\DeclareRobustCommand{\doi}{\hyper@normalise\doi@}
+\makeatother
 
 \tikzstyle{lien}=[->,>=stealth,rounded corners=5pt,thick]
 \tikzset{individu/.style={draw,thick,fill=#1!25},
@@ -144,7 +151,7 @@ This manual describes the {\TBK} computer code.
 
 \chapter{Background theory}
 
-This section displays the theory for computing the magnetic electronic structure in the tight-binding (TB) approximation, with several atoms per unit-cell, periodic boundary conditions and orbital overlaps.
+This section displays references for computing the magnetic electronic structure in the tight-binding (TB) approximation, with several atoms per unit-cell, periodic boundary conditions and orbital overlaps.
 
 \begin{itemize}
   \item[$\bullet$]{\textbf{General formalism} with several atoms per unit-cell, non-collinear magnetism, overlap orbital integrals and periodic boundary conditions is described thoroughly in the file \href{https://fr.overleaf.com/read/hvmmbjspmtcg#e8c298}{\textcolor{blue}{Formalism.pdf}}.}
@@ -174,8 +181,10 @@ In order to build this documentation, a LaTeX distribution is mandatory, includi
 Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ sudo apt install cmake gfortran clang doxygen graphviz \
-libblas-dev liblapack-dev libomp-dev texlive-latex-base \
-texlive-latex-extra tex4ht
+libblas-dev liblapack-dev libomp-dev texlive-latex-base \ 
+texlive-latex-extra \ 
+texlive-bibtex-extra \ 
+tex4ht
 \end{lstlisting}
 Be sure to update to cmake release 3.9 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
@@ -1043,7 +1052,7 @@ $\bullet$
 $\bullet$ \verb+mft_config.dat+ which contains the list of MFT band energies for the various configurations.
 \vfil
 \pagebreak
-\bibliographystyle{unsrt}
+\bibliographystyle{apacite}
 \bibliography{TBsd}
 \appendix
 \backmatter
