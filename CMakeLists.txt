@@ -41,7 +41,7 @@ opt(FLUSH "Enable manually flush files" ON)
 opt(LATEX "Enable LaTeX engine for documentation" ON)
 opt(OPENMP "Enable OpenMP support" OFF)
 opt(TESTS "Enable tests" OFF)
-opt(FORTRAN_STDLIB "Enable fortran-lang stdlib" ON)
+opt(FORTRAN_STDLIB "Enable fortran-lang stdlib" OFF)
 
 # Find all the .in files
 file(GLOB inFiles RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/src/*.in" "${PROJECT_SOURCE_DIR}/test/*.in")
