@@ -68,13 +68,12 @@ unit_tests/string/CMakeFiles/*
 *.synctex.gz
 *.toc
 
-examples/**/*.txt
-examples/**/*.xyz
-examples/**/*.dat
-examples/**/*.orig
-examples/**/*.gnuplot
-examples/**/*.png
-fpretty/lib64
-fpretty/pyvenv.cfg
-stdlib/fypp
-.venv/*
+examples/
+fpretty/
+.venv
+doc/src/TBKOSTER-userguide.pdf
+doc/src/TBKOSTER-formalism.pdf
+doc/src/Userguide.pdf
+doc/Userguide.pdf
+doc/Formalism.pdf
+
