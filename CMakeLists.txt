@@ -101,7 +101,8 @@ if(ENABLE_LATEX)
     set(LATEX_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/doc)
     set(MyDocImages doc/images)
     add_latex_document(
-      doc/src/UserManual.tex 
+      doc/src/Userguide.tex
+      doc/src/Formalism.tex  
       IMAGE_DIRS ${MyDocImages}
     )
   else()

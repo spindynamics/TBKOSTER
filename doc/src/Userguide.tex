@@ -63,19 +63,22 @@ individu/.default={green}}
 \makeatother
 
 \title{{\textbf{\huge\TBK}} \\ \textsc{\small Tight-Binding Magnetic Molecular Dynamics for everyone}}
-\author{C. Barreteau, P. Thibaudeau\thanks{Supported by CEA}}
-\date{Release 0.0.3\\ \today}
+\author{C. Barreteau, P. Thibaudeau \thanks{Supported by CEA}}
+\date{Release 0.0.4\\ \today}
 
 \begin{document}
 \frontmatter
 \maketitle
-\begin{abstract}
-\end{abstract}
-%\let\clearforchapter\par %Comment this at the end
+%\begin{abstract}
+%\end{abstract}
+\pagebreak
+\let\clearforchapter\par %Comment this at the end
 \chapterstyle{daleif1}
+
 \tableofcontents*
+
 \chapter*{Preface}
-In this manual we describe the \TBK code. 
+This manual describes the {\TBK} computer code. 
 
 
 \begin{center}
@@ -134,26 +137,10 @@ In this manual we describe the \TBK code.
 \end{tikzpicture}
 \end{center}
 
-\noindent
-\textbf{The manual contains:}
-
-\noindent
-$\bullet$ Background theory for magnetic Tight-Binding with several atoms per unit-cell, periodic boundary conditions and overlaps.
-
-\noindent
-$\bullet$ Installation guide
-
-\noindent
-$\bullet$ Instructions to run the code
-
-\noindent
-$\bullet$ \TBK process and post-process options.
-
-\noindent
-$\bullet$ Description of input and output files.
-
 \mainmatter
 \chapter{Background theory}
+
+Background theory for magnetic Tight-Binding with several atoms per unit-cell, periodic boundary conditions and overlaps.
 
 $\bullet$ \textbf{General TB formalism} with several atoms per unit-cell, non-collinear magnetism, overlap integrals and periodic boundary conditions is described thoroughly in file \href{https://fr.overleaf.com/read/hvmmbjspmtcg#e8c298}{\textcolor{blue}{TB.pdf}}.
 
@@ -181,7 +168,7 @@ $ locate git
 \end{lstlisting}
 Then, clone the distant repository to your local one~:
 \begin{lstlisting}[language=bash,basicstyle=\small]
-$ git clone https://github.com/araven/TBKOSTER.git
+$ git clone https://github.com/spindynamics/TBKOSTER.git
 \end{lstlisting}
 In order to build this documentation, a LaTeX distribution is mandatory, including some external packages such as pdflatex, bibtex and htlatex.
 %%%%%%%%%%%%%%%%%%%%%%%
