@@ -181,7 +181,7 @@ In order to build this documentation, a LaTeX distribution is mandatory, includi
 Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
 \begin{lstlisting}[language=sh,basicstyle=\small]
 $ sudo apt install cmake gfortran clang doxygen graphviz \
-libblas-dev liblapack-dev libomp-dev texlive-latex-base \ 
+libopenblas-dev libomp-dev texlive-latex-base \ 
 texlive-latex-extra \ 
 texlive-bibtex-extra \ 
 tex4ht biber
@@ -273,6 +273,31 @@ No OpenMP implementation for MS Windows has been tested.
 
 For Windows higher than 10 release 1709, you simply have to activate the optional Windows SubSystem for Linux, download the Ubuntu Package from the Microsoft Marketplace and follow the instructions of the Linux section of this manual.
 \vfil
+
+\section{Additional features}
+Experimental features are coming from the dev branch of TBKOSTER.
+First install the \href{https://stdlib.fortran-lang.org/}{fortran stdlib}:
+\begin{lstlisting}
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install fypp
+$ git clone https://github.com/fortran-lang/stdlib
+$ cd stdlib
+$ cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -Bbuild .
+$ cmake --build build --parallel 4
+$ cmake --install build 
+\end{lstlisting}
+The fortran stdlib is installed in your \$HOME/.local folder.
+Return to TBKOSTER, switch to the dev branch and compile 
+\begin{lstlisting}
+  $ cd TBKOSTER
+  $ git checkout dev
+  $ rm -fr build
+  $ cmake -Bbuild .
+  $ cmake --build build --parallel 4
+\end{lstlisting}
+During the process, the fortran stdlib has to be found.
+
 \pagebreak
 
 \chapter{Running the code}
