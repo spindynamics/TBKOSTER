@@ -10,6 +10,7 @@
 \usepackage{listings}
 \usepackage{tikz}
 \usetikzlibrary{arrows}
+\usetikzlibrary{trees}
 \usepackage{tikzorbital}
 \usepackage{supertabular}
 \usepackage{gensymb}
@@ -178,15 +179,11 @@ $ git clone https://github.com/spindynamics/TBKOSTER.git
 In order to build this documentation, a LaTeX distribution is mandatory, including some external packages such as pdflatex, bibtex and htlatex.
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{Linux}
-Preferred method : on Ubuntu 16.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
-\begin{lstlisting}[language=sh,basicstyle=\small\ttfamily,frame=single]
-$ sudo apt install cmake gfortran clang doxygen graphviz \
-libopenblas-dev libomp-dev texlive-latex-base \ 
-texlive-latex-extra \ 
-texlive-bibtex-extra \ 
-tex4ht biber
+Preferred method : on Ubuntu 22.04 and later, install gfortran and cmake to compile TBKOSTER. Be sure to get the mandatory related dependencies of these packages.
+\begin{lstlisting}[language=sh,basicstyle=\small\ttfamily,frame=single,breaklines=true]
+$ sudo apt install cmake gfortran clang doxygen graphviz libopenblas-dev libomp-dev texlive-latex-base texlive-latex-extra texlive-bibtex-extra tex4ht biber
 \end{lstlisting}
-Be sure to update to cmake release 3.9 or higher.
+Be sure to update to cmake release 3.13 or higher.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small\ttfamily,frame=single]
   $ cd TBKOSTER
@@ -212,13 +209,15 @@ $ BLA_VENDOR=OpenBLAS FC=gfortran cmake -B build
 \end{lstlisting}
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{MacOS}
-Preferred method : on MacOS 10.11 and later, install the cmake, lapack and gfortran with llvm support, with the ports subsystem (http://www.macports.org)
+Preferred method: on MacOS 10.11 and later, install cmake, lapack and gfortran with llvm support, with the \href{https://www.macports.org}{ports} subsystem:
 \begin{lstlisting}[language=sh,basicstyle=\small\ttfamily,frame=single]
 $ sudo port install cmake gcc libgcc gcc_select \
 llvm-3.9 llvm_select lapack libomp
 \end{lstlisting}
+\href{https://brew.sh}{Brew} is also a working alternative.
 In order to build the code, to the root of TBKOSTER directory~:
 \begin{lstlisting}[language=sh,basicstyle=\small\ttfamily,frame=single]
+$ cd TBKOSTER
 $ cmake -B build
 $ cmake --build build
 \end{lstlisting}
@@ -299,6 +298,7 @@ $ cmake --build build --parallel 4
 \end{lstlisting}
 During the process, the fortran stdlib has to be found.
 
+\vfil
 \pagebreak
 
 \chapter{Running the code}
@@ -309,7 +309,7 @@ During the process, the fortran stdlib has to be found.
 \begin{tikzpicture}
 [level 1/.style={sibling distance=2.7cm},
 level 2/.style={sibling distance=2.7cm}]
-\node [individu] {github.com/TBKOSTER}
+\node [individu] {github.com/spindynamics/TBKOSTER}
 child { node [individu=blue]{\footnotesize{src}}
 child { node [individu=white]{\footnotesize{source files}}}}
 child { node [individu=blue]{\footnotesize{tools}}
@@ -318,7 +318,7 @@ child { node [individu=blue]{\footnotesize{doc}}
 child { node [individu=white]{\footnotesize{documentation}}}}
 child { node [individu=blue]{\footnotesize{tb\_parameters}}
 child { node [individu=white]{\footnotesize{NRL TB}}}}
-child { node [individu=blue]{\footnotesize{linux}}
+child { node [individu=blue]{\footnotesize{build}}
 child { node [individu=white]{\footnotesize{executables}}}}
 child { node [individu=blue]{\footnotesize{TBKExamples}}
 child { node [individu=white]{\footnotesize{examples}}}}
@@ -327,61 +327,81 @@ child { node [individu=white]{\footnotesize{examples}}}}
 
 \section{build directory}
 
-The "build" directory should contain...
+The \textit{build} directory contains all the necessary binaries and documentation.
 
 \section{running TBKOSTER}
+\label{sec:Running}
 
-\TBK needs an \verb+in_master.txt+ file to run. 
-\verb+in_master.txt+ contains all the parameters of the calculation. This file will be described in details in Input File Command Reference section.
+{\TBK} needs an \verb+in_master.txt+ file to run. 
+\verb+in_master.txt+ contains all the parameters of the calculation. 
+This file is described in details in the section \ref{sec:Input_files}.
 
+\vfil
 \pagebreak
 
 \chapter{Getting Started}
+\label{sec:Getting_Started}
 
-To get started we recommend to first run the various examples that are provided within the TBKOSTER git repository.
-
-\noindent
-In the TBKOSTER directory one can find a TBKExamples directory organized as follow;
+To get started, first we recommend to run the various examples that are provided within the TBKOSTER project.
+\begin{lstlisting}[language=bash,basicstyle=\small\ttfamily,frame=single,breaklines=true]
+$git clone https://github.com/spindynamics/TBKExamples 
+\end{lstlisting}
+In the directory TBKExamples, you have to update the location of the folder where to find the TBKOSTER binaries in the file 
+\textit{environment\_variables}.
+This directory is organized as follow;
 
 \vspace{0.5cm}
 
 \noindent
 \begin{tikzpicture}
-[level 1/.style={sibling distance=8.5cm},
-level 2/.style={sibling distance=3cm}]
-\node [individu] {TBKExamples}
-child { node [individu=blue]{NRL}
-child { node [individu=red]{\footnotesize collinear} }
-child { node [individu=red]{\footnotesize non-collinear} }
-child { node [individu=red]{\footnotesize spin-dynamics} }
-child { node [individu=red]{\footnotesize molecular-dynamics} }
-}
-child { node [individu=blue]{WANMOD}
-child { node [individu=red]{\footnotesize MOD} }
-child { node [individu=red]{\footnotesize WAN} }
-};
+[
+	level 1/.style = {red},
+	level 2/.style = {blue},
+	level 3/.style = {teal},
+	every node/.append style = {draw, anchor = west},
+	grow via three points={one child at (0.5,-0.8) and two children at (0.5,-0.8) and (0.5,-1.6)},
+	edge from parent path={(\tikzparentnode\tikzparentanchor) |- (\tikzchildnode\tikzchildanchor)}]
+
+\node {TBKExamples}
+	child {node {NRL}
+	child {node {collinear}}
+	child {node {non-collinear}}
+  child {node {spin-dynamics}}
+	child {node {molecular-dynamics}}}
+  child [missing] {}
+  child [missing] {} 
+  child [missing] {} 
+  child [missing] {}  
+	child {node {WANMOD}
+	child {node {models}}
+	child {node {Wannier}}};
 \end{tikzpicture}
 
 \vspace{0.5cm}
 
 \noindent
-In each \textcolor{nicered}{sub-directory} one can find a \verb+README.md+ file and a list of examplesxx directories each containing a \verb+jobs.sh+ file. This \verb+jobs.sh+ can be executed by the command \verb+./jobs.sh+
+Each \textcolor{nicered}{sub-directory} contains a \verb+README.md+ file and a list of directories labelled examplesxx, containing a script file called \verb+jobs.sh+.
+This \verb+jobs.sh+ can be executed by the command \verb+./jobs.sh+
+\vfil
+\pagebreak
 
 \chapter{I/O Command Reference}
 
 \section{Input files}
+\label{sec:Input_files}
 
 \subsection{in\_master.txt}
-The file  \verb+in_master.txt+ is the main input file of \TBK.
+The file \verb+in_master.txt+ is the main input file of \TBK.
+\vfil
 
 \begin{supertabular}{@{\hspace{0.025\textwidth}} p{0.15\textwidth} @{\hspace{0.025\textwidth}} 
 p{0.3\textwidth} @{\hspace{0.025\textwidth}} p{0.65\textwidth} @{} }
 & & \\
 \hline
 \hline
-namelist &Variable     &Description \\
+namelist &Variable     &Description\\
 \hline 
-\&calculation &  &   \\
+\&calculation &  &\\
 \hline
  & \verb+pre_processing+  (char)    & type of pre-processing calculation: 
                             \begin{liste} 
@@ -419,20 +439,20 @@ namelist &Variable     &Description \\
                           \begin{liste}    
                                    \item 'hau'$\ra$ \textbf{Hartree atomic units}, 
                                    \item 'rau'$\ra$ Rydberg atomic units, 
-                                    \item 'nm'$\ra$ nanometer. 
-                                    \item 'ang'$\ra$ angstrom. 
+                                   \item 'nm'$\ra$ nanometer. 
+                                   \item 'ang'$\ra$ angstrom. 
                            \end{liste} \\
   & \verb+time+  (char)  &  time unit:   
                           \begin{liste}    
                                    \item 'hau'$\ra$ \textbf{Hartree atomic units}, 
                                    \item 'rau'$\ra$ Rydberg atomic units, 
-                                    \item 'fs'$\ra$ femtoseconds. 
+                                   \item 'fs'$\ra$ femtoseconds. 
                            \end{liste} \\             
  & \verb+mass+  (char)  &  Mass unit:   
                           \begin{liste}    
                                    \item 'hau'$\ra$ \textbf{Hartree atomic units}, 
                                    \item 'rau'$\ra$ Rydberg atomic units, 
-                                    \item 'g/mol'$\ra$ g/mol. 
+                                   \item 'g/mol'$\ra$ g/mol. 
                            \end{liste} \\
 
 \hline
