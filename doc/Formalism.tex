@@ -68,7 +68,7 @@
 
 \title{Tight-Binding formalism}
 \author{Cyrille Barreteau }
-\date{April 2025}
+\date{\today}
 
 \begin{document}
 \vspace{-2cm}
@@ -150,37 +150,40 @@
 \end{center}
 \end{figure}
 
-\section{notations}
-The main reference is \cite{barreteauEfficientMagneticTightbinding2016}.
+\section{Notations}
+Here are defined some notations that come from the reference \cite{barreteauEfficientMagneticTightbinding2016}.
 
 \subsection{Geometry}
+\label{sec:Geometry}
 \noindent
 Born von Karman (BVK) conditions are used.
+The lattice parameters are $a,b$ and $c$.
+
 \noindent
 BVK: $L_a=N_a \times a$,\; $L_b=N_b \times b$,\; $L_c=N_c \times c$.
 
 \noindent
-$N=N_a \times N_b \times N_c$: Total number of cells.
+Total number of cells: $N=N_a \times N_b \times N_c$
 
 \noindent
-Periodicity along $\mathbf a$, $\mathbf b$ et $\mathbf c$. volume of the unit-cell $\omega=\mathbf{a}.(\mathbf{b} \times \mathbf{c})$
+Periodicity along lattice vectors $\mathbf a$, $\mathbf b$ et $\mathbf c$. 
+Volume of the unit-cell : $\omega=\mathbf{a}.(\mathbf{b} \times \mathbf{c})$
 
 $\mathbf{R}=n_a \mathbf{a}+n_b \mathbf{b}+n_c \mathbf{c}$.
 
 \noindent
-Reciprocal vectors  $\mathbf{a}^*$, $\mathbf{b}^*$ and $\mathbf{c}^*$. volume of Brillouin zone $\omega^*= \frac{2\Pi^3}{\omega}$
+Reciprocal vectors  $\mathbf{a}^*$, $\mathbf{b}^*$ and $\mathbf{c}^*$. Volume of the Brillouin zone $\omega^*=\displaystyle{\frac{2\pi^3}{\omega}}$
 
 $\mathbf{g}= h \mathbf{a}^*+k \mathbf{b}^*+l \mathbf{c}^*$.
 
 \noindent
-scalar product: $\mathbf{R}.\mathbf{g}=2\pi(n_ah+n_bk+n_cl)$
+Scalar product between a real-space lattice vector and a reciprocal lattice vector: $\mathbf{R}.\mathbf{g}=2\pi(n_ah+n_bk+n_cl)$
 
 \noindent
 If $\mathbf{R} \in \text{Bravais lattice}$ and $\mathbf{g} \in \text{Reciprocal lattice}$ then $\mathbf{R}.\mathbf{g}=2\pi n \Rightarrow e^{i\mathbf{R}.\mathbf{g}}=1$
 
-
 \noindent
-$n_{\text at}$: number of atoms in the unit-cell.
+Number of atoms in the unit-cell : $n_{\text at}$
 
 \noindent
 $\mathbf{R}, \mathbf{R}'$: periodic vectors of the Bravais lattice
@@ -189,6 +192,7 @@ $\mathbf{R}, \mathbf{R}'$: periodic vectors of the Bravais lattice
 
 
 \subsection{Orbitals}
+\label{sec:orbitals}
 
 \noindent
 $\lambda, \mu, \nu$: orbitals 
@@ -213,14 +217,15 @@ $\bm{H}$ Hamiltonian matrix:
 
 \noindent
 \[ \displaystyle \bm{H}_{R,n,R',m}^{\lambda, \mu}=\bra{ R,n,\lambda} \op{H} \ket{ R',m,\mu } \quad ;\quad
-\bm{S}_{R,n,R',m}^{\lambda, \mu}=\bra{ Rn,\lambda} \op{I} \ket{R' m,\mu }\]
+\bm{S}_{R,n,R',m}^{\lambda, \mu}=\bra{ Rn,\lambda} \op{\mathbb{I}} \ket{R' m,\mu }\]
+where $\op{\mathbb{I}}$ is the identity operator.
 
 
 \section{Bloch Theorem}
 
-\subsection{notations}
+\subsection{Notations}
 
-\noindent $\ket{\alpha, \mathbf{k} }$  Bloch function of index
+\noindent $\ket{\alpha, \mathbf{k} }$ is a Bloch function of index
 $\alpha$ ($\alpha=1, \cdots, n_{\text{at}} \times l$) and wave-vector $\mathbf{k}\in \text{1BZ}$
 
 
@@ -247,7 +252,7 @@ Expansion of wave functions on atomic orbitals
 
 
 \noindent
-According to Bloch theorem  the function solutions of the Shrodinger equations can be labeled by two indices $\alpha, \mathbf{k}$):
+According to Bloch theorem, the functions that are solutions of the Schrödinger equations can be labeled by two indices $\alpha, \mathbf{k}$:
 
 \[ \displaystyle C_{R,n \lambda}^{\alpha}=\frac{1}{\sqrt{N}}e^{i  \mathbf{k}.\mathbf{R}}e^{i \mathbf{k}.\mathbf{r}_n} C_{n \lambda}^{\alpha}(\mathbf{k})\]
 
@@ -266,10 +271,10 @@ So:
 \noindent
 The closure relation reads
 
-\[\displaystyle \sum_{\alpha,\mathbf{k}} \ket{\alpha,\mathbf{k}}  \bra{\alpha,\mathbf{k}}=\op{I}\]
+\[\displaystyle \sum_{\alpha,\mathbf{k}} \ket{\alpha,\mathbf{k}}  \bra{\alpha,\mathbf{k}}=\op{\mathbb{I}}\]
 
 \noindent
-And the Hamiltonian:
+and the Hamiltonian:
 
 \[ \sum_{\alpha,\mathbf{k}} \ket{\alpha,\mathbf{k}} \varepsilon_{\alpha}(\mathbf{k}) \bra{\alpha,\mathbf{k}}=\op{H}\]
 
@@ -300,9 +305,9 @@ Generalized eigenvalue problem:.
 \sum_{\mathbf{R}} e^{i\mathbf{k}.(\mathbf{R}+\mathbf{r}_{m}-\mathbf{r}_n)} \bra{ 0,n,\lambda} \op{H} \ket{\mathbf{R},m,\mu}\]
 
 
-\[\displaystyle  S_{n,m}^{\lambda,\mu}(\mathbf{k})=\bra{n,\lambda,\mathbf{k}}\op{I}\ket{ m,\mu,\mathbf{k}}=
+\[\displaystyle  S_{n,m}^{\lambda,\mu}(\mathbf{k})=\bra{n,\lambda,\mathbf{k}}\op{\mathbb{I}}\ket{ m,\mu,\mathbf{k}}=
 \sum_{\mathbf{R}} e^{i\mathbf{k}.(\mathbf{R}+\mathbf{r}_{m}-\mathbf{r}_n)}
-\bra{ 0,n,\lambda}\op{I}\ket{\mathbf{R},m,\mu }\]
+\bra{ 0,n,\lambda}\op{\mathbb{I}}\ket{\mathbf{R},m,\mu }\]
 
 \noindent
 \[ \left( \begin{array}{c c c c c}
@@ -352,6 +357,7 @@ In matrix form:
 
 \[ ^tC^{\alpha \star}(\mathbf{k})\mathcal{S}(\mathbf{k})C^{\beta}(\mathbf{k})=
 \delta_{\alpha \beta} \quad \forall \mathbf{k} \]
+where $t$ stands for transposition and $*$ for complex conjugate.
 
 \noindent
 Setting
@@ -381,8 +387,8 @@ the following  orthogonality relation holds
 \noindent
 And two closure relations: 
 
-\[ \displaystyle \sum_{a} \ket{\tilde{a}} \bra{a}=\op{I} \quad ; \quad
-                 \sum_{a } \ket{a} \bra{\tilde{a}} =\op{I}
+\[ \displaystyle \sum_{a} \ket{\tilde{a}} \bra{a}=\op{\mathbb{I}} \quad ; \quad
+                 \sum_{a } \ket{a} \bra{\tilde{a}} =\op{\mathbb{I}}
  \]
 
 \noindent
@@ -466,16 +472,16 @@ we get
 \sum_{\alpha} F(\varepsilon_{\alpha})C_a^{\alpha}(C_{b}^{\alpha})^{\star} \]
 
 \noindent
-Let's consider two important operator, the density operator $\op{\rho}=f(\op{H})$ and the Green function operator $\op{G}(z)=(z\op{I}-\op{H})^{-1}$:
+Let's consider two important operator, the density operator $\op{\rho}=f(\op{H})$ and the Green function operator $\op{G}(z)=(z\op{\mathbb{I}}-\op{H})^{-1}$:
 
 \noindent
 \[ \bar{\rho}_{ab}=
 \sum_{\alpha} f(\varepsilon_{\alpha})C_a^{\alpha}(C_{b}^{\alpha})^{\star} \]
 
 \noindent
-And for $\op{G}(z)$ using the identity $(z\op{I}-\op{H})\op{G}(z)=\op{I}$ we have:
+And for $\op{G}(z)$ using the identity $(z\op{\mathbb{I}}-\op{H})\op{G}(z)=\op{\mathbb{I}}$ we have:
 
-\[ \bra{a}(z\op{I}-\op{H})\sum_b \ket{b}\bra{\tilde{b}}\op{G}(z) \ket{\tilde{c}}=\delta_{a,c}\]
+\[ \bra{a}(z\op{\mathbb{I}}-\op{H})\sum_b \ket{b}\bra{\tilde{b}}\op{G}(z) \ket{\tilde{c}}=\delta_{a,c}\]
 
 \noindent
 Hence we have the following matrix relation
@@ -518,25 +524,25 @@ The tensorial can be very useful is some cases:
 \noindent
 we then have:
 
-\[ A_{ab}=\bra{\phi_a}\op{A}\ket{\phi_b}=A_{ab} \quad ; \quad  
+\[ A_{ab}=\bra{\phi_a}\op{A}\ket{\phi_b} \quad ; \quad  
 A^{ab}=\bra{\phi^a}\op{A}\ket{\phi^b}=\bar{A}_{ab} \quad ; \quad  
 A^{a}_{\; \;b}=\bra{\phi^a}\op{A}\ket{\phi_b}=\tilde{A}_{ab} \quad ; \quad 
-A_{a}^{\; \;b}=\bra{\phi_a}\op{A}\ket{\phi^b}=( GA{b}_{\; \;a})^{\star}
+A_{a}^{\; \;b}=\bra{\phi_a}\op{A}\ket{\phi^b}=( GA^{b}_{\; \;a})^{\star}
  \]
 
 \noindent
 And for the overlaps:
 
-\[ I_{ab}=\bra{\phi_a}\op{I}\ket{\phi_b}=S_{ab} \quad ; \quad  
-I^{ab}=\bra{\phi^a}\op{I}\ket{\phi^b}=(S^{-1})_{ab} \quad ; \quad  
-I^{a}_{\; \;b}=\bra{\phi^a}\op{I}\ket{\phi_b}=\delta^{a}_{b} \quad ; \quad 
-I_{a}^{\; \;b}=\bra{\phi_a}\op{I}\ket{\phi^b}=\delta^{b}_{a}
+\[ I_{ab}=\bra{\phi_a}\op{\mathbb{I}}\ket{\phi_b}=S_{ab} \quad ; \quad  
+I^{ab}=\bra{\phi^a}\op{\mathbb{I}}\ket{\phi^b}=(S^{-1})_{ab} \quad ; \quad  
+I^{a}_{\; \;b}=\bra{\phi^a}\op{\mathbb{I}}\ket{\phi_b}=\delta^{a}_{b} \quad ; \quad 
+I_{a}^{\; \;b}=\bra{\phi_a}\op{\mathbb{I}}\ket{\phi^b}=\delta^{b}_{a}
  \]
 
 \noindent
 With Einstein convention the closure relations reads:
 
-\[ \ket{\phi^a}\bra{\phi_a}=\op{I} \quad ; \quad  \ket{\phi_a}\bra{\phi^a}=\op{I}\]
+\[ \ket{\phi^a}\bra{\phi_a}=\op{\mathbb{I}} \quad ; \quad  \ket{\phi_a}\bra{\phi^a}=\op{\mathbb{I}}\]
 
 \noindent
 The trace of operator $\op{A}$ reads:
@@ -545,9 +551,9 @@ The trace of operator $\op{A}$ reads:
 
 
 \noindent
-The trace of the product of two operators $\op{A}.\op{B}$
+The trace of the product of two operators $\op{A}\op{B}$
 
-\[ \text{Tr}(\op{A}.\op{B})= \bra{\phi_a}\op{A}.\op{B}\ket{\phi^a}=
+\[ \text{Tr}(\op{A}\op{B})= \bra{\phi_a}\op{A}\op{B}\ket{\phi^a}=
 \bra{\phi_a}\op{A} \ket{\phi_b}\bra{\phi^b}\op{B}\ket{\phi^a}= A_{ab}B^{ba}\]
 
 \section{Definition of local quantities in a non-orthogonal basis}
@@ -565,7 +571,7 @@ Let's consider the density operator $\op{\rho}=f(\op{H})$ \footnote{$f(x)=\frac{
 \noindent
 The trace of $\op{\rho}$ is equal to the number of electrons:
 
-\[ \mbox{Tr}(\op{\rho})=N_e= \int_{-\infty}^{+\infty} f(E) D(E)dE = \sum_{\alpha }f_{\alpha}) \]
+\[ \mbox{Tr}(\op{\rho})=N_e= \int_{-\infty}^{+\infty} f(E) D(E)dE = \sum_{\alpha }f_{\alpha} \]
 
 \noindent
 while the trace of $\op{D}(E)$  is the density of states:
@@ -636,7 +642,7 @@ And the trace of $\op{\rho}$ gives the total number of electrons:
 
 \noindent The average of $\op{A}$ reads:
 
-\[ \langle \op{A} \rangle =\mbox{Tr} (\op{\rho}.\op{A})=\sum_{\alpha}f_{\alpha}
+\[ \langle \op{A} \rangle =\mbox{Tr} (\op{\rho}\op{A})=\sum_{\alpha}f_{\alpha}
 \bra{\alpha}\op{A}\ket{\alpha}\]
 
 \noindent
@@ -717,13 +723,13 @@ In a more compact form:
 \[ {A}_{a} =\Re \left[ 
 \sum_{\alpha} f_{\alpha}g(\varepsilon_{\alpha}) 
 C_{a}^{\alpha \star}\widetilde{C}_{a}^{\alpha} \right]= 
-\frac{1}{2} \Big[ \bra{\tilde{a}} \op{\rho}.\op{G} \ket{a} + \bra{a} \op{\rho}.\op{G} \ket{\tilde{a}}  \Big]
+\frac{1}{2} \Big[ \bra{\tilde{a}} \op{\rho}\op{G} \ket{a} + \bra{a} \op{\rho}\op{G} \ket{\tilde{a}}  \Big]
  \]
 
 \subsubsection{Total energy}
 
 \noindent
-In the case of the total energy $\op{A}=\op{H} $ so $G(x)=x$
+In the case of the total energy $\op{A}=\op{H}$, and consequently $G(x)=x$
 
 \[E^{tot}=\langle \op{H} \rangle=\sum_{\alpha } f_{\alpha}\varepsilon_{\alpha}
 \underbrace{^tC^{\alpha \star}\widetilde{C}^{\alpha}}_{=1}= \sum_{\alpha } f_{\alpha}\varepsilon_{\alpha}\]
@@ -748,7 +754,7 @@ verifying the relation $
 
 \noindent
 Closure relation: $\displaystyle \sum_{R,n,\lambda} 
-\widetilde{\ket{R,n,\lambda}}\bra{R,n,\lambda}=\op{I}$
+\widetilde{\ket{R,n,\lambda}}\bra{R,n,\lambda}=\op{\mathbb{I}}$
 
 \[\displaystyle \ket{\Psi_{\alpha}}=\sum_{\mathbf{R},n,\lambda} C_{R n  \lambda}^{\alpha} \ket{\mathbf{R},n,\lambda }\]
 
@@ -774,7 +780,7 @@ The dual basis is naturally defined as:
 \noindent
 As well as the closure relation:
 $\displaystyle \sum_{n,\lambda,\mathbf{k} } 
-\widetilde{\ket{n,\lambda,\mathbf{k}}} \bra{n,\lambda,\mathbf{k}}=\op{I}$
+\widetilde{\ket{n,\lambda,\mathbf{k}}} \bra{n,\lambda,\mathbf{k}}=\op{\mathbb{I}}$
 
 \noindent
 And the TB coefficients $\langle 
@@ -808,9 +814,11 @@ $\mathbf{k}$ is discrete and involves special $\mathbf{k}$ points. The summation
 \noindent
 By definition the trace of $\op{\rho}$ is equal to the number of electrons:
 
-\[ \mbox{Tr}(\op{\rho})=N_e= \int_{-\infty}^{+\infty} f(E) D(E)dE
+\begin{align}
+\mbox{Tr}(\op{\rho})&=N_e= \int_{-\infty}^{+\infty} f(E) D(E)dE
 =
-\sum_{\alpha}(\mathbf{k}) w_{\mathbf{k}} f_{\alpha}(\mathbf{k}) \]
+\sum_{\alpha,\mathbf{k}} w_{\mathbf{k}} f_{\alpha}(\mathbf{k})
+\end{align}
 
 \noindent Let's write the trace of $\op{\rho}$ using the TB coefficient:
 
@@ -896,7 +904,7 @@ f_{\alpha}(\mathbf{k}) ^tC^{\alpha
 \noindent The average of $\op{ A}$ reads:
 
 \[ \langle \op{A} \rangle =\mbox{Tr} (\op{\rho} \op{A})=\sum_{\alpha,\mathbf{k}}
-w_{\mathbf{k}}f_{\alpha}(\mathbf{k}) \bra{\alpha,\mathbf{k}}\bm{A}\ket{\alpha,\mathbf{k}} \]
+w_{\mathbf{k}}f_{\alpha}(\mathbf{k}) \bra{\alpha,\mathbf{k}}\op{A}\ket{\alpha,\mathbf{k}} \]
 
 \noindent
 Unsing the expansion of the Bloch $\ket{\alpha,\mathbf{k}}$ on the TB basis $\ket{n,\lambda,\mathbf{k}}$ gives:
@@ -932,7 +940,7 @@ Note that the summation can be re-organized in a slightly different way:
 Let's consider $\op{A}=g(\op{H})$ then:
 
 
-\[ \langle \op{A} \rangle =\mbox{Tr} (\op{\rho} F(\op{H}))= \sum_{\mathbf{k}}
+\[ \langle \op{A} \rangle =\mbox{Tr} (\op{\rho} g(\op{H}))= \sum_{\mathbf{k}}
 \sum_{\substack{n \lambda\\ m \mu}}\left(
 \sum_{\alpha} w_{\mathbf{k}}f_{\alpha}(\mathbf{k})g(\varepsilon_{\alpha}(\mathbf{k}))
  C_{m\mu}^{\alpha}(\mathbf{k}) (C_{n \lambda}^{\alpha}(\mathbf{k}))^{\star} \right)  S_{n,m}^{\lambda,\mu}(\mathbf{k})\]
@@ -942,10 +950,10 @@ Let's consider $\op{A}=g(\op{H})$ then:
 In matrix form:
 
 \[\langle \op{A} \rangle = \sum_{\mathbf{k}} w_{\mathbf{k}}\mbox{Tr} 
- \left[(\overline{FG})(\mathbf{k}) S(\mathbf{k}) \right] \] 
+ \left[(\overline{gG})(\mathbf{k}) S(\mathbf{k}) \right] \] 
 \noindent
 with
-\[ \overline{FG}_{n m}^{\lambda \mu}(\mathbf{k})=  \sum_{\alpha} f_{\alpha}(\mathbf{k})
+\[ \overline{gG}_{n m}^{\lambda \mu}(\mathbf{k})=  \sum_{\alpha} f_{\alpha}(\mathbf{k})
 g(\varepsilon_{\alpha}(\mathbf{k}))C_{n \lambda}^{\alpha}(\mathbf{k})(C_{m \mu}^{\alpha}(\mathbf{k}))^{\star}    \]
 
 \noindent
@@ -1001,7 +1009,9 @@ C_{n \lambda}^{\alpha \star}(\mathbf{k}) \widetilde{C}_{n \lambda}^{\alpha}(\mat
 
 Let's consider the groupe velocity $\mathbf{v}_{\mathbf{k},\alpha}$, of band $\alpha$ at $\mathbf{k}$:
 
-\[ \hbar \mathbf{v}_{\mathbf{k},\alpha}=\nabla_{\mathbf{k}} \varepsilon_{\alpha}(\mathbf{k})\]
+\begin{align*} 
+  \hbar \mathbf{v}_{\mathbf{k},\alpha}&\equiv\nabla_{\mathbf{k}} \varepsilon_{\alpha}(\mathbf{k})
+\end{align*}
 
 \noindent
 For component $d=x,y,z$
@@ -1023,7 +1033,7 @@ i \sum_{\mathbf{R}} (\mathbf{R}^{d}+\mathbf{r}_{m}^{d}-\mathbf{r}_n^{d})e^{i\mat
 
 \[\displaystyle  \frac{\partial}{\partial k_{d}} S_{n,m}^{\lambda,\mu}(\mathbf{k})=
 i\sum_{\mathbf{R}} (\mathbf{R}^{d}+\mathbf{r}_{m}^{d}-\mathbf{r}_n^{d})e^{i\mathbf{k}.(\mathbf{R}+\mathbf{r}_{m}-\mathbf{r}_n)}
-\bra{ 0,n,\lambda}\op{I}\ket{\mathbf{R},m,\mu }\]
+\bra{ 0,n,\lambda}\op{\mathbb{I}}\ket{\mathbf{R},m,\mu }\]
 
 
 \section{What about spin!}
@@ -1126,7 +1136,7 @@ S_{n,m}^{\lambda \sigma, \mu \sigma'} (\mathbf{k})
 =S_{n,m}^{\lambda, \mu} (\mathbf{k}) \otimes \bm{\sigma}_0
 \]
 
-\noindent The TB magnetic Hamiltonian contains four terms $H_0$, $H_{\text{LCN}}$, $H_{\text{Stoner}}$ and $H_{\text{SOC}}$ \footnote{\noindent For more details aboit the Hamiltonian see "Comptes Rendus Physique 17 406-429 (2016)."}:
+\noindent The TB magnetic Hamiltonian contains four terms $H_0$, $H_{\text{LCN}}$, $H_{\text{Stoner}}$ and $H_{\text{SOC}}$ \footnote{\noindent For more details, see reference~\cite{barreteauEfficientMagneticTightbinding2016}}:
 
 
 \[\displaystyle H=H_0\otimes\bm{\sigma}_0
@@ -1147,10 +1157,7 @@ S_{n,m}^{\lambda \sigma, \mu \sigma'} (\mathbf{k})
 The average of the spin operator is expressed as follows
 $\bm{\sigma}$
 \footnote{\noindent 
-${\bm{\sigma}}=(\sigma_x,\sigma_y,\sigma_z)$ est
-form\'e des 3 matrices de Pauli et $\bm{\sigma}_{\sigma \sigma'}$ repr\'esente les coefficients de ces matrices:
-
-
+The vector ${\bm{\sigma}}=(\sigma_x,\sigma_y,\sigma_z)$ is formed by the 3 Pauli's matrices and $\bm{\sigma}_{\sigma \sigma'}$ are the coefficients of these matrices:
 \[ \sigma_x=\left( \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right) 
 \quad
 \sigma_y=\left( \begin{array}{cc} 0 & -i \\ i & 0 \end{array} \right) \quad
@@ -1205,7 +1212,7 @@ Hence we have:
 
 
 \noindent
-Le calcul montre donc que:
+Consequently
 
 \[ \begin{array}{lcl} 
 \langle \sigma_x \rangle&=&     \bar{\rho}^{\downarrow \uparrow} +  \bar{\rho}^{\uparrow \downarrow} = 2\Re(\bar{\rho}^{\uparrow \downarrow}) \\ 
@@ -1218,13 +1225,12 @@ Le calcul montre donc que:
 \noindent
 Inverting these formula one gets:
 
-\[ \begin{array}{lcl} 
- \bar{\rho}^{\uparrow \uparrow}      &=&  \displaystyle \frac{1}{2}[\langle \sigma_0\rangle+  \langle\sigma_z\rangle]     \\ 
- \bar{\rho}^{\downarrow \downarrow}  &=&  \displaystyle \frac{1}{2}[\langle\sigma_0\rangle-  \langle\sigma_z\rangle]   \\ 
- \bar{\rho}^{\uparrow \downarrow}    &=&  \displaystyle \frac{1}{2}[\langle\sigma_x\rangle- i\langle\sigma_y\rangle]   \\
- \bar{\rho}^{\downarrow \uparrow}    &=&  \displaystyle \frac{1}{2}[\langle\sigma_x\rangle+ i\langle\sigma_y\rangle]   
-\end{array}
-\]
+\begin{align*}
+ \bar{\rho}^{\uparrow \uparrow}      &=  \displaystyle \frac{1}{2}[\langle \sigma_0\rangle+  \langle\sigma_z\rangle]     \\ 
+ \bar{\rho}^{\downarrow \downarrow}  &=  \displaystyle \frac{1}{2}[\langle\sigma_0\rangle-  \langle\sigma_z\rangle]   \\ 
+ \bar{\rho}^{\uparrow \downarrow}    &=  \displaystyle \frac{1}{2}[\langle\sigma_x\rangle- i\langle\sigma_y\rangle]   \\
+ \bar{\rho}^{\downarrow \uparrow}    &=  \displaystyle \frac{1}{2}[\langle\sigma_x\rangle+ i\langle\sigma_y\rangle]   
+\end{align*}
 
 %\noindent Soit sous forme plus compacte:
 
@@ -1290,21 +1296,19 @@ and we have :
 %\[ \tilde{\rho}_{a \lambda}= \frac{1}{2} \sum_{\zeta=1}^{3} %<\sigma_{\zeta}>_{a \lambda} \otimes \sigma_{\zeta} \quad;
 %\quad \zeta=0,x,y,z\]
 
-
 \subsection{Average of an operator}
 
 \subsubsection{General case}
 
 \noindent
-$\op{A}$ Hermitian operator:
+Let $\op{A}$ an Hermitian operator:
 
 \[\displaystyle A_{nm}^{\lambda \sigma,\mu \sigma'}(\mathbf{k})=
 \langle n,\lambda,\sigma,\mathbf{k}|{\bm A}| m,\mu,
 \sigma'\mathbf{k}\rangle \]
 
-
 \noindent
-Its average reads:
+Its average value reads:
 
 \[ \langle A \rangle =\sum_{\mathbf{k}} w_{\mathbf{k}} \text{Tr} \left[\bar{\rho}(\mathbf{k}) A(\mathbf{k}) \right] \]
 
