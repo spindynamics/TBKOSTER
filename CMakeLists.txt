@@ -17,7 +17,7 @@ cmake_policy(SET CMP0074 NEW)
 #  endif()
 #endif()
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 
 set(PROJECT_NAME TBKOSTER)
 project(${PROJECT_NAME} VERSION 1.9.4.0 DESCRIPTION "Tight-Binding Kernel of Objects for SpinTronics Enhanced Research")
